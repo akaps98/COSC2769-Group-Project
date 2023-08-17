@@ -1,0 +1,169 @@
+html
+body{
+    height: 100vh;
+    background-color: #D8D9DA;
+}
+
+.login-container{
+    background-color: #fff;
+    padding: 20px 40px 40px 40px;
+}
+
+h2{
+    font-weight: 600 !important;
+    text-align: center;
+    padding: 15px 0;
+}
+
+.login-btn{
+    background-color: #F86F03;
+    border: none;
+    color: white;
+    padding: 10px;
+    &:hover{
+        background-color: #cb5800;
+        transition: ease-in-out 400ms;
+    }
+}
+
+.link-text{
+    font-size: 12px;
+    text-align: center;
+}
+
+span{
+    color: red;
+}
+
+.product-detail-container{
+    width: 1000px;
+    margin: 20px auto;
+    display: flex;
+    background-color: #fff;
+}
+
+.img-container, .product-main-container{
+    padding: 15px;
+}
+
+.product-img{
+    width: 400px;
+}
+
+.seller-name-container{
+    font-size: 12px;
+    padding: 15px;
+    background-color: #f4f4f4;
+    margin-top: 20px;
+}
+
+.seller-name-container p{
+    margin-bottom: 0;
+}
+
+.seller-name{
+    font-size: 18px;
+}
+
+.pName{
+    text-align: start;
+    margin-bottom: 40px;
+}
+
+.category-text{
+    font-size: 12px;
+    color: #a5a5a5;
+}
+
+.price{
+    color: #ff8820;
+    font-size: 34px;
+}
+
+.currency{
+    color: #ff8820;
+    font-size: 20px;
+}
+
+.qty-container{
+    display: flex;
+    margin: 20px 0 40px 0;
+}
+
+.qty-container p{
+    margin-right: 20px;
+}
+
+.quantity{
+    text-align: center;
+    width: 40px;
+    height: 35px;
+    border: #D8D9DA solid 1px;
+    border-left: none;
+    border-right: none;
+}
+
+.qty-btn{
+    width: 35px;
+    height: 35px;
+    border: #D8D9DA solid 1px;
+    font-size: 24px;
+    color: #616161;
+    line-height: 10px;
+    &:hover{
+        background-color: #939393;
+        color: #fff;
+        transition: ease-in-out 0.2s;
+    }
+}
+
+.btn-container{
+    display: flex;
+    margin: 30px 0;
+}
+
+.buy-btn{
+    background-color: #FBC252;
+    padding: 10px 60px;
+    border: none;
+    color: #fff;
+    margin-right: 10px;
+    border-radius: 3px;
+    &:hover{
+        background-color: #d39d30;
+        transition: ease-in-out 0.4s;
+    }
+}
+
+.toCart-btn{
+    background-color: #F86F03;
+    padding: 10px 60px;
+    border: none;
+    color: #fff;
+    border-radius: 3px;
+    &:hover{
+        background-color: #cb5800;
+        transition: ease-in-out 0.4s;
+    }
+}
+
+.product-desc-container{
+    margin: 0 auto;
+    width: 1000px;
+    background-color: #fff;
+}
+
+.product-desc-container p{
+    padding: 20px;
+}
+
+.desc-title{
+    background-color: #f4f4f4;
+    font-weight: bolder;
+    font-size: 16px;
+}
+
+.stock{
+    margin-left: 20px;
+    padding-top: 5px;
+}
