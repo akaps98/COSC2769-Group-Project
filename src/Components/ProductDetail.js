@@ -6,20 +6,13 @@ function ProductDetail() {
         <>
             <div className="product-detail-container">
                 <div className="img-container">
-                    <img className="product-img" src="./iphone14.png"></img>
-                    <div className="seller-name-container">
-                        <p className="text-secondary">Sold By</p>
-                        <p className="seller-name">Seller Name</p>
-                    </div>
+                    <img className="product-img" src="./iphone14.png" alt="" />
                 </div>
                 <div className="product-main-container">
                     <h2 className="pName">iPhone 14 Pro - Hàng Chính Hãng VN/A</h2>
                     <p className="text-muted category-text">Categories: Product Category | Subcategory</p>
-                    <hr />
+                    <div className="hr-line"></div>
                     <p className="price"><span className="currency">₫</span>{price.toLocaleString()}</p>
-                    <div>
-                        <p className="text-secondary">Shipping</p>
-                    </div>
                     <div className="qty-container">
                         <p className="text-secondary pt-1">Quantity</p>
                         <button className="qty-btn">-</button>
@@ -27,10 +20,32 @@ function ProductDetail() {
                         <button className="qty-btn">+</button>
                         <p className="text-secondary stock">1000 pieces available</p>
                     </div>
-
                     <div className="btn-container">
                         <button className="buy-btn">Buy Now</button>
                         <button className="toCart-btn">Add to Cart</button>
+                    </div>
+                </div>
+                <div className="product-sub-container">
+                    <div className="shipping-info-container">
+                        <p className="text-secondary section-title">Delivery options</p>
+                        <div className="location-img">
+                            <p className="shipping-address">Hồ Chí Minh, Quận 1, Phường Phạm Ngũ Lão</p>
+                        </div>
+                        <div className="cod-container">
+                            <p className="cod-text-container">Cash on Delivery Available<br />(No mutual check)</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p className="text-secondary section-title">Return & Warranty</p>
+                        <div className="warranty-container">
+                            <p><img src="./images/guaranteed.png" alt=""/>100% Authentic</p>
+                            <p><img src="./images/heart.png" alt=""/>Change of Mind</p>
+                            <p><img src="./images/guaranteed.png" alt=""/>15 Days Return</p>
+                        </div>
+                    </div>
+                    <div className="seller-name-container">
+                        <p className="text-secondary section-title">Sold By</p>
+                        <p className="seller-name">Seller Name</p>
                     </div>
                 </div>
             </div>

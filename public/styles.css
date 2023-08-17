@@ -36,7 +36,7 @@ span{
 }
 
 .product-detail-container{
-    width: 1000px;
+    width: 1200px;
     margin: 20px auto;
     display: flex;
     background-color: #fff;
@@ -46,26 +46,26 @@ span{
     padding: 15px;
 }
 
+.product-main-container{
+    width: 550px;
+    padding-right: 50px;
+}
+
 .product-img{
-    width: 400px;
+    width: 350px;
+    transition: ease-in 0.2s;
+    transform-origin: top left;
+    &:hover{
+        scale: 1.5;
+    }
 }
 
-.seller-name-container{
-    font-size: 12px;
-    padding: 15px;
-    background-color: #f4f4f4;
-    margin-top: 20px;
-}
-
-.seller-name-container p{
-    margin-bottom: 0;
-}
-
-.seller-name{
-    font-size: 18px;
+.hr-line{
+    border: #d8d9da95 solid 1px;
 }
 
 .pName{
+    font-size: 24px;
     text-align: start;
     margin-bottom: 40px;
 }
@@ -149,7 +149,7 @@ span{
 
 .product-desc-container{
     margin: 0 auto;
-    width: 1000px;
+    width: 1200px;
     background-color: #fff;
 }
 
@@ -166,4 +166,76 @@ span{
 .stock{
     margin-left: 20px;
     padding-top: 5px;
+}
+
+.product-sub-container{
+    width: 350px;
+}
+
+.product-sub-container div{
+    background-color: #f4f4f4;
+}
+
+.shipping-address{
+    padding: 15px 20px 15px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 35px;
+}
+
+.shipping-info-container p{
+    margin-bottom: 0;
+}
+
+.cod-container{
+    background: url("./images/money.png") no-repeat 20px center;
+    border-bottom: #d8d9da95 solid 1px;
+}
+
+.cod-text-container{
+    padding: 15px 20px 15px 20px;
+    font-size: 14px;
+    margin-left: 35px;
+    font-weight: bold;
+}
+
+.seller-name-container{
+    margin-bottom: 20px;
+}
+
+.seller-name-container p{
+    margin-bottom: 0;
+}
+
+.seller-name{
+    padding: 0 20px 15px 20px;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.section-title{
+    font-size: 12px;
+    font-weight: bold;
+    padding: 20px 20px 0 20px;
+}
+
+.location-img{
+    background: url("./images/location.png") no-repeat 20px center;
+    border-bottom: #d8d9da95 solid 1px;
+}
+
+.warranty-container{
+    margin-bottom: 20px;
+    border-bottom: #d8d9da95 solid 1px;
+}
+
+.warranty-container p{
+    padding: 10px 20px 10px 20px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.warranty-container p img{
+    margin-right: 10px;
 }
