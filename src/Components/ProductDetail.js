@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 
 function ProductDetail() {
     const price = 22000000
+    const rating = 3.8;
+    const [ isWrapped, setIsWrapped ] = useState(true);
+    function handleClick(){
+        setIsWrapped(prev => !prev);
+    }
     return (
         <>
             <div className="product-detail-container">
@@ -10,9 +15,10 @@ function ProductDetail() {
                 </div>
                 <div className="product-main-container">
                     <h2 className="pName">iPhone 14 Pro - Hàng Chính Hãng VN/A</h2>
+                    <p className="stars" style={{ "--rating": rating }}>1490 Ratings</p>
                     <p className="text-muted category-text">Categories: Product Category | Subcategory</p>
                     <div className="hr-line"></div>
-                    <p className="price"><span className="currency">₫</span>{price.toLocaleString()}</p>
+                    <p className="price">{price.toLocaleString()}</p>
                     <div className="qty-container">
                         <p className="text-secondary pt-1">Quantity</p>
                         <button className="qty-btn">-</button>
@@ -38,9 +44,9 @@ function ProductDetail() {
                     <div>
                         <p className="text-secondary section-title">Return & Warranty</p>
                         <div className="warranty-container">
-                            <p><img src="./images/guaranteed.png" alt=""/>100% Authentic</p>
-                            <p><img src="./images/heart.png" alt=""/>Change of Mind</p>
-                            <p><img src="./images/guaranteed.png" alt=""/>15 Days Return</p>
+                            <p><img src="./images/guaranteed.png" alt="" />100% Authentic</p>
+                            <p><img src="./images/heart.png" alt="" />Change of Mind</p>
+                            <p><img src="./images/guaranteed.png" alt="" />15 Days Return</p>
                         </div>
                     </div>
                     <div className="seller-name-container">
@@ -51,7 +57,7 @@ function ProductDetail() {
             </div>
             <div className="product-desc-container">
                 <p className="desc-title">Product description for product name</p>
-                <p>
+                <p className={isWrapped && "product-desc"}>
                     Lorem ipsum dolor sit amet,
                     consectetur adipiscing elit,
                     sed do eiusmod tempor incididunt
@@ -103,6 +109,9 @@ function ProductDetail() {
                     pariatur. Excepteur sint occaecat cupidatat non proident, sunt
                     in culpa qui officia deserunt mollit anim id est laborum.
                 </p>
+                <div className="wrap-toggle-btn-container">
+                    <button className="wrap-toggle-btn" onClick={handleClick}>{isWrapped ? "VIEW MORE" : "VIEW LESS"}</button>
+                </div>
             </div>
         </>
     )
