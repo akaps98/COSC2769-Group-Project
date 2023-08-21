@@ -5,6 +5,7 @@ import Carousel from "./components/Carousel";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ProductDetail from "./components/ProductDetail";
+import Logout from "./components/Logout";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/detail" element={<ProductDetail />} />
+            <Route exact path="/logout" element={<Logout />} />
           </Routes>
         </div>
       </div>

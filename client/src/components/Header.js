@@ -12,15 +12,15 @@ function Header() {
                         <li><a href="#">Save More on App</a></li>
                         <li><a href="#">Sell On Lazada</a></li>
                         <li><a href="#">Lazada Care</a></li>
-                        <li><a href="#">Login</a></li>
-                        <li><a href="#">Sign Up</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Sign Up</a></li>
                     </ul>
                 </nav>
             </div>
             <div className="headerBottom">
                 <div className="container d-flex justify-content-center align-items-center">
                     <div className="logo">
-                        <img src={logo}></img>
+                        <a href="/"><img src={logo}></img></a>
                     </div>
                     <form className="headerSearch d-flex">
                         <input type="text" className="searchText" id="searchText" placeholder="Search in Lazada"></input>
