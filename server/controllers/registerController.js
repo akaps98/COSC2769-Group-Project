@@ -2,35 +2,100 @@ const database = require("../config/database");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const handleRegister = (req, res) => {
+const handleCustomerRegister = (req, res) => {
     const username = req.body.username;
-    const password = req.body.password;
-    const role = req.body.role;
     const email = req.body.email;
     const phone = req.body.phone;
-    const address_business = req.body.address_business
-    
-    database.query('SELECT * FROM users WHERE BINARY(username) = ?', username, (err, result) => {
+    const address = req.body.address;
+    const password = req.body.password;
+
+    database.query('SELECT * FROM customers WHERE BINARY(Cemail) = ?', email, (err, Eresult) => {
         if (err) {
             return res.send({ err: err });
         } 
-        if (result.length==0) {
-            bcrypt.hash(password,saltRounds, (err, hash) => {
+        if (Eresult.length==0) {
+            database.query('SELECT * FROM customers WHERE BINARY(Cphone) = ?', phone, (err, Presult) => {
                 if (err) {
-                    console.log(err)
+                    return res.send({ err: err });
+                } 
+                if (Presult.length==0) {
+                    database.query('SELECT * FROM customers WHERE BINARY(Cname) = ?', username, (err, Nresult) => {
+                        if (err) {
+                            return res.send({ err: err });
+                        } 
+                        if (Nresult.length==0) {
+                            bcrypt.hash(password,saltRounds, (err, hash) => {
+                                if (err) {
+                                    console.log(err)
+                                }
+                                database.query('INSERT INTO customers (Cname,Cemail,Cphone,Caddress,Cpassword) VALUES (?,?,?,?,?)', [username, email, phone, address, hash], (err, result) => {
+                                    if (err) {
+                                        return res.send({ err: err });
+                                    } else {
+                                        return res.send({ message: 'New data inserted successfully!' });
+                                    }
+                                });
+                            });
+                        } else {
+                            return res.send("Username already exists! Choose another one.")
+                        }
+                    });
+                } else {
+                    return res.send("Phone number already exists! Choose another one.")
                 }
-                database.query('INSERT INTO users (username,password,role,email,phone,address_business) VALUES (?,?,?,?,?,?)', [username, hash, role, email, phone, address_business], (err, result) => {
-                    if (err) {
-                        return res.send({ err: err });
-                    } else {
-                        return res.send({ message: 'New data inserted successfully!' });
-                    }
-                });
             });
         } else {
-            return res.send("Username already exists! Choose another one.")
+            return res.send("Email already exists! Choose another one.")
         }
     });
 };
 
-module.exports = { handleRegister };
+const handleSellerRegister = (req, res) => {
+    const username = req.body.username;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const business = req.body.business;
+    const password = req.body.password;
+
+    database.query('SELECT * FROM sellers WHERE BINARY(Semail) = ?', email, (err, Eresult) => {
+        if (err) {
+            return res.send({ err: err });
+        } 
+        if (Eresult.length==0) {
+            database.query('SELECT * FROM sellers WHERE BINARY(Sphone) = ?', phone, (err, Presult) => {
+                if (err) {
+                    return res.send({ err: err });
+                } 
+                if (Presult.length==0) {
+                    database.query('SELECT * FROM sellers WHERE BINARY(Sname) = ?', username, (err, Nresult) => {
+                        if (err) {
+                            return res.send({ err: err });
+                        } 
+                        if (Nresult.length==0) {
+                            bcrypt.hash(password,saltRounds, (err, hash) => {
+                                if (err) {
+                                    console.log(err)
+                                }
+                                database.query('INSERT INTO sellers (Sname,Semail,Sphone,Sbusiness,Spassword,Sstatus) VALUES (?,?,?,?,?,?)', [username, email, phone, business, hash, 'Pending'], (err, result) => {
+                                    if (err) {
+                                        return res.send({ err: err });
+                                    } else {
+                                        return res.send({ message: 'New data inserted successfully!' });
+                                    }
+                                });
+                            });
+                        } else {
+                            return res.send("Username already exists! Choose another one.")
+                        }
+                    });
+                } else {
+                    return res.send("Phone number already exists! Choose another one.")
+                }
+            });
+        } else {
+            return res.send("Email already exists! Choose another one.")
+        }
+    });
+};
+
+module.exports = { handleCustomerRegister, handleSellerRegister };
