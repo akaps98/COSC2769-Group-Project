@@ -12,12 +12,12 @@ function ProductTableRow(props) {
     }
     return (
         <tr id={props.product.id}>
-            <td><img src={props.product.image} alt="Nothing..." /></td>
-            <td>{props.product.name}</td>
-            <td>{props.product.price.toLocaleString() + " vnd"}</td>
-            <td>{props.product.category}</td>
-            <td>{props.product.dateAdded}</td>
-            <td>
+            <td className="col-sm-2"><img src={props.product.image} alt="Nothing..." /></td>
+            <td className="col-sm-2">{props.product.name}</td>
+            <td className="col-sm-2">{props.product.price.toLocaleString() + " ₫"}</td>
+            <td className="col-sm-2">{props.product.category}</td>
+            <td className="col-sm-2">{props.product.dateAdded}</td>
+            <td className="col-sm-2">
                 <button className="product-update-btn" value={props.product.id} onClick={handleUpdate}/>
                 <button className="product-delete-btn" value={props.product.id} onClick={handleDelete}/>
             </td>
