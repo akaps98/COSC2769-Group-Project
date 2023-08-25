@@ -337,14 +337,6 @@ span {
     }
 }
 
-.accepted {
-    color: rgb(0, 147, 0) !important;
-}
-
-.rejected {
-    color: red !important;
-}
-
 .management-container {
     width: 1200px;
     height: 600px;
@@ -364,6 +356,7 @@ span {
     background-color: #fff;
     width: 100%;
     margin: 20px 0;
+    color: #1d1d1dcf;
 }
 
 .product-table tbody {
@@ -485,7 +478,14 @@ span {
     height: 100px;
 }
 
-.seller-header-container {
+.seller-header-container{
+    width: 100vw;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+}
+
+.seller-header-main-container {
     width: 1200px;
     position: relative;
 }
@@ -511,9 +511,10 @@ span {
     border: none;
     border-radius: 5px;
     color: #fff;
-    padding: 5px 15px;
     margin-right: 10px;
-    line-height: 25px;
+    padding: 10px 15px;
+    line-height: 20px;
+    font-size: 14px;
     &::before{
         content: url("../images/delivery.png");
         filter: invert(1);
@@ -530,12 +531,13 @@ span {
 }
 
 .order-cancel-btn {
-    background-color: #DC3545;
+    background-color: #000;
     border: none;
     border-radius: 5px;
     color: #fff;
-    padding: 5px 15px;
-    line-height: 25px;
+    padding: 10px 15px;
+    line-height: 20px;
+    font-size: 14px;
     &::before{
         content: url("../images/close.png");
         filter: invert(1);
@@ -544,7 +546,7 @@ span {
         top: 2px;
     }
     &:hover {
-        background-color: rgba(179, 0, 0, 0.8);
+        background-color: rgba(59, 59, 59, 0.8);
         box-shadow: 1px 1px 5px #616161;
         transition: ease-in-out 0.3s;
     }
@@ -574,4 +576,34 @@ span {
     background-color: #fff;
     padding: 20px 40px;
     border-radius: 5px;
+}
+
+.status-text{
+    width: fit-content;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 0;
+    line-height: 15px;
+    color: #fff;
+}
+
+.New{
+    background-color: #FBC252;
+}
+
+.Shipped{
+    background-color: #198754;
+}
+
+.Canceled{
+    background-color: #000;
+}
+
+.Accepted{
+    background-color: #609966;
+}
+
+.Rejected{
+    background-color: #DC3545;
 }

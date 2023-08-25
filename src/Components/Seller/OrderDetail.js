@@ -3,7 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 
 function OrderDetail({ order, show, handleClose }) {
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal size="lg" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Order ID #{order.id}</Modal.Title>
             </Modal.Header>
@@ -11,15 +11,15 @@ function OrderDetail({ order, show, handleClose }) {
                 <div className="row mb-4">
                     <div className="col-sm-4">
                         <p className="text-secondary">Customer Name</p>
-                        <p>{order.customerId}</p>
+                        <p>Tom</p>
                     </div>
                     <div className="col-sm-4">
                         <p className="text-secondary">Address</p>
-                        <p>{order.customerId}</p>
+                        <p>702 Đ. Nguyễn Văn Linh, Tân Hưng, Quận 7, Thành phố Hồ Chí Minh 700000</p>
                     </div>
                     <div className="col-sm-4">
                         <p className="text-secondary">Phone</p>
-                        <p>{order.customerId}</p>
+                        <p>090124124</p>
                     </div>
                 </div>
                 <div className="row mb-4">
@@ -31,18 +31,22 @@ function OrderDetail({ order, show, handleClose }) {
                         <p className="text-secondary">Quantity</p>
                         <p>{order.quantity}</p>
                     </div>
+                    <div className="col-sm-4">
+                        <p className="text-secondary">Price</p>
+                        <p>2,000,000 ₫</p>
+                    </div>
                 </div>
                 <div>
                     <div className="row mb-4">
                         <div className="col-sm-4">
                             <p className="text-secondary">Status</p>
-                            <p>{order.status}</p>
+                            <p className={"status-text " + order.status}>{order.status}</p>
                         </div>
                         {order.status === "New" &&
                             <div className="col-sm-8">
-                                <p className="text-secondary">Confirm Order</p>
+                                <p className="text-secondary">Action</p>
                                 <Button variant="success" className="col-sm-4 me-2 order-ship-btn">Shipped</Button>
-                                <Button variant="danger" className="col-sm-4 order-cancel-btn">Canceled</Button>
+                                <Button variant="dark" className="col-sm-4 order-cancel-btn">Canceled</Button>
                             </div>
                         }
                     </div>

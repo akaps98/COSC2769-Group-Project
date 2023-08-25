@@ -138,8 +138,8 @@ function ProductManage() {
                         return (
                             <ProductTableRow product={product}
                                 key={product.id}
-                                delete={handleDeleteModalShow}
-                                pID={setProductId}
+                                handleDeleteModalShow={handleDeleteModalShow}
+                                setProductId={setProductId}
                                 getProduct={getProduct}
                             />
                         )
