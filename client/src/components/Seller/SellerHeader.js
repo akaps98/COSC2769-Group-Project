@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/lazada-seller-center.png"
+import logo from "../../assets/images/sellers/lazada-seller-center.png"
 
 function SellerHeader() {
-    const [dropdown, setDropdown] = useState(false);
+    const [dropdown, setDropdown] = useState(true);
     const handleToggle = () => setDropdown(prev => !prev);
     return (
         <div className="seller-header-container">

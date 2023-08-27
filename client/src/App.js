@@ -6,6 +6,7 @@ import ProductDetail from './components/ProductDetail';
 import AddProduct from './components/Seller/AddProduct';
 import ProductManage from './components/Seller/ProductManage';
 import OrderList from './components/Seller/OrderList';
+import Unauthorized from './components/Unauthorized';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/detail' element={<ProductDetail />} />
+            <Route path='/una' element={<Unauthorized />} />
           </Routes>
         </div>
       </div>

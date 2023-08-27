@@ -1,8 +1,5 @@
-import React, { useRef } from 'react'
-import Statistics from './Statistics';
-import ProductManage from './ProductManage';
+import React, { useRef } from 'react';
 import SellerHeader from './SellerHeader';
-import OrderList from './OrderList';
 import { Outlet } from 'react-router-dom';
 
 function SellerPage() {
