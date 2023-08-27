@@ -464,13 +464,20 @@ span {
     }
 }
 
+.seller-page-container{
+    display: flex;
+}
+
+.seller-page-main-container{
+    margin: 0 auto;
+    position: relative;
+}
+
 .management-title-container {
     background-color: #fff;
     display: flex;
     justify-content: space-between;
     padding-top: 10px;
-    margin-bottom: 10px;
-    border-bottom: #d8d9da95 solid 2px;
 }
 
 .seller-logo {
@@ -478,16 +485,31 @@ span {
     height: 100px;
 }
 
+.seller-header-container, .management-container, .statistics-container{
+    box-shadow: 1px 1px 5px 1px #babbbc;
+}
+
 .seller-header-container{
-    width: 100vw;
+    width: 250px;
+    height: 100vh;
     background-color: #fff;
     position: sticky;
     top: 0;
 }
 
-.seller-header-main-container {
-    width: 1200px;
-    position: relative;
+.seller-header-main-container{
+    padding: 10px 20px;
+}
+
+.seller-header-container p, .seller-header-container a{
+    cursor: pointer;
+    text-decoration: none !important;
+    color: #818181 !important;
+    margin-bottom: 24px;
+    &:hover{
+        color: #2f2f2f !important;
+        transition: ease-in-out 0.2s;
+    }
 }
 
 .sign-out-btn {
@@ -495,9 +517,8 @@ span {
     background: url("../images/logout.png") transparent no-repeat 20px 16px;
     border: none;
     position: absolute;
-    right: 0;
-    top: 25px;
-
+    left: 0;
+    bottom: 15px;
     &:hover {
         background-color: #fff;
         border-radius: 5px;
@@ -512,7 +533,7 @@ span {
     border-radius: 5px;
     color: #fff;
     margin-right: 10px;
-    padding: 10px 15px;
+    padding: 10px 30px;
     line-height: 20px;
     font-size: 14px;
     &::before{
@@ -535,7 +556,7 @@ span {
     border: none;
     border-radius: 5px;
     color: #fff;
-    padding: 10px 15px;
+    padding: 10px 30px;
     line-height: 20px;
     font-size: 14px;
     &::before{
@@ -559,11 +580,11 @@ span {
 }
 
 .desc {
-    background: url("../images/down-filled-triangular-arrow.png") right no-repeat;
+    background: url("../images/sort-descending.png") right 15px no-repeat;
 }
 
 .asc {
-    background: url("../images/caret-arrow-up.png") right no-repeat;
+    background: url("../images/sort-ascending.png") right 15px no-repeat;
 }
 
 .clickable{
@@ -573,9 +594,11 @@ span {
 }
 
 .product-form-container{
+    width: 1200px;
     background-color: #fff;
     padding: 20px 40px;
     border-radius: 5px;
+    box-shadow: 1px 1px 5px 1px #babbbc;
 }
 
 .status-text{
@@ -606,4 +629,47 @@ span {
 
 .Rejected{
     background-color: #DC3545;
+}
+
+.dropdown-disabled{
+    &::after{
+        content: "";
+        width: 24px;
+        height: 24px;
+        background: url("../images/down-arrow.png") no-repeat 0 5px;
+        display: inline-block;
+        position: absolute;
+        right: 10px;
+    }
+}
+
+.dropdown-enabled{
+    &::after{
+        content: "";
+        width: 24px;
+        height: 24px;
+        background: url("../images/down-arrow.png") no-repeat 0 -5px;
+        display: inline-block;
+        position: absolute;
+        right: 10px;
+        transform: scaleY(-1);
+    }
+}
+
+.product-header{
+    background: url("../images/product.png") no-repeat 0 4px;
+}
+
+.order-header{
+    background: url("../images/order-delivery.png") no-repeat 0 -2px;
+}
+
+.section-header{
+    &::before{
+        content: "";
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        margin-right: 5px;
+    }
 }

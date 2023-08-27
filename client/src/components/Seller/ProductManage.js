@@ -5,6 +5,7 @@ import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ProductUpdate from "./ProductUpdate";
 import ProductTableHead from "./ProductTableHead";
+import Statistics from "./Statistics";
 
 function ProductManage() {
     const date = new Date();
@@ -101,52 +102,55 @@ function ProductManage() {
     const handleUpdateModalClose = () => setUpdateModalShow(false);
     const handleUpdateModalShow = () => setUpdateModalShow(true);
     return (
-        <div className="management-container">
-            <Modal show={deleteModalshow} onHide={handleDeleteModalClose} animation={false} centered>
-                <Modal.Header>
-                    <Modal.Title>Delete Product</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Do you really want to delete a product?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={() => {
-                        deleteProduct();
-                        handleDeleteModalClose();
-                    }}>
-                        Delete
-                    </Button>
-                    <Button variant="secondary" onClick={handleDeleteModalClose}>
-                        Cancel
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <ProductUpdate handleClose={handleUpdateModalClose} show={updateModalshow} product={product} setProduct={setProduct} />
-            <div className="management-title-container">
-                <p className="management-title">Product Management</p>
-                <Link to={"/addProduct"} className="add-btn">Add Product</Link>
+        <>
+            <Statistics />
+            <div className="management-container">
+                <Modal show={deleteModalshow} onHide={handleDeleteModalClose} animation={false} centered>
+                    <Modal.Header>
+                        <Modal.Title>Delete Product</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Do you really want to delete a product?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={() => {
+                            deleteProduct();
+                            handleDeleteModalClose();
+                        }}>
+                            Delete
+                        </Button>
+                        <Button variant="secondary" onClick={handleDeleteModalClose}>
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                <ProductUpdate handleClose={handleUpdateModalClose} show={updateModalshow} product={product} setProduct={setProduct} />
+                <div className="management-title-container">
+                    <p className="management-title">Product Management</p>
+                    <Link to={"/addProduct"} className="add-btn">Add Product</Link>
+                </div>
+                <table className="product-table">
+                    <thead>
+                        <ProductTableHead
+                            columns={columns}
+                            handleSorting={handleSorting}
+                            sortOrder={sortOrder}
+                            sortingOption={sortingOption}
+                        />
+                    </thead>
+                    <tbody>
+                        {products.map((product) => {
+                            return (
+                                <ProductTableRow product={product}
+                                    key={product.id}
+                                    handleDeleteModalShow={handleDeleteModalShow}
+                                    setProductId={setProductId}
+                                    getProduct={getProduct}
+                                />
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
-            <table className="product-table">
-                <thead>
-                    <ProductTableHead
-                        columns={columns}
-                        handleSorting={handleSorting}
-                        sortOrder={sortOrder}
-                        sortingOption={sortingOption}
-                    />
-                </thead>
-                <tbody>
-                    {products.map((product) => {
-                        return (
-                            <ProductTableRow product={product}
-                                key={product.id}
-                                handleDeleteModalShow={handleDeleteModalShow}
-                                setProductId={setProductId}
-                                getProduct={getProduct}
-                            />
-                        )
-                    })}
-                </tbody>
-            </table>
-        </div>
+        </>
     )
 }
 
