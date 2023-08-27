@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './Components/Login';
-import SellerPage from './Components/Seller/SellerPage';
-import Register from './Components/Register';
-import ProductDetail from './Components/ProductDetail';
-import AddProduct from './Components/Seller/AddProduct';
+import Login from './components/Login';
+import SellerPage from './components/Seller/SellerPage';
+import Register from './components/Register';
+import ProductDetail from './components/ProductDetail';
+import AddProduct from './components/Seller/AddProduct';
 
 function App() {
   return (

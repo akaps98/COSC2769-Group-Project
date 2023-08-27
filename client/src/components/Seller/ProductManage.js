@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ProductTableRow from "./ProductTableRow";
-import productImg from "../../assets/images/iPhone14.png";
+import productImg from "../../assets/images/products/iPhone14.png";
 import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ProductUpdate from "./ProductUpdate";
