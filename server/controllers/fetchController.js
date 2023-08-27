@@ -13,5 +13,14 @@ const allUsers = (req, res) => {
         }
     });
 };
+const allProducts = (req, res) => {
+    database.query("SELECT * FROM products", (err, result) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.send(result);
+        }
+    });
+};
 
-module.exports = { root, allUsers }
+module.exports = { root, allUsers, allProducts }

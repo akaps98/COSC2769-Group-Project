@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ProductDetail from "./components/ProductDetail";
 import Logout from "./components/Logout";
+import BrowseProduct from './components/BrowseProduct';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/detail" element={<ProductDetail />} />
             <Route exact path="/logout" element={<Logout />} />
+            <Route exact path="/search" element={<BrowseProduct />} />
           </Routes>
         </div>
       </div>

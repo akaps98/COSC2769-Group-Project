@@ -30,6 +30,7 @@ app.use('/', require('./routes/fetch'));
 app.use('/register', require('./routes/register'));
 app.use('/log', require('./routes/log'));
 app.use('/auth', require('./routes/auth'));
+app.use('/product', require('./routes/product'));
 
 app.listen(3001, () => {
     console.log('Server running on port 3001');
