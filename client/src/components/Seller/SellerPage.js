@@ -1,14 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import SellerHeader from './SellerHeader';
 import { Outlet } from 'react-router-dom';
 
 function SellerPage() {
-    const myRef = useRef({});
+    const [ menuToggle, setMenuToggle ] = useState(false);
     return (
         <div className='seller-page-container'>
-            <SellerHeader myRef = {myRef}/>
+            <SellerHeader setMenuToggle={setMenuToggle} menuToggle = {menuToggle}/>
             <div className='seller-page-main-container'>
-                <Outlet/>
+                <div className={menuToggle ? "background-wrapper" : ""}>
+                    <Outlet />
+                </div>
             </div>
         </div>
     )

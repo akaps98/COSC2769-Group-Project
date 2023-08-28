@@ -17,8 +17,8 @@ function OrderTableRow({ order, getOrder }) {
             <td className="col-sm-4">
                 {order.status === "New" &&
                     <div>
-                        <button className="order-ship-btn" name="Shipped" value={order.id}>Shipped</button>
-                        <button className="order-cancel-btn" name="Canceled" value={order.id}>Canceled</button>
+                        <button className="order-ship-btn" name="Shipped" value={order.id}>Ship</button>
+                        <button className="order-cancel-btn" name="Canceled" value={order.id}>Cancel</button>
                     </div>
                 }
             </td>

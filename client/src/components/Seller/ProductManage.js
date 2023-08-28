@@ -125,7 +125,7 @@ function ProductManage() {
                 <ProductUpdate handleClose={handleUpdateModalClose} show={updateModalshow} product={product} setProduct={setProduct} />
                 <div className="management-title-container">
                     <p className="management-title">Product Management</p>
-                    <Link to={"/addProduct"} className="add-btn">Add Product</Link>
+                    <Link to={"/seller/addProduct"} className="add-btn">Add Product</Link>
                 </div>
                 <table className="product-table">
                     <thead>
