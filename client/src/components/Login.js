@@ -4,29 +4,23 @@ import { useState, useEffect } from "react";
 import Axios from 'axios';
 import Logout from './Logout';
 
-function Login() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, setUser] = useState("")
-
+function Login({ userType, user }) {
     Axios.defaults.withCredentials = true;
 
-    useEffect(() => {
-        Axios.get("http://localhost:3001/auth").then((response) => {
-            if (response.data.loggedIn) {
-                setIsLoggedIn(true);
-                setUser(response.data.user[0].username+' ('+response.data.user[0].role+')');
-            }
-        });
-    }, []);
+    const [emailPhone, setEmailPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const [type, setType] = useState("customer");
+    
+    function handleClick(e) {
+        const newType = e.target.value;
+        setType(newType);
+    }
 
     const login = event => {
         event.preventDefault();
-
         Axios.post('http://localhost:3001/log/in', {
-            username: username,
+            type: type,
+            emailPhone: emailPhone,
             password: password
         }).then((response) => {
             console.log(response);
@@ -34,17 +28,21 @@ function Login() {
                 alert(JSON.stringify(response.data.message)); //error type
             } else {
                 alert("Hello, "+response.data+"!"); //success
-                window.location.reload();
+                if (type=="seller") {
+                    window.location.href = '/seller';
+                } else {
+                    window.location.href = '/';
+                }
             }
         });
     };
 
     return (
         <>
-        {(isLoggedIn) 
+        {(userType!=="") 
             ? 
             <div className="pt-5">
-                <h2>You are logged in, {user}!</h2>
+                <h2>You are logged in, {user.username}!</h2>
                 <Logout />
             </div>
             :
@@ -52,15 +50,27 @@ function Login() {
                 <form onSubmit={login}>
                     <h2>Welcome!</h2>
                     <hr />
+                    <div className="form-check form-check-inline">
+                        <input className="form-check-input me-2" name="radios" value="customer" type="radio" defaultChecked 
+                        onClick={handleClick} 
+                        />
+                        <label className="form-check-label">Customer</label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                        <input className="form-check-input me-2" name="radios" type="radio" value="seller" 
+                        onClick={handleClick} 
+                        />
+                        <label className="form-check-label me-3">Seller</label>
+                    </div>
                     <div className="my-3">
-                        <label className="form-label">Username</label>
+                        <label className="form-label">Email or Phone Number</label>
                         <input 
                             className="form-control" 
-                            id="userName" 
+                            id="emailPhone" 
                             type="text" 
-                            placeholder="Enter your username..." 
-                            onChange={(e) => setUsername(e.target.value)}
-                            value={username}
+                            placeholder="Enter your email or phone number..." 
+                            onChange={(e) => setEmailPhone(e.target.value)}
+                            value={emailPhone}
                             required
                         />
                     </div>

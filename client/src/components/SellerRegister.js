@@ -15,13 +15,12 @@ function SellerRegister(){
     const register = event => {
         event.preventDefault();
 
-        Axios.post('http://localhost:3001/register', {
+        Axios.post('http://localhost:3001/register/seller', {
             username: username,
-            password: password,
-            role: "seller",
             email: email,
             phone: phone,
-            address_business: business
+            business: business,
+            password: password
         }).then((response) => {
             if (response.data.message) {
                 alert(JSON.stringify(response.data.message)); //success
@@ -64,9 +63,9 @@ function SellerRegister(){
             <div className="my-3 col-sm-6">
                 <label className="form-label">Phone Number<span>*</span></label>
                 <input 
-                    className="form-control" 
+                    className="form-control phoneNumber" 
                     id="userPhone" 
-                    type="text" 
+                    type="number" 
                     placeholder="Enter your phone number..." 
                     onChange={(e) => setPhone(e.target.value)}
                     value={phone}

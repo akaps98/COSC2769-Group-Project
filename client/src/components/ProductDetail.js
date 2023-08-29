@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import productImg from "../assets/images/products/iPhone14.png";
+import guaranteed from "../assets/images/guaranteed.png";
+import heart from "../assets/images/heart.png"
 
 function ProductDetail() {
     const price = 22000000
@@ -11,7 +14,7 @@ function ProductDetail() {
         <>
             <div className="product-detail-container">
                 <div className="img-container">
-                    <img className="product-img" src="./iphone14.png" alt="" />
+                    <img className="product-img" src={productImg} alt="" />
                 </div>
                 <div className="product-main-container">
                     <h2 className="pName">iPhone 14 Pro - Hàng Chính Hãng VN/A</h2>
@@ -44,9 +47,9 @@ function ProductDetail() {
                     <div>
                         <p className="text-secondary section-title">Return & Warranty</p>
                         <div className="warranty-container">
-                            <p><img src="./images/guaranteed.png" alt="" />100% Authentic</p>
-                            <p><img src="./images/heart.png" alt="" />Change of Mind</p>
-                            <p><img src="./images/guaranteed.png" alt="" />15 Days Return</p>
+                            <p><img src={guaranteed} alt="" />100% Authentic</p>
+                            <p><img src={heart} alt="" />Change of Mind</p>
+                            <p><img src={guaranteed} alt="" />15 Days Return</p>
                         </div>
                     </div>
                     <div className="seller-name-container">

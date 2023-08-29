@@ -4,6 +4,9 @@ const router = express.Router();
 const fetchController = require('../controllers/fetchController');
 
 router.get('/', fetchController.root);
-router.get('/allUsers', fetchController.allUsers);
+router.get('/allCustomers', fetchController.allCustomers);
+router.get('/allSellers', fetchController.allSellers)
+router.get('/allProducts', fetchController.allProducts)
+router.get('/allOrders', fetchController.allOrders)
 
 module.exports = router;
