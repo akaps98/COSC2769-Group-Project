@@ -7,15 +7,15 @@ const handleLogIn = (req,res) => {
     const password = req.body.password;
 
     if (type==="customer") {
-        database.query('SELECT * FROM customers WHERE BINARY(Cemail) = ? OR Cphone = ?', [emailPhone, emailPhone], (err, result) => {
+        database.query('SELECT * FROM customers WHERE BINARY(email) = ? OR phone = ?', [emailPhone, emailPhone], (err, result) => {
             if (err) {
                 return res.send({ err: err });
             } 
             if (result.length>0) {
-                bcrypt.compare(password, result[0].Cpassword, (error, response) => {
+                bcrypt.compare(password, result[0].password, (error, response) => {
                     if (response) {
                         req.session.user = result;
-                        return res.send(result[0].Cname+' (customer)');
+                        return res.send(result[0].username+' (customer)');
                     } else {
                         return res.send({ message: "Wrong password!"});
                     }
@@ -25,15 +25,15 @@ const handleLogIn = (req,res) => {
             }
         });
     } else {
-        database.query('SELECT * FROM sellers WHERE BINARY(Semail) = ? OR Sphone = ?', [emailPhone, emailPhone], (err, result) => {
+        database.query('SELECT * FROM sellers WHERE BINARY(email) = ? OR phone = ?', [emailPhone, emailPhone], (err, result) => {
             if (err) {
                 return res.send({ err: err });
             } 
             if (result.length>0) {
-                bcrypt.compare(password, result[0].Spassword, (error, response) => {
+                bcrypt.compare(password, result[0].password, (error, response) => {
                     if (response) {
                         req.session.user = result;
-                        return res.send(result[0].Sname+' (seller)');
+                        return res.send(result[0].username+' (seller)');
                     } else {
                         return res.send({ message: "Wrong password!"});
                     }

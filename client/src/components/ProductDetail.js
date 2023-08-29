@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import productImg from "../assets/images/iPhone14.png";
+import productImg from "../assets/images/products/iPhone14.png";
 import guaranteed from "../assets/images/guaranteed.png";
 import heart from "../assets/images/heart.png"
 

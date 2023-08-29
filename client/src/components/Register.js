@@ -3,21 +3,10 @@ import CustomerRegister from "./CustomerRegister";
 import SellerRegister from "./SellerRegister";
 import Axios from 'axios';
 import Logout from './Logout';
-function Register() {
-    const [type, setType] = useState("customer");
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, setUser] = useState("")
-
+function Register({ userType, user }) {
     Axios.defaults.withCredentials = true;
-    useEffect(() => {
-        Axios.get("http://localhost:3001/auth").then((response) => {
-            if (response.data.loggedIn) {
-                setIsLoggedIn(true);
-                setUser(response.data.user[0].username+' ('+response.data.user[0].role+')');
-            }
-        });
-    }, []);
+
+    const [type, setType] = useState("customer");
 
     function handleClick(e) {
         const newType = e.target.value;
@@ -25,10 +14,10 @@ function Register() {
     }
     return (
         <>
-        {(isLoggedIn) 
+        {(userType!=="") 
             ? 
             <div className="pt-5">
-                <h2>You are logged in, {user}!</h2>
+                <h2>You are logged in, {user.username}!</h2>
                 <Logout />
             </div>
             :

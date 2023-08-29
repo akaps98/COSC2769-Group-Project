@@ -4,32 +4,13 @@ import { useState, useEffect } from "react";
 import Axios from 'axios';
 import Logout from './Logout';
 
-function Login() {
+function Login({ userType, user }) {
+    Axios.defaults.withCredentials = true;
+
     const [emailPhone, setEmailPhone] = useState("");
     const [password, setPassword] = useState("");
     const [type, setType] = useState("customer");
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, setUser] = useState("")
-    const [sellerStatus, setSellerStatus] = useState("");
-
-    Axios.defaults.withCredentials = true;
-
-    useEffect(() => {
-        Axios.get("http://localhost:3001/auth").then((response) => {
-            if (response.data.loggedIn) {
-                setIsLoggedIn(true);
-                typeof variable !== 'undefined'
-                if (typeof response.data.user[0].Sstatus === 'undefined') {
-                    setUser(response.data.user[0].Cname+' (customer)');
-                } else {
-                    setUser(response.data.user[0].Sname+' (seller)');
-                    setSellerStatus(response.data.user[0].Sstatus);
-                }
-            }
-        });
-    }, []);
-
+    
     function handleClick(e) {
         const newType = e.target.value;
         setType(newType);
@@ -37,7 +18,6 @@ function Login() {
 
     const login = event => {
         event.preventDefault();
-    
         Axios.post('http://localhost:3001/log/in', {
             type: type,
             emailPhone: emailPhone,
@@ -48,18 +28,21 @@ function Login() {
                 alert(JSON.stringify(response.data.message)); //error type
             } else {
                 alert("Hello, "+response.data+"!"); //success
-                window.location.reload();
+                if (type=="seller") {
+                    window.location.href = '/seller';
+                } else {
+                    window.location.href = '/';
+                }
             }
         });
     };
 
     return (
         <>
-        {(isLoggedIn) 
+        {(userType!=="") 
             ? 
             <div className="pt-5">
-                <h2>You are logged in, {user}!</h2>
-                {(sellerStatus==='Pending') ? <h4>Status: Waiting for approval</h4> : <h4>You are approved as a seller</h4>}
+                <h2>You are logged in, {user.username}!</h2>
                 <Logout />
             </div>
             :
