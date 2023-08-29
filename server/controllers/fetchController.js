@@ -4,8 +4,8 @@ const database = require("../config/database");
 const root = (req, res) => {
     return res.send('Backend Connection (MySQL)');
 };
-const allUsers = (req, res) => {
-    database.query("SELECT * FROM users", (err, result) => {
+const allCustomers = (req, res) => {
+    database.query("SELECT * FROM customers", (err, result) => {
         if (err) {
             return res.send(err);
         } else {
@@ -13,5 +13,31 @@ const allUsers = (req, res) => {
         }
     });
 };
-
-module.exports = { root, allUsers }
+const allSellers = (req, res) => {
+    database.query("SELECT * FROM sellers", (err, result) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.send(result);
+        }
+    });
+};
+const allProducts = (req, res) => {
+    database.query("SELECT * FROM products", (err, result) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.send(result);
+        }
+    });
+};
+const allOrders = (req, res) => {
+    database.query("SELECT * FROM orders", (err, result) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.send(result);
+        }
+    });
+};
+module.exports = { root, allCustomers, allSellers, allProducts, allOrders }

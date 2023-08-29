@@ -9,17 +9,17 @@ const handleCustomerRegister = (req, res) => {
     const address = req.body.address;
     const password = req.body.password;
 
-    database.query('SELECT * FROM customers WHERE BINARY(Cemail) = ?', email, (err, Eresult) => {
+    database.query('SELECT * FROM customers WHERE BINARY(email) = ?', email, (err, Eresult) => {
         if (err) {
             return res.send({ err: err });
         } 
         if (Eresult.length==0) {
-            database.query('SELECT * FROM customers WHERE BINARY(Cphone) = ?', phone, (err, Presult) => {
+            database.query('SELECT * FROM customers WHERE phone = ?', phone, (err, Presult) => {
                 if (err) {
                     return res.send({ err: err });
                 } 
                 if (Presult.length==0) {
-                    database.query('SELECT * FROM customers WHERE BINARY(Cname) = ?', username, (err, Nresult) => {
+                    database.query('SELECT * FROM customers WHERE BINARY(username) = ?', username, (err, Nresult) => {
                         if (err) {
                             return res.send({ err: err });
                         } 
@@ -28,7 +28,7 @@ const handleCustomerRegister = (req, res) => {
                                 if (err) {
                                     console.log(err)
                                 }
-                                database.query('INSERT INTO customers (Cname,Cemail,Cphone,Caddress,Cpassword) VALUES (?,?,?,?,?)', [username, email, phone, address, hash], (err, result) => {
+                                database.query('INSERT INTO customers (username,email,phone,address,password) VALUES (?,?,?,?,?)', [username, email, phone, address, hash], (err, result) => {
                                     if (err) {
                                         return res.send({ err: err });
                                     } else {
@@ -57,17 +57,17 @@ const handleSellerRegister = (req, res) => {
     const business = req.body.business;
     const password = req.body.password;
 
-    database.query('SELECT * FROM sellers WHERE BINARY(Semail) = ?', email, (err, Eresult) => {
+    database.query('SELECT * FROM sellers WHERE BINARY(email) = ?', email, (err, Eresult) => {
         if (err) {
             return res.send({ err: err });
         } 
         if (Eresult.length==0) {
-            database.query('SELECT * FROM sellers WHERE BINARY(Sphone) = ?', phone, (err, Presult) => {
+            database.query('SELECT * FROM sellers WHERE phone = ?', phone, (err, Presult) => {
                 if (err) {
                     return res.send({ err: err });
                 } 
                 if (Presult.length==0) {
-                    database.query('SELECT * FROM sellers WHERE BINARY(Sname) = ?', username, (err, Nresult) => {
+                    database.query('SELECT * FROM sellers WHERE BINARY(username) = ?', username, (err, Nresult) => {
                         if (err) {
                             return res.send({ err: err });
                         } 
@@ -76,7 +76,7 @@ const handleSellerRegister = (req, res) => {
                                 if (err) {
                                     console.log(err)
                                 }
-                                database.query('INSERT INTO sellers (Sname,Semail,Sphone,Sbusiness,Spassword,Sstatus) VALUES (?,?,?,?,?,?)', [username, email, phone, business, hash, 'Pending'], (err, result) => {
+                                database.query('INSERT INTO sellers (username,email,phone,business,password,status) VALUES (?,?,?,?,?,?)', [username, email, phone, business, hash, 'Pending'], (err, result) => {
                                     if (err) {
                                         return res.send({ err: err });
                                     } else {
