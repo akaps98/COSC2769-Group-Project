@@ -3,6 +3,7 @@ const router = express.Router();
 
 const productController = require('../controllers/productController');
 
-router.post("/browseProduct", productController.browseByTitle);
+router.post("/browseProductBySearching", productController.browseByTitle);
+router.post("/browseProductByFiltering", productController.browseByCategory);
 
 module.exports = router;

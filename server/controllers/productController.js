@@ -1,10 +1,11 @@
 const database = require("../config/database");
 
 const browseByTitle = (req, res) => {
-    const name = req.body.name;
-    const description = req.body.description;
+    const value = req.body.value;
 
-    database.query("SELECT * FROM products WHERE name LIKE ?", name, (err,result) => {
+    const valueCondition = ("%" + value + "%");
+
+    database.query("SELECT * FROM products WHERE name LIKE ? OR description LIKE ?", [valueCondition, valueCondition], (err,result) => {
         if (err) {
             return res.send(err);
         } else {
@@ -14,9 +15,9 @@ const browseByTitle = (req, res) => {
 }
 
 const browseByCategory = (req, res) => {
-    const sub = req.body.sub;
+    const category = req.body.category;
 
-    database.query("SELECT JSON_SEARCH(sub, ?) FROM products", sub, (err,result) => {
+    database.query("SELECT * FROM products WHERE JSON_UNQUOTE(JSON_EXTRACT(category, '$[0]')) LIKE ?", category, (err,result) => {
         if (err) {
             return res.send(err);
         } else {
@@ -25,4 +26,4 @@ const browseByCategory = (req, res) => {
     });
 }
 
-module.exports = { browseByTitle };
+module.exports = { browseByTitle, browseByCategory };
