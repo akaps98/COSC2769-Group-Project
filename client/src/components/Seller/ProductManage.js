@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import ProductUpdate from "./ProductUpdate";
 import Axios from 'axios';
 import ProductTableHead from "./ProductTableHead";
+import Statistics from "./Statistics";
 
 function ProductManage({ seller }) {
     Axios.defaults.withCredentials = true;
@@ -114,62 +115,65 @@ function ProductManage({ seller }) {
     }
 
     return (
-        <div className="management-container">
-            <Modal show={deleteModalshow} onHide={handleDeleteModalClose} animation={false} centered>
-                <Modal.Header>
-                    <Modal.Title>Delete Product ID #{product.ProductID}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Do you really want to delete the product: {product.name} ?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={() => {
-                        deleteProduct();
-                        handleDeleteModalClose();
-                    }}>
-                        Delete
-                    </Button>
-                    <Button variant="secondary" onClick={handleDeleteModalClose}>
-                        Cancel
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <ProductUpdate handleClose={handleUpdateModalClose} show={updateModalshow} p={product} key={product.ProductID} reload={loadProducts}/>
-            <div className="management-title-container">
-                <p className="management-title">Product Management</p>
-                <Link to={"/addProduct"} className="add-btn">Add Product</Link>
+        <>
+            <Statistics seller={seller}/>
+            <div className="management-container">
+                <Modal show={deleteModalshow} onHide={handleDeleteModalClose} animation={false} centered>
+                    <Modal.Header>
+                        <Modal.Title>Delete Product ID #{product.ProductID}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Do you really want to delete the product: {product.name} ?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={() => {
+                            deleteProduct();
+                            handleDeleteModalClose();
+                        }}>
+                            Delete
+                        </Button>
+                        <Button variant="secondary" onClick={handleDeleteModalClose}>
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                <ProductUpdate handleClose={handleUpdateModalClose} show={updateModalshow} p={product} key={product.ProductID} reload={loadProducts}/>
+                <div className="management-title-container">
+                    <p className="management-title">Product Management</p>
+                    <Link to={"/seller/addProduct"} className="add-btn">Add Product</Link>
+                </div>
+                <table className="product-table">
+                <thead>
+                        <ProductTableHead
+                            columns={columns}
+                            handleSorting={handleSorting}
+                            sortOrder={sortOrder}
+                            sortingOption={sortingOption}
+                        />
+                    </thead>
+                    <tbody>
+                        {products.map((product) => {
+                            return (
+                                <tr key={product.ProductID}>
+                                    <td className="col-sm-2">{product.ProductID}</td>
+                                    {/* imagePath format = "../assets/images/products/..." */}
+                                    {/* src={require("../../assets/images/products/3.png") works */}
+                                    {/* src={require("../"+product.imagePath)} doesn't work with variable...T-T */}
+                                    <td className="col-sm-2"><img src={"../"+product.imagePath}  alt={product.ProductID} /></td>
+                                    <td className="col-sm-2">{product.name}</td>
+                                    <td className="col-sm-2">{product.price.toLocaleString() + " ₫"}</td>
+                                    <td className="col-sm-2">{JSON.parse(product.category).join(' > ')}</td>
+                                    <td className="col-sm-2">{product.quantity}</td>
+                                    <td className="col-sm-2">{product.dateAdded.slice(0,10)}</td>
+                                    <td className="col-sm-2">
+                                        <button className="product-update-btn" value={product.ProductID} onClick={handleUpdate}/>
+                                        <button className="product-delete-btn" value={product.ProductID} onClick={handleDelete}/>
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
-            <table className="product-table">
-            <thead>
-                    <ProductTableHead
-                        columns={columns}
-                        handleSorting={handleSorting}
-                        sortOrder={sortOrder}
-                        sortingOption={sortingOption}
-                    />
-                </thead>
-                <tbody>
-                    {products.map((product) => {
-                        return (
-                            <tr key={product.ProductID}>
-                                <td className="col-sm-2">{product.ProductID}</td>
-                                {/* imagePath format = "../assets/images/products/..." */}
-                                {/* src={require("../../assets/images/products/3.png") works */}
-                                {/* src={require("../"+product.imagePath)} doesn't work with variable...T-T */}
-                                <td className="col-sm-2"><img src={"../"+product.imagePath}  alt={product.ProductID} /></td>
-                                <td className="col-sm-2">{product.name}</td>
-                                <td className="col-sm-2">{product.price.toLocaleString() + " ₫"}</td>
-                                <td className="col-sm-2">{JSON.parse(product.category).join(' > ')}</td>
-                                <td className="col-sm-2">{product.quantity}</td>
-                                <td className="col-sm-2">{product.dateAdded.slice(0,10)}</td>
-                                <td className="col-sm-2">
-                                    <button className="product-update-btn" value={product.ProductID} onClick={handleUpdate}/>
-                                    <button className="product-delete-btn" value={product.ProductID} onClick={handleDelete}/>
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-        </div>
+        </>
     )
 }
 
