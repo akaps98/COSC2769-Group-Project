@@ -47,7 +47,7 @@ function App() {
   return (
     <Router>
       <div>
-        <Header />
+        {userType!=="Seller" && <Header />}
         <div className="App">
           <Routes>
             <Route exact path="/" element={<Carousel />} />

@@ -720,3 +720,104 @@ span {
         transition: ease-in-out 0.3s;
     }
 }
+
+.menu-btn{
+    position: relative;
+    top: -15px;
+    width: 24px;
+    height: 24px;
+    background: url("../images/sellers/hamburger.png") no-repeat center;
+    border: none;
+    border-radius: 50%;
+    padding: 20px;
+    margin: 0 10px;
+    display: none;
+    &:hover{
+        background-color: #939393;
+        transition: ease-in-out 0.3s;
+    }
+}
+
+@media screen and (max-width: 600px){
+    .seller-page-container{
+        display: inline;
+    }
+    .seller-header-container{
+        width: 100vw;
+        height: 65px;
+        background-color: #fff;
+        box-shadow: none;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+    .background-wrapper{
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+        filter: opacity(0.5);
+    }
+    .seller-header-main-container{
+        display: none;
+    }
+    .seller-header-small-container{
+        display: inline;
+        position: absolute;
+        width: 220px;
+        background-color: #fff;
+        height: 90vh;
+        left: 0;
+        top: 65px;
+        animation: fadeIn ease-in-out 0.3s;
+    }
+    .seller-logo{
+        width: 160px;
+        height: 65px;
+    }
+    .menu-btn{
+        display: inline;
+    }
+    .statistics-container, .management-container, .product-form-container{
+        width: 100vw;
+    }
+    .statistics-main-container{
+        display: block;
+    }
+    .product-table img{
+        width: 60px;
+    }
+    .product-table td, .product-table th{
+        font-size: 12px;
+    }
+
+    @keyframes fadeIn{
+        0%{
+            transform: translateX(-300px);
+        }
+        100%{
+            transform: translateX(0);
+        }
+    }
+
+    .order-ship-btn {
+        background-color: #198754;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        margin-right: 10px;
+        padding: 5px 10px;
+        line-height: 20px;
+        font-size: 10px;
+    }
+    
+    .order-cancel-btn {
+        background-color: #000;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        padding: 5px 10px;
+        line-height: 20px;
+        font-size: 10px;
+    }
+}

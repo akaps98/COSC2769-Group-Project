@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/sellers/lazada-seller-center.png"
 
-function SellerHeader() {
+function SellerHeader({ setMenuToggle, menuToggle }) {
     const [dropdown, setDropdown] = useState(true);
     const handleToggle = () => setDropdown(prev => !prev);
+    const handleMenuToggle = () => setMenuToggle(prev => !prev);
     return (
         <div className="seller-header-container">
+            <button className="menu-btn" onClick={handleMenuToggle}/>
             <Link to={"/seller"}><img src={logo} alt="" className="seller-logo mb-4" /></Link>
-            <div className="seller-header-main-container">
+            <div className={menuToggle ? "seller-header-main-container seller-header-small-container" : "seller-header-main-container"}>
                 <div>
                     <p onClick={handleToggle}
                         className={dropdown ? "product-header section-header dropdown-enabled" : "product-header section-header dropdown-disabled"}
@@ -29,7 +31,7 @@ function SellerHeader() {
                 <div>
                     <Link className="order-header section-header" to={"/seller/orders"}>Order Management</Link>
                 </div>
-                <button className="sign-out-btn">SIGN OUT</button>
+                <Link className="sign-out-btn" to={"/logout"}>SIGN OUT</Link>
             </div>
         </div>
     )
