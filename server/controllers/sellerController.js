@@ -52,6 +52,7 @@ const addProduct = (req, res) => {
 
 const allOrders = (req,res) => {
     const SellerID = req.body.SellerID;
+    console.log(SellerID)
     database.query('SELECT ProductID FROM products WHERE SellerID = ?', [SellerID], (err, productIDs)=>{
         if (err) {
             return res.send({ err: err });
@@ -72,7 +73,7 @@ const allOrders = (req,res) => {
             JSON_UNQUOTE(JSON_EXTRACT(op.product, '$[0].quantity')) AS quantity, 
             JSON_UNQUOTE(JSON_EXTRACT(op.product, '$[1]')) AS status, 
             o.date 
-            FROM TestingDB.orders o 
+            FROM orders o 
             JOIN JSON_TABLE(o.products, '$[*]' COLUMNS ( product JSON PATH '$' )) AS op 
             JOIN products p ON JSON_UNQUOTE(JSON_EXTRACT(op.product, '$[0].ProductID')) = p.ProductID
             JOIN customers c ON o.CustomerID = c.CustomerID
