@@ -9,7 +9,7 @@ function SellerPage() {
             <SellerHeader setMenuToggle={setMenuToggle} menuToggle = {menuToggle}/>
             <div className='seller-page-main-container'>
                 <div className={menuToggle ? "background-wrapper" : ""}>
-                    <Outlet />
+                    <Outlet/>
                 </div>
             </div>
         </div>

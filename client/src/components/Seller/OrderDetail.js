@@ -6,20 +6,20 @@ function OrderDetail({ order, show, handleClose }) {
     return (
         <Modal size="lg" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Order #{order.id}</Modal.Title>
+                <Modal.Title>Order ID. {order.OrderID}</Modal.Title>
             </Modal.Header>
             <Modal.Body className="px-4">
                 <div className="row mb-3">
                     <img src={iphone} alt="" className="col-sm-2" />
                     <div className="col-sm-4">
-                        <p className="text-secondary">Product</p>
-                        <p>{order.pName}</p>
+                        <p className="text-secondary">Product ID. {order.ProductID}</p>
+                        <p>{order.name}</p>
                     </div>
                     <div className="col-sm-3">
                         <div className="row">
                             <div className="col-sm-8">
                                 <p className="text-secondary">Price</p>
-                                <p>2,000,000₫</p>
+                                <p>{(order.price*1).toLocaleString()}₫</p>
                             </div>
                             <div className="col-sm-4">
                                 <p className="text-secondary">Qty</p>
@@ -29,22 +29,32 @@ function OrderDetail({ order, show, handleClose }) {
                     </div>
                     <div className="col-sm-3">
                         <p className="text-secondary">Total</p>
-                        <p>{(2000000 * order.quantity).toLocaleString()}₫</p>
+                        <p>{(order.price * order.quantity).toLocaleString()}₫</p>
                     </div>
                 </div>
                 <div className="hr-line mb-4" />
                 <div className="row mb-4">
                     <div className="col-sm-3">
-                        <p className="text-secondary">Customer Name</p>
-                        <p>Tom</p>
+                        <p className="text-secondary">Customer ID. {order.CustomerID}</p>
+                        <p>{order.username}</p>
                     </div>
                     <div className="col-sm-3">
                         <p className="text-secondary">Phone</p>
-                        <p>090124124</p>
+                        <p>{order.phone}</p>
                     </div>
                     <div className="col-sm-6">
+                        <p className="text-secondary">Email</p>
+                        <p className="align-center">{order.email}</p>
+                    </div>
+                </div>
+                <div className="row mb-4">
+                    <div className="col-sm-6">
                         <p className="text-secondary">Address</p>
-                        <p className="align-center">702 Đ. Nguyễn Văn Linh, Tân Hưng, Quận 7, Thành phố Hồ Chí Minh 700000</p>
+                        <p>{order.address}</p>
+                    </div>
+                    <div className="col-sm-3">
+                        <p className="text-secondary">Date Ordered</p>
+                        <p className="align-center">{order.date.slice(0,10)}</p>
                     </div>
                 </div>
                 <div className="row mb-3">
@@ -62,14 +72,10 @@ function OrderDetail({ order, show, handleClose }) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                <Button variant="secondary" onClick={handleClose} className="close-btn">Close</Button>
             </Modal.Footer>
         </Modal>
     )
 }
 
 export default OrderDetail;
-
-
-
-
