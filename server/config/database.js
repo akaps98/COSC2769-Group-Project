@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 
 const database = mysql.createConnection({
-    user: 'root',
-    host: '127.0.0.1',
-    password: 'password',
-    database: 'testingdb',
+    host: 'myrds.cc9rwqabneki.ap-southeast-1.rds.amazonaws.com',
+    user: 'tony',
+    password: 'tonypassword', // change password to yours
+    database: 'fullstackdev14_db',
 });
 
 module.exports = database;
