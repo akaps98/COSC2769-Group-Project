@@ -117,7 +117,7 @@ function ProductManage({ seller }) {
     return (
         <>
             <Statistics seller={seller}/>
-            <div className="management-container">
+            <div className="product-management-container">
                 <Modal show={deleteModalshow} onHide={handleDeleteModalClose} animation={false} centered>
                     <Modal.Header>
                         <Modal.Title>Delete Product ID #{product.ProductID}</Modal.Title>

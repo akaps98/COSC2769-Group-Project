@@ -124,10 +124,10 @@ function ProductUpdate({ handleClose, show, p, reload }) {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button type="submit" variant="outline-success">
+                        <Button type="submit" variant="outline-success" className="save-btn">
                             Save
                         </Button>
-                        <Button type="button" variant="secondary" onClick={handleClose}>
+                        <Button type="button" variant="secondary" onClick={handleClose} className="close-btn">
                             Cancel
                         </Button>
                     </Modal.Footer>

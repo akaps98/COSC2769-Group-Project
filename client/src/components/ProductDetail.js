@@ -1,5 +1,3 @@
-ProductDetail.js
-
 import React, { useState } from "react";
 import guaranteed from "../assets/images/guaranteed.png";
 import heart from "../assets/images/heart.png"

@@ -4,6 +4,7 @@ html body {
 }
 
 .login-container {
+    text-align: start;
     background-color: #fff;
     padding: 20px 40px 40px 40px;
 }
@@ -297,6 +298,7 @@ span {
 }
 
 .statistics-container {
+    text-align: start;
     width: 1200px;
     background-color: #fff;
     border-radius: 5px;
@@ -338,6 +340,16 @@ span {
 }
 
 .management-container {
+    text-align: start;
+    width: 1200px;
+    height: 600px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 20px auto;
+    padding: 0 30px 30px 30px;
+}
+
+.product-management-container {
     width: 1200px;
     height: 600px;
     background-color: #fff;
@@ -404,6 +416,8 @@ span {
 
 
 .product-update-btn {
+    width: 45px;
+    height: 45px;
     background-color: rgba(0, 136, 0, 0.8);
     border: none;
     border-radius: 5px;
@@ -424,6 +438,8 @@ span {
 }
 
 .product-delete-btn {
+    width: 45px;
+    height: 45px;
     background-color: rgba(255, 0, 0, 0.8);
     border: none;
     border-radius: 5px;
@@ -485,11 +501,12 @@ span {
     height: 100px;
 }
 
-.seller-header-container, .management-container, .statistics-container{
+.seller-header-container, .management-container, .statistics-container, .login-container{
     box-shadow: 1px 1px 5px 1px #babbbc;
 }
 
 .seller-header-container{
+    text-align: start;
     width: 250px;
     height: 100vh;
     background-color: #fff;
@@ -528,6 +545,8 @@ span {
 }
 
 .order-ship-btn {
+    width: 120px;
+    height: 40px;
     background-color: #198754;
     border: none;
     border-radius: 5px;
@@ -552,6 +571,8 @@ span {
 }
 
 .order-cancel-btn {
+    width: 130px;
+    height: 40px;
     background-color: #000;
     border: none;
     border-radius: 5px;
@@ -571,6 +592,11 @@ span {
         box-shadow: 1px 1px 5px #616161;
         transition: ease-in-out 0.3s;
     }
+}
+
+.close-btn, .save-btn{
+    width: 100px;
+    height: 40px;
 }
 
 .order-row-container:hover {
@@ -594,6 +620,7 @@ span {
 }
 
 .product-form-container{
+    text-align: start;
     width: 1200px;
     background-color: #fff;
     padding: 20px 40px;
@@ -681,7 +708,7 @@ span {
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -300px;
+    margin-top: -250px;
     margin-left: -400px;
     text-align: center;
     box-shadow: 1px 1px 5px 1px #babbbc;
@@ -707,6 +734,8 @@ span {
 }
 
 .go-back-btn{
+    width: fit-content;
+    height: 40px;
     border: none;
     padding: 8px 35px;
     border-radius: 40px;
@@ -751,6 +780,9 @@ span {
         top: 0;
         z-index: 2;
     }
+    .seller-header-logo-container{
+        display: flex;
+    }
     .background-wrapper{
         position: relative;
         width: 100vw;
@@ -777,8 +809,10 @@ span {
     }
     .menu-btn{
         display: inline;
+        position: relative;
+        top: 10px;
     }
-    .statistics-container, .management-container, .product-form-container{
+    .statistics-container, .management-container, .product-form-container, .product-management-container{
         width: 100vw;
     }
     .statistics-main-container{
@@ -798,9 +832,49 @@ span {
         100%{
             transform: translateX(0);
         }
+    }.product-update-btn {
+        width: 30px;
+        height: 30px;
+        background: url("../images/sellers/edit.png") no-repeat center;
+        filter: invert(0);
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        padding: 5px 15px;
+    
+        &:hover {
+            background-color: rgba(0, 74, 0, 0.8);
+            box-shadow: 1px 1px 5px #616161;
+            transition: ease-in-out 0.3s;
+        }
+    
+        &::before {
+            content: "";
+        }
     }
-
+    
+    .product-delete-btn {
+        width: 30px;
+        height: 30px;
+        background: url("../images/sellers/delete.png") no-repeat center;
+        filter: invert(0);
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        padding: 5px 15px;
+    
+        &:hover {
+            background-color: rgba(179, 0, 0, 0.8);
+            box-shadow: 1px 1px 5px #616161;
+            transition: ease-in-out 0.3s;
+        }
+    
+        &::before {
+            content: "";
+        }
+    }
     .order-ship-btn {
+        width: 70px;
         background-color: #198754;
         border: none;
         border-radius: 5px;
@@ -812,6 +886,7 @@ span {
     }
     
     .order-cancel-btn {
+        width: 70px;
         background-color: #000;
         border: none;
         border-radius: 5px;
@@ -819,5 +894,14 @@ span {
         padding: 5px 10px;
         line-height: 20px;
         font-size: 10px;
+    }
+    .status-text{
+        width: fit-content;
+        font-size: 10px;
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin-bottom: 0;
+        line-height: 15px;
+        color: #fff;
     }
 }

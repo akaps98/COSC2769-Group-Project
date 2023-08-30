@@ -72,7 +72,7 @@ function OrderDetail({ order, show, handleClose }) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                <Button variant="secondary" onClick={handleClose} className="close-btn">Close</Button>
             </Modal.Footer>
         </Modal>
     )
