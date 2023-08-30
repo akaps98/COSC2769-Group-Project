@@ -6,10 +6,11 @@
 
 img {
   display: block;
-  object-fit: fill;
+  object-fit: cover;
 }
 
 a {
+  display: inline-block;
   text-decoration: none;
   color: #000000;
 }
@@ -20,6 +21,11 @@ ul {
 
 .container {
   padding: 0 20px;
+}
+
+
+.App {
+  text-align: center;
 }
 
 ul a {
@@ -82,10 +88,25 @@ button img {
   padding-right: 30px;
 }
 
-.App {
-  text-align: center;
+.headerCaption img {
+  width: 30px;
+  margin-right: 10px;
+}
+
+.headerCaption span {
+  display: inline-block;
 }
 
 .banner img {
   width: 200px;
 }
+
+.carousel {
+  text-align: center;
+}
+
+.carousel img {
+  width: 1200px;
+  margin: auto;
+}
+
