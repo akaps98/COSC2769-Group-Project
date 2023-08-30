@@ -163,6 +163,7 @@ span {
 .product-desc-container {
     margin: 0 auto;
     width: 1200px;
+    text-align: start;
     background-color: #fff;
 }
 
