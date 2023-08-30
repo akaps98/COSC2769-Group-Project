@@ -5,7 +5,6 @@ import heart from "../assets/images/heart.png"
 
 function ProductDetail() {
     const price = 22000000
-    const rating = 3.8;
     const [ isWrapped, setIsWrapped ] = useState(true);
     function handleClick(){
         setIsWrapped(prev => !prev);
@@ -18,7 +17,6 @@ function ProductDetail() {
                 </div>
                 <div className="product-main-container">
                     <h2 className="pName">iPhone 14 Pro - Hàng Chính Hãng VN/A</h2>
-                    <p className="stars" style={{ "--rating": rating }}>1490 Ratings</p>
                     <p className="text-muted category-text">Categories: Product Category | Subcategory</p>
                     <div className="hr-line"></div>
                     <p className="price">{price.toLocaleString()}</p>
