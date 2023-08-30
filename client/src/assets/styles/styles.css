@@ -40,6 +40,7 @@ span {
     width: 1200px;
     margin: 20px auto;
     display: flex;
+    text-align: start;
     background-color: #fff;
 }
 
@@ -110,6 +111,7 @@ span {
 .qty-btn {
     width: 35px;
     height: 35px;
+    background-color: #fff;
     border: #D8D9DA solid 1px;
     font-size: 24px;
     color: #616161;
@@ -129,6 +131,8 @@ span {
 
 .buy-btn {
     background-color: #FBC252;
+    width: 200px;
+    height: 50px;
     padding: 10px 60px;
     border: none;
     color: #fff;
@@ -142,8 +146,10 @@ span {
 }
 
 .toCart-btn {
+    width: 200px;
+    height: 50px;
     background-color: #F86F03;
-    padding: 10px 60px;
+    padding: 10px 40px;
     border: none;
     color: #fff;
     border-radius: 3px;
@@ -250,6 +256,10 @@ span {
     border-bottom: #d8d9da95 solid 1px;
 }
 
+.warranty-container img {
+    display: inline;
+}
+
 .warranty-container p {
     padding: 10px 20px 10px 20px;
     margin-bottom: 0;
@@ -261,29 +271,13 @@ span {
     margin-right: 10px;
 }
 
-.stars {
-    --percent: calc(var(--rating) / 5 * 100%);
-    font-size: 12px;
-    margin-bottom: 20px;
-
-    &::before {
-        content: "★★★★★";
-        font-size: 16px;
-        background: linear-gradient(90deg, #fc0 var(--percent), #fff var(--percent));
-        background-clip: text;
-        -webkit-text-stroke: 1px #fc0;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-right: 10px;
-    }
-}
-
 .wrap-toggle-btn-container {
     text-align: center;
     padding: 20px 0;
 }
 
 .wrap-toggle-btn {
+    width: 150px;
     background: transparent;
     border: rgb(48, 153, 202) solid 1px;
     padding: 7px 20px;
@@ -780,12 +774,12 @@ span {
     }
 }
 
-.product-filter-container{
+.product-filter-container {
     position: relative;
     float: right;
 }
 
-.product-filter-form-container{
+.product-filter-form-container {
     text-align: start;
     border: 1px solid #D8D9DA;
     background-color: #fff;
@@ -797,15 +791,16 @@ span {
     animation: scale ease-in-out 0.1s;
 }
 
-.product-filter-form-container input{
+.product-filter-form-container input {
     padding: 5px;
-    &:focus{
+
+    &:focus {
         outline: none;
         border: 1px solid rgba(0, 115, 187, 0.8);
     }
 }
 
-.product-price-filter-container input{
+.product-price-filter-container input {
     width: 140px;
 }
 
@@ -815,29 +810,29 @@ span {
     height: 40px;
     border: 1px solid #D8D9DA;
 
-    &:focus{
+    &:focus {
         outline: none;
         border: 1px solid rgba(0, 115, 187, 0.8);
     }
 }
 
-.filter-btn-active{
+.filter-btn-active {
     border: 1px solid rgba(0, 115, 187, 0.8) !important;
 }
 
-.product-search-btn{
+.product-search-btn {
     position: absolute;
     background-color: transparent;
     width: 40px;
     height: 40px;
 }
 
-.product-search-btn img{
+.product-search-btn img {
     width: 16px;
     height: 16px;
 }
 
-.product-filter-btn{
+.product-filter-btn {
     text-align: start;
     padding-left: 10px;
     width: 100px;
@@ -847,12 +842,12 @@ span {
     background: #fff url("../images/sellers/filter.png") no-repeat 80% 12px;
 }
 
-.product-filter-footer{
+.product-filter-footer {
     display: flex;
     justify-content: space-between;
 }
 
-.product-filter-footer button{
+.product-filter-footer button {
     width: fit-content;
     height: fit-content;
     border: none;
@@ -860,11 +855,12 @@ span {
 }
 
 @keyframes scale {
-    0%{
+    0% {
         transform-origin: top right;
         transform: scale(0);
     }
-    100%{
+
+    100% {
         transform-origin: top right;
         transform: scale(1);
     }
@@ -1026,5 +1022,28 @@ span {
         margin-bottom: 0;
         line-height: 15px;
         color: #fff;
+    }
+
+    .product-detail-container {
+        width: 100vw;
+        display: block;
+    }
+
+    .product-sub-container,
+    .product-desc-container,
+    .product-img {
+        width: 100vw;
+    }
+
+    .product-img{
+        pointer-events: none;
+    }
+
+    .img-container {
+        padding: 0px;
+    }
+
+    .product-main-container{
+        padding: 0 20px;
     }
 }
