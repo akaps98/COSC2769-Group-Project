@@ -1,4 +1,3 @@
-const session = require('express-session');
 const database = require("../config/database");
 
 const allCategories = (req, res) => {

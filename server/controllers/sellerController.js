@@ -1,4 +1,3 @@
-const session = require('express-session');
 const database = require("../config/database");
 
 const allProducts = (req, res) => {
@@ -52,7 +51,6 @@ const addProduct = (req, res) => {
 
 const allOrders = (req,res) => {
     const SellerID = req.body.SellerID;
-    console.log(SellerID)
     database.query('SELECT ProductID FROM products WHERE SellerID = ?', [SellerID], (err, productIDs)=>{
         if (err) {
             return res.send({ err: err });
