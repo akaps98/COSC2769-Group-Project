@@ -134,7 +134,7 @@ function AddProduct({ seller }) {
                     <div className="row">
                         <div>
                             <input
-                                className="form-control"
+                                className="form-control mb-2"
                                 disabled
                                 value={selectionName.join(' > ')}
                             />
