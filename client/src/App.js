@@ -14,6 +14,7 @@ import AddProduct from './components/Seller/AddProduct';
 import ProductManage from './components/Seller/ProductManage';
 import OrderList from './components/Seller/OrderList';
 import Unauthorized from './components/Unauthorized';
+import BrowseProduct from './components/BrowseProduct';
 
 function App() {
   Axios.defaults.withCredentials = true;
@@ -62,7 +63,8 @@ function App() {
               <Route path='/seller/addProduct' element={<AddProduct seller={user.SellerID}/>} />
             </Route>
 
-            <Route exact path="/detail" element={<ProductDetail />} />
+            <Route exact path="/search" element={<BrowseProduct />} />
+            <Route exact path="/search/detail" element={<ProductDetail user={user}/>} />
 
             <Route path='/una' element={<Unauthorized />} />
           </Routes>
