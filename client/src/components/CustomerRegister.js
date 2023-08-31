@@ -28,7 +28,6 @@ function CustomerRegister() {
             } else {
                 alert(JSON.stringify(response.data)); //error
             }
-            console.log(response);
         });
     };
 

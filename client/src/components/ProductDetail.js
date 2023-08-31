@@ -11,7 +11,7 @@ function ProductDetail() {
         name: 'Desk OfficeLife', 
         price: 3399000, 
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', 
-        imagePath: '../assets/images/products/10.png', 
+        imagePath: 'imageUploads/10.png', 
         category: '["Home", "Furnitures", "Home Office", "Desks"]', 
         quantity: 55, 
         dateAdded: '2023-08-09', 
@@ -28,7 +28,7 @@ function ProductDetail() {
         <>
             <div className="product-detail-container">
                 <div className="img-container">
-                    <img className="product-img" src={product.imagePath} alt={product.ProductID} />
+                    <img className="product-img" src={`http://localhost:3001/${product.imagePath}`} alt={product.ProductID} />
                 </div>
                 <div className="product-main-container">
                     <h2 className="pName">{product.name}</h2>

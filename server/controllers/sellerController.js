@@ -1,4 +1,6 @@
 const database = require("../config/database");
+const multer = require('multer');
+const fs = require('fs');
 
 const allProducts = (req, res) => {
     const SellerID = req.body.SellerID;
@@ -18,36 +20,89 @@ const updateProduct = (req, res) => {
     const description = req.body.description;
     const quantity = req.body.quantity;
     const category = req.body.category;
-    database.query('UPDATE products SET name = ?, price = ?, description = ?, quantity = ?, category = ? WHERE ProductID = ?', [name,price,description,quantity,category,id], (err, result) => {
-        if (err) {
-            return res.send({ err: err });
+    const seller = req.body.SellerID
+
+    database.query('SELECT * FROM products WHERE BINARY(name) = ? AND SellerID = ? AND ProductID != ?', [name,seller,id], (Verr, Vresult) => {
+        if (Verr) {
+            return res.send({ err: Verr });
+        } 
+        if (Vresult.length==0) {
+            database.query('UPDATE products SET name = ?, price = ?, description = ?, quantity = ?, category = ? WHERE ProductID = ?', [name,price,description,quantity,category,id], (err, result) => {
+                if (err) {
+                    return res.send({ err: err });
+                } else {
+                    return res.send({ message: 'Product updated successfully!' });
+                }
+            });
         } else {
-            return res.send({ message: 'Product updated successfully!' });
+            return res.send("Product name already exists! Choose another one to update.")
         }
     });
 };
 
 const deleteProduct = (req, res) => {
-    const id = req.body.id
-    database.query('DELETE FROM products WHERE ProductID = ?', id, (err, result) => {
+    const id = req.body.id;
+
+    database.query('SELECT imagePath FROM products WHERE ProductID = ?', id, (err, result) => {
         if (err) {
             return res.send({ err: err });
         } else {
-            return res.send({ message: 'Product deleted successfully!' });
+            const imagePath = result[0].imagePath;
+
+            fs.unlink(imagePath, (fileErr) => {
+                if (fileErr) {
+                    console.error('file delete failed', fileErr);
+                } else {
+                    console.log('file deleted');
+                }
+
+                database.query('DELETE FROM products WHERE ProductID = ?', id, (dbErr, dbResult) => {
+                    if (dbErr) {
+                        return res.send({ err: dbErr });
+                    } else {
+                        return res.send({ message: 'Product and file deleted successfully!' });
+                    }
+                });
+            });
         }
     });
 };
 
-const addProduct = (req, res) => {
-    const product = req.body;
-    database.query('INSERT INTO products (name,price,description,imagePath,category,quantity,dateAdded,SellerID) VALUES (?,?,?,?,?,?,?,?)', [product.name,product.price,product.description,product.imagePath,JSON.stringify(product.category),product.quantity,product.dateAdded,product.SellerID], (err, result) => {
-        if (err) {
-            return res.send({ err: err });
+function multerMiddleware(SellerID) {
+    const storage = multer.diskStorage({
+        destination: (req, file, callback) => {
+            callback(null, 'imageUploads');
+        },
+        filename: (req, file, callback) => {
+            const now = new Date();
+            const filename = `${now.toISOString().replace(/[-:]/g, '').replace('T', '_').slice(0, -5)}_${file.originalname}`;
+            callback(null, filename);
+        },
+    });
+    return multer({ storage: storage });
+}
+
+const addProduct = async (req, res) => {
+    const { name, price, description, category, quantity, dateAdded, SellerID } = req.body;
+    const imagePath = req.file.path;
+
+    database.query('SELECT * FROM products WHERE BINARY(name) = ? AND SellerID = ?', [name,SellerID], (Verr, Vresult) => {
+        if (Verr) {
+            return res.send({ err: Verr });
+        } 
+        if (Vresult.length==0) {
+            database.query('INSERT INTO products (name, price, description, imagePath, category, quantity, dateAdded, SellerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [name, price, description, imagePath, category, quantity, dateAdded, SellerID], (err, result) => {
+                if (err) {
+                    return res.send({ err: err });
+                } else {
+                    return res.send({ message: 'New data inserted successfully!' });
+                }
+            });
         } else {
-            return res.send({ message: 'New data inserted successfully!' });
+            return res.send("Product name already exists! Choose another one.")
         }
     });
-}
+};
 
 const allOrders = (req,res) => {
     const SellerID = req.body.SellerID;
@@ -114,4 +169,4 @@ const updateOrderStatus = (req, res) => {
   };
 
 
-module.exports = { allProducts, updateProduct, deleteProduct, addProduct, allOrders, updateOrderStatus }
+module.exports = { allProducts, updateProduct, deleteProduct, multerMiddleware, addProduct, allOrders, updateOrderStatus }

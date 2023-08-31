@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
-import iphone from "../../assets/images/products/iPhone14.png"
 
 function OrderDetail({ order, show, handleClose }) {
     return (
@@ -10,7 +9,7 @@ function OrderDetail({ order, show, handleClose }) {
             </Modal.Header>
             <Modal.Body className="px-4">
                 <div className="row mb-3">
-                    <img src={"../"+order.imagePath} alt={order.ProductID} className="col-sm-2" />
+                    <img src={`http://localhost:3001/${order.imagePath}`} alt={order.ProductID} className="col-sm-2" />
                     <div className="col-sm-4">
                         <p className="text-secondary">Product ID. {order.ProductID}</p>
                         <p>{order.name}</p>

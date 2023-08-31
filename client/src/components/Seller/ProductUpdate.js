@@ -2,47 +2,78 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import Axios from 'axios';
 
-function ProductUpdate({ handleClose, show, p, reload }) {
+function ProductUpdate({ handleCloseModal, show, p, reload }) {
     Axios.defaults.withCredentials = true;
 
     const [product, setProduct] = useState(p);
 
-    function handleChange(e){
-        const { name, value } = e.target;
-        setProduct(prev =>{
-            return({ ...prev, [name]: value })
-        });
-    }
-
-    const [categories, setCategories] = useState({});
+    const [categories, setCategories] = useState([]);
     const getCategories = () => {
         Axios.get('http://localhost:3001/admin/allCategories')
             .then((response) => {
-                setCategories(response)
+                setCategories(response.data)
             })
-            .catch(() => {alert('ProductUpdate.js_getCategories: error')});
+            .catch(() => {alert('ProductUpdate.js_getCategories:',err)});
     }
     useEffect(() => {
         getCategories()
     }, []);
+    const [selection, setSelection] = useState([]);
+    const [selectionName, setSelectionName] = useState([]);
+    const [image, setImage] = useState();
 
-    // NOTE*** change when Admin functions are developed
-    const [ options, setOptions ] = useState(["Electronics", "Beauty", "Health", "Clothes"]);
-    // NOTE*** change when Admin functions are developed
+    function handleChange(e){
+        const { name, value } = e.target;
+        if (name.startsWith("category")) {
+            const selectedId = parseInt(value);
+            const selectedCategory = categories.find(category => category.CategoryID === selectedId);
+            const index = parseInt(name.charAt(name.length - 1)) - 1;
+            const selectedNames = [
+                ...selectionName.slice(0, index),
+                selectedCategory.name
+            ];
+            setSelection([...selection.slice(0, index), selectedId]);
+            setSelectionName(selectedNames);
+        } else {
+            setProduct(prev =>{
+                return({ ...prev, [name]: value })
+            });
+        }
+    }
+    console.log("SelectionName:",selectionName);
+    console.log("Product category:",product.category);
 
+    function handleClose() {
+        setSelectionName([]);
+        setSelection([])
+        handleCloseModal();
+    }
     const updateProduct = event => {
         event.preventDefault();
-        Axios.post('http://localhost:3001/seller/updateProduct', product)
-            .then((response) => {
-                if (response.data.message) {
-                    alert(JSON.stringify(response.data.message));
-                    reload();
-                    handleClose();
-                } else {
-                    alert("ProductUpdate.js_updateProduct:",JSON.stringify(response.data)); 
-                }
+        handleCloseModal();
+        if (selectionName.length < 3) {
+            alert("Please select at least three categories.");
+            return;
+        }
+        setProduct(prev => ({...prev,category: selectionName,}));
+        
+        Axios.post('http://localhost:3001/seller/updateProduct', {
+            ProductID: product.ProductID,
+            name: product.name,
+            price: product.price,
+            description: product.description,
+            quantity: product.quantity,
+            category: JSON.stringify(selectionName),
+            SellerID: product.SellerID
+        })
+        .then((response) => {
+            if (response.data.message) {
+                alert(JSON.stringify(response.data.message));
+                reload();
+            } else {
+                alert(JSON.stringify(response.data));
             }
-        );
+        });
     }
 
     return (
@@ -55,7 +86,7 @@ function ProductUpdate({ handleClose, show, p, reload }) {
                     <Modal.Body>
                         <div className="row mb-4">
                             <div className="col-sm-6">
-                                <img className="col-12" src={"../"+product.imagePath} alt={product.ProductID} />
+                                <img className="col-12" src={`http://localhost:3001/${product.imagePath}`} alt={product.ProductID} />
                             </div>
                             <div className="col-sm-6">
                                 <div className="col-sm-12 mb-3">
@@ -64,6 +95,8 @@ function ProductUpdate({ handleClose, show, p, reload }) {
                                         <input 
                                             name="name" 
                                             className="form-control" 
+                                            minLength="5" maxLength="50" 
+                                            title="Name should be at least 5 characters." 
                                             value={product.name}
                                             onChange={handleChange}
                                             required
@@ -108,9 +141,58 @@ function ProductUpdate({ handleClose, show, p, reload }) {
                             <input 
                                 name="category" 
                                 className="form-control" 
-                                value={JSON.parse(product.category).join(' > ')}
+                                placeholder={product.category}
+                                value={selectionName.join(' > ')}
                                 disabled
                             />
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <select className="form-select" name="category1" onChange={handleChange}>
+                                        <option hidden>Top</option>
+                                        {categories.filter(category => !category.parentID).map(category => (
+                                            <option value={category.CategoryID} key={category.CategoryID}>
+                                                {category.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="col-sm-3">
+                                    <select className="form-select" name="category2" onChange={handleChange}>
+                                        <option hidden>Second</option>
+                                        {(selection.length>0) && (
+                                            categories.filter(category => category.parentID === selection[0]).map(category => (
+                                                <option value={category.CategoryID} key={category.CategoryID}>
+                                                    {category.name}
+                                                </option>
+                                            )) 
+                                        )}
+                                    </select>
+                                </div>
+                                <div className="col-sm-3">
+                                    <select className="form-select" name="category3" onChange={handleChange}>
+                                        <option hidden>Third</option>
+                                        {(selection.length>1) && (
+                                            categories.filter(category => category.parentID === selection[1]).map(category => (
+                                                <option value={category.CategoryID} key={category.CategoryID}>
+                                                    {category.name}
+                                                </option>
+                                            ))
+                                        )}
+                                    </select>
+                                </div>
+                                <div className="col-sm-3">
+                                    <select className="form-select" name="category4" onChange={handleChange}>
+                                        <option hidden>Optional</option>
+                                        {(selection.length>2) && (
+                                            categories.filter(category => category.parentID === selection[2]).map(category => (
+                                                <option value={category.CategoryID} key={category.CategoryID}>
+                                                    {category.name}
+                                                </option>
+                                            ))
+                                        )}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div className="mb-4">
                             <label className="fw-bold mb-2">Description</label>

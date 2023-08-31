@@ -23,7 +23,6 @@ function Login({ userType, user }) {
             emailPhone: emailPhone,
             password: password
         }).then((response) => {
-            console.log(response);
             if (response.data.message) {
                 alert(JSON.stringify(response.data.message)); //error type
             } else {

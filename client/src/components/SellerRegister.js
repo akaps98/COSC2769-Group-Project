@@ -28,7 +28,6 @@ function SellerRegister(){
             } else {
                 alert(JSON.stringify(response.data)); 
             }
-            console.log(response)
         });
     };
 
