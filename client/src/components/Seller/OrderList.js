@@ -8,11 +8,21 @@ function OrderList({ seller }){
     Axios.defaults.withCredentials = true;
 
     const [orders, setOrders] = useState([]);
+    const [newCount, setNewCount] = useState(0);
+    const [shippedCount, setShippedCount] = useState(0);
+    const [canceledCount, setCanceledCount] = useState(0);
+    const [acceptedCount, setAcceptedCount] = useState(0);
+    const [rejectedCount, setRejectedCount] = useState(0);
 
     const getOrders = () => {
         Axios.post('http://localhost:3001/seller/allOrders', {SellerID: seller})
             .then((response) => {
                 setOrders(response.data);
+                setNewCount(response.data.filter(order => order.status === "New").length)
+                setShippedCount(response.data.filter(order => order.status === "Shipped").length)
+                setCanceledCount(response.data.filter(order => order.status === "Canceled").length)
+                setAcceptedCount(response.data.filter(order => order.status === "Accepted").length)
+                setRejectedCount(response.data.filter(order => order.status === "Rejected").length)
             })
             .catch(() => {console.log('error')});
     }
@@ -47,13 +57,20 @@ function OrderList({ seller }){
     }
     return(
         <>
-            <Statistics seller={seller}/>
+            <Statistics
+                seller={seller}
+                newCount={newCount}
+                acceptedCount={acceptedCount}
+                rejectedCount={rejectedCount}
+                canceledCount={canceledCount}
+                shippedCount={shippedCount}
+            />
             <div className="management-container">
                 <OrderDetail order={order} handleClose={handleClose} show={show} updateStatus={updateStatus} />
                 <div className="management-title-container">
                     <p className="management-title">Order Management</p>
                 </div>
-                <table className="product-table">
+                <table className="management-table">
                     <thead>
                         <tr>
                             <th className="col-sm-1">Order ID</th>

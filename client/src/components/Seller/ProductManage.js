@@ -4,19 +4,23 @@ import { Link } from "react-router-dom";
 import ProductUpdate from "./ProductUpdate";
 import Axios from 'axios';
 import ProductTableHead from "./ProductTableHead";
-import Statistics from "./Statistics";
+
+import search from "../../assets/images/sellers/search-interface-symbol.png";
 
 function ProductManage({ seller }) {
     Axios.defaults.withCredentials = true;
 
     const [products, setProducts] = useState([]);
+    const [allProducts, setAllProducts] = useState([]);
     const loadProducts = () => {
         Axios.post('http://localhost:3001/seller/allProducts', {SellerID: seller})
-            .then((response) => {setProducts(response.data)})
+            .then((response) => {setProducts(response.data); setAllProducts(response.data) })
             .catch(() => {console.log('error')});
     }
     useEffect(() => {
         loadProducts()
+
+
     }, []);
 
     const columns = [
@@ -73,6 +77,90 @@ function ProductManage({ seller }) {
     }
 
     const [product, setProduct] = useState({});
+    const [pName, setPName] = useState("");
+    const handleNameChange = (e) => setPName(e.target.value);
+    const [pDate, setPDate] = useState({ fromDate: "", toDate: "" });
+    const [pPrice, setPPrice] = useState({ fromPrice: 0, toPrice: 0 });
+
+    function handleDateChange(e) {
+        const { name, value } = e.target;
+        setPDate((prev) => {
+            return (
+                {
+                    ...prev,
+                    [name]: value
+                }
+            )
+        });
+        console.log(pDate);
+    }
+
+    function handlePriceChange(e) {
+        const { name, value } = e.target;
+        setPPrice((prev) => {
+            return (
+                {
+                    ...prev,
+                    [name]: parseInt(value)
+                }
+            )
+        });
+        console.log(pPrice);
+    }
+
+    function filterProducts() {
+        const newProducts = [...allProducts];
+        const filteredProducts = newProducts.filter(product => {
+            if (pName !== "") {
+                const name = pName.toLowerCase();
+                if (!product.name.toLowerCase().includes(name)) {
+                    return false;
+                }
+            }
+            if (pDate.fromDate !== "" && pDate.toDate !== "") {
+                if (!(new Date(pDate.fromDate) <= new Date(product.dateAdded.slice(0, 10)))
+                    || !(new Date(product.dateAdded.slice(0, 10)) <= new Date(pDate.toDate))) {
+                    return false;
+                }
+            }else if (pDate.fromDate !== "" || pDate.toDate !== "") {
+                if (pDate.fromDate !== "") {
+                    if(!(new Date(pDate.fromDate) <= new Date(product.dateAdded.slice(0, 10)))){
+                        return false;
+                    }
+                } else {
+                    if (!(new Date(product.dateAdded.slice(0, 10)) <= new Date(pDate.toDate))){
+                        return false;
+                    }
+                }
+            }
+            if (pPrice.fromPrice !== 0 && pPrice.toPrice !== 0) {
+                if (!(pPrice.fromPrice <= product.price) || !(product.price <= pPrice.toPrice)){
+                    return false;
+                }
+            } else if (pPrice.fromPrice !== 0 || pPrice.toPrice !== 0) {
+                if (pPrice.fromPrice !== 0) {
+                    if (!(pPrice.fromPrice <= product.price)){
+                        return false
+                    }
+                } else {
+                    if (!(pPrice.toPrice >= product.price)){
+                        return false;
+                    }
+                }
+            }
+            return true;
+        });
+        setProducts(filteredProducts);
+        console.log(filteredProducts);
+        console.log(pDate);
+        console.log(pPrice);
+    }
+
+    function handleFilterClear() {
+        setPDate({ fromDate: "", toDate: "" });
+        setPPrice({ fromPrice: 0, toPrice: 0 });
+    }
+
 
     const [deleteModalshow, setDeleteModalShow] = useState(false);
     const handleDeleteModalClose = () => setDeleteModalShow(false);
@@ -81,6 +169,10 @@ function ProductManage({ seller }) {
     const [updateModalshow, setUpdateModalShow] = useState(false);
     const handleUpdateModalClose = () => setUpdateModalShow(false);
     const handleUpdateModalShow = () => setUpdateModalShow(true);
+
+    const [filterShow, setFilterShow] = useState(false);
+    const handleFilterClose = () => setFilterShow(false);
+    const handleFilterToggle = () => setFilterShow((prev) => !prev);
 
     function handleUpdate(e){
         const { value } = e.target;
@@ -109,14 +201,13 @@ function ProductManage({ seller }) {
                 loadProducts();
                 handleDeleteModalClose();
             } else {
-                alert("ProductManage.js_deleteProduct:",JSON.stringify(response.data)); 
+                console.log("ProductManage.js:",err); 
             }
         });
     }
 
     return (
         <>
-            <Statistics seller={seller}/>
             <div className="product-management-container">
                 <Modal show={deleteModalshow} onHide={handleDeleteModalClose} animation={false} centered>
                     <Modal.Header>
@@ -124,13 +215,13 @@ function ProductManage({ seller }) {
                     </Modal.Header>
                     <Modal.Body>Do you really want to delete the product: {product.name} ?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant="danger" onClick={() => {
+                        <Button variant="danger close-btn" onClick={() => {
                             deleteProduct();
                             handleDeleteModalClose();
                         }}>
                             Delete
                         </Button>
-                        <Button variant="secondary" onClick={handleDeleteModalClose}>
+                        <Button variant="secondary close-btn" onClick={handleDeleteModalClose}>
                             Cancel
                         </Button>
                     </Modal.Footer>
@@ -140,8 +231,35 @@ function ProductManage({ seller }) {
                     <p className="management-title">Product Management</p>
                     <Link to={"/seller/addProduct"} className="add-btn">Add Product</Link>
                 </div>
-                <table className="product-table">
-                <thead>
+
+                <div className="product-filter-container my-3">
+                    <button className="product-search-btn" onClick={filterProducts}><img src={search} alt="" /></button>
+                    <input type="text" placeholder="Search..." className="product-name-filter-input" onChange={(e) => handleNameChange(e)} />
+                    <button className={filterShow ? "product-filter-btn filter-btn-active" : "product-filter-btn"}
+                        onClick={handleFilterToggle}>
+                        Filter
+                    </button>
+                    {filterShow &&
+                        <div className="product-filter-form-container mt-3 text-secondary">
+                            <div className="product-date-filter-container">
+                                Date <input type="date" className="col-sm-4 ms-4" name="fromDate" onChange={(e) => handleDateChange(e)} value={pDate.fromDate} /> - <input type="date" className="col-sm-4" name="toDate" value={pDate.toDate} onChange={(e) => handleDateChange(e)} />
+                            </div>
+                            <div className="hr-line my-3" />
+                            <div className="product-price-filter-container">
+                                Price <input type="number" className="col-sm-4 ms-4" placeholder="20000" name="fromPrice" onChange={(e) => handlePriceChange(e)} value={pPrice.fromPrice} /> - <input type="number" className="col-sm-4" placeholder="100000" value={pPrice.toPrice} name="toPrice" onChange={(e) => handlePriceChange(e)} />
+                            </div>
+                            <div className="hr-line my-3" />
+                            <div className="product-filter-footer">
+                                <button className="text-danger" onClick={handleFilterClear}>Clear all filter</button>
+                                <div>
+                                    <button className="text-secondary" onClick={handleFilterClose}>Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <table className="management-table">
+                    <thead>
                         <ProductTableHead
                             columns={columns}
                             handleSorting={handleSorting}

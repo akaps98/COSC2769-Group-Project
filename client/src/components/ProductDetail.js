@@ -19,7 +19,6 @@ function ProductDetail() {
     };
     // NOTE ******************************
 
-    const rating = 3.8;
     const [ isWrapped, setIsWrapped ] = useState(true);
     function handleClick(){
         setIsWrapped(prev => !prev);
@@ -32,7 +31,6 @@ function ProductDetail() {
                 </div>
                 <div className="product-main-container">
                     <h2 className="pName">{product.name}</h2>
-                    <p className="stars" style={{ "--rating": rating }}>1490 Ratings</p>
                     <p className="text-muted category-text">Categories: {JSON.parse(product.category).join(' > ')}</p>
                     <div className="hr-line"></div>
                     <p className="price">{product.price.toLocaleString()}</p>

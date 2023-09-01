@@ -4,8 +4,7 @@ import SellerTest from './SellerTest';
 
 export default function AdminTest() {
     return (
-        <div className='m-5'>
-            <h2>Admin Page Test</h2>
+        <div className='admin-page-container'>
             <SellerTest/>
             <CategoryTest/>
         </div>
