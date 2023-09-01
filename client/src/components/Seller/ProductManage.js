@@ -208,7 +208,6 @@ function ProductManage({ seller }) {
 
     return (
         <>
-            <Statistics seller={seller} />
             <div className="product-management-container">
                 <Modal show={deleteModalshow} onHide={handleDeleteModalClose} animation={false} centered>
                     <Modal.Header>

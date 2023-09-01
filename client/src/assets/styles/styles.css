@@ -345,11 +345,13 @@ span {
 }
 
 .product-management-container {
+    position: absolute;
+    top: 50%;
+    transform: translate(-600px, -325px);
     width: 1200px;
-    height: 600px;
+    height: 650px;
     background-color: #fff;
     border-radius: 5px;
-    margin: 20px auto;
     padding: 0 30px 30px 30px;
 }
 
@@ -1193,6 +1195,11 @@ span {
     .product-form-container,
     .product-management-container {
         width: 100vw;
+    }
+
+    .product-management-container{
+        transform: translate(0, 0);
+        margin-top: 20px;
     }
 
     .statistics-main-container {

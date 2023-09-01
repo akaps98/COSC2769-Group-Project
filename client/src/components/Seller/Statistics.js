@@ -1,28 +1,8 @@
 import React from "react";
-import { useState, useEffect } from 'react';
 import Axios from 'axios';
 
-function Statistics({ seller }) {
+function Statistics({ seller, newCount, shippedCount, canceledCount, acceptedCount, rejectedCount }) {
     Axios.defaults.withCredentials = true;
-
-    const [newCount, setNewCount] = useState(0);
-    const [shippedCount, setShippedCount] = useState(0);
-    const [canceledCount, setCanceledCount] = useState(0);
-    const [acceptedCount, setAcceptedCount] = useState(0);
-    const [rejectedCount, setRejectedCount] = useState(0);
-    
-    useEffect(() => {
-        Axios.post('http://localhost:3001/seller/allOrders', {SellerID: seller})
-            .then((response) => {
-                setNewCount(response.data.filter(order=>order.status==="New").length)
-                setShippedCount(response.data.filter(order=>order.status==="Shipped").length)
-                setCanceledCount(response.data.filter(order=>order.status==="Canceled").length)
-                setAcceptedCount(response.data.filter(order=>order.status==="Accepted").length)
-                setRejectedCount(response.data.filter(order=>order.status==="Rejected").length)
-            })
-            .catch(() => {alert('Statistics.js_useEffect: error')});
-    }, []);
-
 
     return(
         <div className="statistics-container">
