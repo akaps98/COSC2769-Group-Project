@@ -142,31 +142,31 @@ const allOrders = (req,res) => {
 };
 
 const updateOrderStatus = (req, res) => {
-    const OrderID = req.body.orderId;
-    const ProductID = req.body.productId;
+    const OrderID = req.body.OrderID;
+    const ProductID = parseInt(req.body.ProductID,10);
     const newStatus = req.body.newStatus;
-    db.query('SELECT products FROM orders WHERE OrderID = ?', [OrderID], (err, rows) => {
+    database.query('SELECT products FROM orders WHERE OrderID = ?', [OrderID], (err, results) => {
         if (err) {
-            return res.send({ err: err });
-        } else {
-            const productsJson = JSON.parse(rows[0].products);
-            for (const product of productsJson) {
-                if (product[0].ProductID === ProductID) {
-                    product[1] = newStatus;
-                    break;
-                }
-            }
-            const newProductsString = JSON.stringify(productsJson);
-            db.query('UPDATE orders SET products = ? WHERE OrderID = ?', [newProductsString, OrderID], (err, result) => {
-                if (err) {
-                return res.send({ err: err });
-                } else {
-                return res.send({ message: 'Status updated successfully' });
-                }
-            });
+          console.error('Error fetching products:', err);
+          return res.send({ err: err });
         }
+        const products = JSON.parse(results[0].products);
+        const updatedProducts = products.map(product => {
+            if (product[0].ProductID === ProductID) {
+              return [product[0], newStatus];
+            }
+            return product;
+        });
+        database.query('UPDATE orders SET products = ? WHERE OrderID = ?', [JSON.stringify(updatedProducts), OrderID], (err, results) => {
+            if (err) {
+              console.error('Error updating productOrders:', err);
+              return res.send({ err: err });
+            }
+            return res.send({ message: 'Product order status updated successfully' });
+        });
     });
-  };
+};
+
 
 
 module.exports = { allProducts, updateProduct, deleteProduct, multerMiddleware, addProduct, allOrders, updateOrderStatus }

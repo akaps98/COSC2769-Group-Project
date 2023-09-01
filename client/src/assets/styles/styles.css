@@ -594,6 +594,17 @@ span {
     }
 }
 
+.order-update {
+    width: fit-content;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 0;
+    line-height: 15px;
+    color: #fff;
+    background-color: #a5a5a5;
+}
+
 .close-btn, .save-btn{
     width: 100px;
     height: 40px;

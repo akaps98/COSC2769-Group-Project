@@ -20,7 +20,7 @@ function Statistics({ seller }) {
                 setAcceptedCount(response.data.filter(order=>order.status==="Accepted").length)
                 setRejectedCount(response.data.filter(order=>order.status==="Rejected").length)
             })
-            .catch(() => {alert('Statistics.js_useEffect: error')});
+            .catch(() => {console.log(response.data)});
     }, []);
 
 

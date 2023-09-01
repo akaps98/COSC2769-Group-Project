@@ -13,7 +13,7 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
             .then((response) => {
                 setCategories(response.data)
             })
-            .catch(() => {alert('ProductUpdate.js_getCategories:',err)});
+            .catch(() => {console.log('ProductUpdate.js',err)});
     }
     useEffect(() => {
         getCategories()
@@ -40,8 +40,6 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
             });
         }
     }
-    console.log("SelectionName:",selectionName);
-    console.log("Product category:",product.category);
 
     function handleClose() {
         setSelectionName([]);
