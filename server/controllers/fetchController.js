@@ -1,4 +1,3 @@
-const session = require('express-session');
 const database = require("../config/database");
 
 const root = (req, res) => {
@@ -40,4 +39,13 @@ const allOrders = (req, res) => {
         }
     });
 };
-module.exports = { root, allCustomers, allSellers, allProducts, allOrders }
+const allCategories = (req, res) => {
+    database.query("SELECT * FROM categories", (err, result) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.send(result);
+        }
+    });
+}
+module.exports = { root, allCustomers, allSellers, allProducts, allOrders, allCategories }
