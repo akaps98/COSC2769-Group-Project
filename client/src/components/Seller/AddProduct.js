@@ -19,7 +19,7 @@ function AddProduct({ seller }) {
 
     const [categories, setCategories] = useState([]);
     const getCategories = () => {
-        Axios.get('http://localhost:3001/admin/allCategories')
+        Axios.get('http://localhost:3001/allCategories')
             .then((response) => {
                 setCategories(response.data)
             })

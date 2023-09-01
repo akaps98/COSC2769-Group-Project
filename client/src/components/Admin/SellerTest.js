@@ -16,25 +16,24 @@ export default function SellerTest() {
         getSellers()
     }, []);
 
-    // const [newStatus, setNewStatus] = useState("");
-    // function update(status) {
-    //     setNewStatus(status)
-    //     updateStatus();
-    // }
-    // const updateStatus = event => {
-    //     event.preventDefault();
-    //     Axios.post('http://localhost:3001/admin/updateSellerStatus', {
-    //         sellerId: order.OrderID,
-    //         newStatus: status
-    //     }).then((response) => {
-    //         if (response.data.message) {
-    //             alert(JSON.stringify(response.data.message));
-    //             getSellers();
-    //         } else {
-    //         }
-    //     });
-    // }
-    
+    function handleClick(e) {
+        const { name } = e.target;
+        const i = parseInt(e.currentTarget.getAttribute("id"));
+        if (window.confirm("Are you sure to update the status of seller "+i+" to "+name+"?")) {
+            Axios.post('http://localhost:3001/admin/updateSellerStatus', {
+                SellerID: i,
+                newStatus: name
+            }).then((response) => {
+                if (response.data.message) {
+                    alert(JSON.stringify(response.data.message));
+                    getSellers();
+                } else {
+                    console.log("SellerTest.js err:",err)
+                }
+            });
+        }
+    }
+
     return(
         <>
             <div className="m-5">
@@ -64,18 +63,26 @@ export default function SellerTest() {
                                 <td className="col-sm-2">
                                     {seller.status === "Pending" &&
                                         <div>
-                                            <button className="btn btn-info">Approve</button>
-                                            <button className="btn btn-warning">Reject</button>
+                                            <button className="btn btn-info" id={seller.SellerID} name="Approved" onClick={handleClick}>
+                                                Approve
+                                            </button>
+                                            <button className="btn btn-warning" id={seller.SellerID} name="Rejected" onClick={handleClick}>
+                                                Reject
+                                            </button>
                                         </div>
                                     }
                                     {seller.status === "Approved" &&
                                         <div>
-                                            <button className="btn btn-warning">Reject</button>
+                                            <button className="btn btn-warning" id={seller.SellerID} name="Rejected" onClick={handleClick}>
+                                                Reject
+                                            </button>
                                         </div>
                                     }
                                     {seller.status === "Rejected" &&
                                         <div>
-                                            <button className="btn btn-info">Approve</button>
+                                            <button className="btn btn-info" id={seller.SellerID} name="Approved" onClick={handleClick}>
+                                                Approve
+                                            </button>
                                         </div>
                                     }
                                 </td>
