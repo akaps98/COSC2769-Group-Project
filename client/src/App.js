@@ -15,6 +15,8 @@ import ProductManage from './components/Seller/ProductManage';
 import OrderList from './components/Seller/OrderList';
 import Unauthorized from './components/Unauthorized';
 
+import AdminTest from './components/Admin/AdminTest';
+
 function App() {
   Axios.defaults.withCredentials = true;
   const [isLoading, setIsLoading] = useState(true);
@@ -65,6 +67,8 @@ function App() {
             <Route exact path="/detail" element={<ProductDetail />} />
 
             <Route path='/una' element={<Unauthorized />} />
+
+            <Route path='/adminTest' element={<AdminTest />} />
           </Routes>
         </div>
       </div>

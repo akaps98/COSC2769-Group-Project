@@ -259,7 +259,7 @@ function ProductManage({ seller }) {
                         </div>
                     }
                 </div>
-                <table className="product-table">
+                <table className="management-table">
                     <thead>
                         <ProductTableHead
                             columns={columns}

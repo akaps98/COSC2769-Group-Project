@@ -71,7 +71,7 @@ function OrderList({ seller }){
                 <div className="management-title-container">
                     <p className="management-title">Order Management</p>
                 </div>
-                <table className="product-table">
+                <table className="management-table">
                     <thead>
                         <tr>
                             <th className="col-sm-1">Order ID</th>
