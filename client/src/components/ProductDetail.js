@@ -7,37 +7,63 @@ import heart from "../assets/images/heart.png"
 function ProductDetail({ user }) {
     const product = useLocation().state.data;
     const category = Array((JSON.parse(product.category.split(","))));
-    console.log(product.imagePath);
-    //console.log()
-    const price = 22000000
-    const rating = 3.8;
+    console.log(product.imagePath)
+    const [ quantity, setQuantity ] = useState(1);
     const [ isWrapped, setIsWrapped ] = useState(true);
     function handleClick(){
         setIsWrapped(prev => !prev);
     }
+    function saveOnLocalStorage() {
+        if(user.username == undefined) { // non - member
+            // localStorage.clear();
+            if(localStorage.getItem(product.ProductID) == null) {
+                localStorage.setItem(product.ProductID, quantity);
+            } else {
+                //localStorage.setItem(product.ProductID, quantity += quantity)
+            }
+        } else { // member
+
+        }
+    }
+    
+    function removeOnLocalStorage() {
+        if(user.username == undefined) { // non - member
+            if(localStorage.getItem(product.ProductID) != null) {
+                localStorage.removeItem(product.ProductID);
+            } else {
+                //localStorage.setItem(product.ProductID, quantity += quantity)
+            }
+        } else { // member
+
+        }
+    }
     return (
         <>
             <div className="product-detail-container">
-                <h1>{user.username}</h1>
                 <div className="img-container">
-                    <img className="product-img" src={product.imagePath} alt="" />
+                    <img className="product-img" src={`http://localhost:3001/${product.imagePath}`} alt="" />
                 </div>
                 <div className="product-main-container">
                     <h2 className="pName">{product.name}</h2>
                     {/* <p className="stars" style={{ "--rating": rating }}>1490 Ratings</p> */}
-                    {category.map(name => <p className="text-muted category-text">{name + '\n'}</p>)}
+                    {category.map(name => <p key = {name} className="text-muted category-text">{name + ''}</p>)}
                     <div className="hr-line"></div>
                     <p className="price">{product.price.toLocaleString()}</p>
                     <div className="qty-container">
                         <p className="text-secondary pt-1">Quantity</p>
-                        <button className="qty-btn">-</button>
-                        <input type="text" className="quantity" defaultValue={1} />
-                        <button className="qty-btn">+</button>
+                        <button className="qty-btn" onClick={() => {
+                            if(quantity != 1) {
+                                setQuantity(quantity - 1)
+                            }
+                        }}>-</button>
+                        <input type="text" className="quantity" value={quantity} readOnly/>
+                        <button className="qty-btn" onClick={() => {setQuantity(quantity + 1)}}>+</button>
                         <p className="text-secondary stock">{product.quantity} available</p>
                     </div>
                     <div className="btn-container">
                         <button className="buy-btn">Buy Now</button>
-                        <button className="toCart-btn">Add to Cart</button>
+                        <button className="toCart-btn" onClick={saveOnLocalStorage}>Add to Cart</button>
+                        <button className="toCart-btn" onClick={removeOnLocalStorage}>Remove on Cart</button>
                     </div>
                 </div>
                 <div className="product-sub-container">

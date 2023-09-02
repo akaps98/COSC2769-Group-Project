@@ -9,5 +9,6 @@ router.get('/allSellers', fetchController.allSellers)
 router.get('/allProducts', fetchController.allProducts)
 router.get('/allOrders', fetchController.allOrders)
 router.get('/allCategories', fetchController.allCategories);
+router.get('/allShoppingCarts', fetchController.allShoppingCarts);
 
 module.exports = router;
