@@ -2,7 +2,6 @@ import React from "react";
 
 function OrderTableRow({ order, index, getOrder }) {
     function handleClick(e) {
-        const { name } = e.target;
         const i = parseInt(e.currentTarget.getAttribute("id"));
         getOrder(i);
     }
@@ -17,7 +16,7 @@ function OrderTableRow({ order, index, getOrder }) {
             <td className="col-sm-1"><p className={"status-text " + order.status}>{order.status}</p></td>
             <td className="col-sm-2">
                 {order.status === "New" &&
-                    <p className="order-update" name="update" value={order.OrderID}>Update needed</p>
+                    <p className="order-update" value={order.OrderID}>Update needed</p>
                 }
             </td>
         </tr>

@@ -197,7 +197,9 @@ function ProductManage({ seller }) {
             id: product.ProductID,
         }).then((response) => {
             if (response.data.message) {
+                // Alert can be replaced with something else
                 alert(JSON.stringify(response.data.message));
+                //
                 loadProducts();
                 handleDeleteModalClose();
             } else {

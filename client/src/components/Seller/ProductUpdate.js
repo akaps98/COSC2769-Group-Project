@@ -66,7 +66,9 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
         })
         .then((response) => {
             if (response.data.message) {
+                // Alert can be replaced with something else
                 alert(JSON.stringify(response.data.message));
+                //
                 reload();
             } else {
                 alert(JSON.stringify(response.data));

@@ -38,7 +38,9 @@ function OrderList({ seller }){
         }).then((response) => {
             if (response.data.message) {
                 getOrders();
+                // Alert can be replaced with something else
                 alert(JSON.stringify(response.data.message));
+                //
                 handleClose();
             } else {
                 console.log(response.data);

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
-function CategoryDelete({ deleteModalshow, handleDeleteModalClose }) {
+function CategoryDelete({ deleteModalshow, handleDeleteModalClose, handleDelete }) {
     return (
         <Modal show={deleteModalshow} onHide={handleDeleteModalClose} animation={false} centered>
             <Modal.Header>
@@ -10,7 +10,7 @@ function CategoryDelete({ deleteModalshow, handleDeleteModalClose }) {
             <Modal.Body>Do you really want to delete this category?</Modal.Body>
             <Modal.Footer>
                 <Button variant="danger close-btn" onClick={() => {
-                    handleDeleteModalClose();
+                    handleDelete();
                 }}>
                     Delete
                 </Button>

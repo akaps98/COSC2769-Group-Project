@@ -68,18 +68,93 @@ export default function CategoryTestData() {
 
     const [selectedCategory, setSelectedCategory] = useState(null);
 
+    const [newName, setNewName] = useState("");
+    const handleUpdate = event => {
+        event.preventDefault();
+        const { id, name } = event.target;
+        Axios.post('http://localhost:3001/admin/updateCategory', {
+            CategoryID: id,
+            newName: newName,
+            parentID: name,
+        }).then((response) => {
+            if (response.data.message) {
+                // Alert can be replaced with something else
+                alert(JSON.stringify(response.data.message));
+                //
+                getCategories();
+                setSelectedCategory(null);
+                setNewName("");
+            } else {
+                alert(JSON.stringify(response.data));
+            }
+        });
+    }
+    function cancelUpdate() {
+        setNewName("");
+        setSelectedCategory(null);
+    }
+
+    const [categoryID,setCategoryID] = useState();
+    function setDelete(id) {
+        setCategoryID(id);
+        handleDeleteModalShow();
+    }
+    function handleDelete() {
+        Axios.post('http://localhost:3001/admin/deleteCategory', {
+            CategoryID: categoryID
+        }).then((response) => {
+            if (response.data.message) {
+                // Alert can be replaced with something else
+                alert(JSON.stringify(response.data.message));
+                //
+                getCategories();
+                handleDeleteModalClose();
+            } else {
+                console.log("CategoryTest.js delete error");
+            }
+        });
+    }
+
+    const [parentID,setParentID] = useState();
+    function setCreate(id) {
+        setParentID(id);
+        if (id===null) {
+            handleAddModalShow();
+        } else {
+            handleAddSubcategoryModalShow();
+        }
+    }
+    function handleCreate() {
+        Axios.post('http://localhost:3001/admin/createCategory', {
+            parentID: parentID,
+            newName: newName,
+        }).then((response) => {
+            if (response.data.message) {
+                // Alert can be replaced with something else
+                alert(JSON.stringify(response.data.message));
+                //
+                getCategories();
+                handleAddModalClose();
+                handleAddSubcategoryModalClose();
+                setNewName("");
+            } else {
+                alert(JSON.stringify(response.data));
+            }
+        });
+    }
+
     return (
         <>
-            <CategoryDelete deleteModalshow={deleteModalShow} handleDeleteModalClose={handleDeleteModalClose} />
-            <AddCategory addModalshow={addModalShow} handleAddModalClose={handleAddModalClose} />
-            <AddSubcategory addSubcategoryModalshow={addSubcategoryModalShow} handleAddSubcategoryModalClose={handleAddSubcategoryModalClose} />
+            <CategoryDelete deleteModalshow={deleteModalShow} handleDeleteModalClose={handleDeleteModalClose} handleDelete={handleDelete}/>
+            <AddCategory addModalshow={addModalShow} handleAddModalClose={handleAddModalClose} newName={newName} setNewName={setNewName} handleCreate={handleCreate}/>
+            <AddSubcategory addSubcategoryModalshow={addSubcategoryModalShow} handleAddSubcategoryModalClose={handleAddSubcategoryModalClose} newName={newName} setNewName={setNewName} handleCreate={handleCreate}/>
             <div className="my-5 category-list-container">
                 <div className="category-list-header">
                     <div>
                         <h3>Category Management</h3>
-                        <p>( CRUD product categories. Delete is possible only when there are no products in the category )</p>
+                        <p>( Delete & Update shows only if no products are related)</p>
                     </div>
-                    <button className="add-btn" onClick={handleAddModalShow}>Add Category</button>
+                    <button className="add-btn" onClick={() => setCreate(null)}>Add Category</button>
                 </div>
                 <div className="hr-line my-4" />
                 <div className="category-container">
@@ -104,23 +179,29 @@ export default function CategoryTestData() {
                                     </div>
                                     {parseInt(selectedCategory) === topCategory.CategoryID ?
                                         <div className="category-name-container">
-                                            <input defaultValue={topCategory.name} />
-                                            <div className="category-manage-btn-container">
-                                                <button className="text-success me-3 save-text" onClick={() => setSelectedCategory(null)}>Save</button>
-                                                <button className="text-secondary cancel-text" onClick={() => setSelectedCategory(null)}>Cancel</button>
-                                            </div>
+                                            <form id={topCategory.CategoryID} name={topCategory.parentID} onSubmit={handleUpdate}>
+                                                <input placeholder={topCategory.name} value={newName} onChange={(e) => setNewName(e.target.value)} required/>
+                                                <div className="category-manage-btn-container">
+                                                    <button type="submit" className="text-success me-3 save-text">Save</button>
+                                                    <button type="button" className="text-secondary cancel-text" onClick={cancelUpdate}>Cancel</button>
+                                                </div>
+                                            </form>
                                         </div>
                                         :
                                         <div className="category-name-container">
-                                            <p>{topCategory.name}</p>
+                                            <p>{topCategory.name} <span style={{color: "lightgray"}}>({topCategory.count} products)</span></p>
                                             <div className="category-manage-btn-container">
-                                                <button className="category-edit-btn" value={topCategory.CategoryID}
-                                                    onClick={(e) => {
-                                                        setSelectedCategory(e.target.value);
-                                                    }}
-                                                ></button>
-                                                <button className="category-delete-btn" onClick={handleDeleteModalShow}></button>
-                                                <button className="subcategory-add-btn" onClick={handleAddSubcategoryModalShow}></button>
+                                                {(topCategory.count===0) &&
+                                                    <>
+                                                        <button className="category-edit-btn" value={topCategory.CategoryID}
+                                                            onClick={(e) => {
+                                                                setSelectedCategory(e.target.value);
+                                                            }}
+                                                        ></button>
+                                                        <button className="category-delete-btn" onClick={() => setDelete(topCategory.CategoryID)}></button>
+                                                    </>
+                                                }
+                                                <button className="subcategory-add-btn" onClick={() => setCreate(topCategory.CategoryID)}></button>
                                             </div>
                                         </div>
                                     }
@@ -148,23 +229,29 @@ export default function CategoryTestData() {
                                                     </div>
                                                     {parseInt(selectedCategory) === secondCategory.CategoryID ?
                                                         <div className="category-name-container">
-                                                            <input defaultValue={secondCategory.name} />
-                                                            <div className="category-manage-btn-container">
-                                                                <button className="text-success me-3 save-text" onClick={() => setSelectedCategory(null)}>Save</button>
-                                                                <button className="text-secondary cancel-text" onClick={() => setSelectedCategory(null)}>Cancel</button>
-                                                            </div>
+                                                            <form id={secondCategory.CategoryID} name={secondCategory.parentID} onSubmit={handleUpdate}>
+                                                                <input placeholder={secondCategory.name} value={newName} onChange={(e) => setNewName(e.target.value)} required/>
+                                                                <div className="category-manage-btn-container">
+                                                                    <button type="submit" className="text-success me-3 save-text">Save</button>
+                                                                    <button type="button" className="text-secondary cancel-text" onClick={cancelUpdate}>Cancel</button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                         :
                                                         <div className="category-name-container">
-                                                            <p>{secondCategory.name}</p>
+                                                            <p>{secondCategory.name} <span style={{color: "lightgray"}}>({secondCategory.count} products)</span></p>
                                                             <div className="category-manage-btn-container">
-                                                                <button className="category-edit-btn" value={secondCategory.CategoryID}
-                                                                    onClick={(e) => {
-                                                                        setSelectedCategory(e.target.value);
-                                                                    }}
-                                                                ></button>
-                                                                <button className="category-delete-btn" onClick={handleDeleteModalShow}></button>
-                                                                <button className="subcategory-add-btn" onClick={handleAddSubcategoryModalShow}></button>
+                                                                {(secondCategory.count===0) &&
+                                                                    <>
+                                                                        <button className="category-edit-btn" value={secondCategory.CategoryID}
+                                                                            onClick={(e) => {
+                                                                                setSelectedCategory(e.target.value);
+                                                                            }}
+                                                                        ></button>
+                                                                        <button className="category-delete-btn" onClick={() => setDelete(secondCategory.CategoryID)}></button>
+                                                                    </>
+                                                                }
+                                                                <button className="subcategory-add-btn" onClick={() => setCreate(secondCategory.CategoryID)}></button>
                                                             </div>
                                                         </div>
                                                     }
@@ -191,23 +278,29 @@ export default function CategoryTestData() {
                                                                     </div>
                                                                     {parseInt(selectedCategory) === thirdCategory.CategoryID ?
                                                                         <div className="category-name-container">
-                                                                            <input className="mt-2" defaultValue={thirdCategory.name} />
-                                                                            <div className="category-manage-btn-container">
-                                                                                <button className="text-success me-3 save-text" onClick={() => setSelectedCategory(null)}>Save</button>
-                                                                                <button className="text-secondary cancel-text" onClick={() => setSelectedCategory(null)}>Cancel</button>
-                                                                            </div>
+                                                                            <form id={thirdCategory.CategoryID} name={thirdCategory.parentID} onSubmit={handleUpdate}>
+                                                                                <input placeholder={thirdCategory.name} value={newName} onChange={(e) => setNewName(e.target.value)} required/>
+                                                                                <div className="category-manage-btn-container">
+                                                                                    <button type="submit" className="text-success me-3 save-text">Save</button>
+                                                                                    <button type="button" className="text-secondary cancel-text" onClick={cancelUpdate}>Cancel</button>
+                                                                                </div>
+                                                                            </form>
                                                                         </div>
                                                                         :
                                                                         <div className="category-name-container">
-                                                                            <p>{thirdCategory.name}</p>
+                                                                            <p>{thirdCategory.name} <span style={{color: "lightgray"}}>({thirdCategory.count} products)</span></p>
                                                                             <div className="category-manage-btn-container">
-                                                                                <button className="category-edit-btn" value={thirdCategory.CategoryID}
-                                                                                    onClick={(e) => {
-                                                                                        setSelectedCategory(e.target.value);
-                                                                                    }}
-                                                                                ></button>
-                                                                                <button className="category-delete-btn" onClick={handleDeleteModalShow}></button>
-                                                                                <button className="subcategory-add-btn" onClick={handleAddSubcategoryModalShow}></button>
+                                                                                {(thirdCategory.count===0) &&
+                                                                                    <>
+                                                                                        <button className="category-edit-btn" value={thirdCategory.CategoryID}
+                                                                                            onClick={(e) => {
+                                                                                                setSelectedCategory(e.target.value);
+                                                                                            }}
+                                                                                        ></button>
+                                                                                        <button className="category-delete-btn" onClick={() => setDelete(thirdCategory.CategoryID)}></button>
+                                                                                    </>
+                                                                                }
+                                                                                <button className="subcategory-add-btn" onClick={() => setCreate(thirdCategory.CategoryID)}></button>
                                                                             </div>
                                                                         </div>}
                                                                 </div>
@@ -218,20 +311,26 @@ export default function CategoryTestData() {
                                                                             <div className="fourthCategory-container" key={fourthCategory.CategoryID}>
                                                                                 {parseInt(selectedCategory) === fourthCategory.CategoryID ?
                                                                                     <div className="category-name-container">
-                                                                                        <input className="mt-2" defaultValue={fourthCategory.name} />
-                                                                                        <div className="category-manage-btn-container">
-                                                                                            <button className="text-success me-3 save-text" onClick={() => setSelectedCategory(null)}>Save</button>
-                                                                                            <button className="text-secondary cancel-text" onClick={() => setSelectedCategory(null)}>Cancel</button>
-                                                                                        </div>
+                                                                                        <form id={fourthCategory.CategoryID} name={fourthCategory.parentID} onSubmit={handleUpdate}>
+                                                                                            <input placeholder={fourthCategory.name} value={newName} onChange={(e) => setNewName(e.target.value)} required/>
+                                                                                            <div className="category-manage-btn-container">
+                                                                                                <button type="submit" className="text-success me-3 save-text">Save</button>
+                                                                                                <button type="button" className="text-secondary cancel-text" onClick={cancelUpdate}>Cancel</button>
+                                                                                            </div>
+                                                                                        </form>
                                                                                     </div>
                                                                                     :
                                                                                     <div className="category-name-container">
-                                                                                        <p>{fourthCategory.name}</p>
+                                                                                        <p>{fourthCategory.name} <span style={{color: "lightgray"}}>({fourthCategory.count} products)</span></p>
                                                                                         <div className="category-manage-btn-container">
-                                                                                            <button className="category-edit-btn" value={fourthCategory.CategoryID}
-                                                                                                onClick={(e) => setSelectedCategory(e.target.value)}
-                                                                                            ></button>
-                                                                                            <button className="category-delete-btn" onClick={handleDeleteModalShow}></button>
+                                                                                            {(fourthCategory.count===0) &&
+                                                                                                <>
+                                                                                                    <button className="category-edit-btn" value={fourthCategory.CategoryID}
+                                                                                                        onClick={(e) => setSelectedCategory(e.target.value)}
+                                                                                                    ></button>
+                                                                                                    <button className="category-delete-btn" onClick={() => setDelete(fourthCategory.CategoryID)}></button>        
+                                                                                                </>
+                                                                                            }
                                                                                         </div>
                                                                                     </div>
                                                                                 }

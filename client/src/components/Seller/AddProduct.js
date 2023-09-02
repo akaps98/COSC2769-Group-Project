@@ -87,7 +87,9 @@ function AddProduct({ seller }) {
             }
         }).then((response) => {
             if (response.data.message) {
+                // Alert can be replaced with something else
                 alert(JSON.stringify(response.data.message)); 
+                //
                 window.location.href = '/seller'
             } else {
                 alert(JSON.stringify(response.data)); 

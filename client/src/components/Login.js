@@ -24,9 +24,11 @@ function Login({ userType, user }) {
             password: password
         }).then((response) => {
             if (response.data.message) {
-                alert(JSON.stringify(response.data.message)); //error type
+                alert(JSON.stringify(response.data.message));
             } else {
-                alert("Hello, "+response.data+"!"); //success
+                // Alert can be replaced with something else
+                alert("Hello, "+response.data+"!");
+                //
                 if (type=="seller") {
                     window.location.href = '/seller';
                 } else {

@@ -26,7 +26,7 @@ const allCategories = (req, res) => {
             h.hierarchy,
             (
                 SELECT COUNT(*)
-                FROM fullstackdev14_db.products p
+                FROM products p
                 WHERE JSON_CONTAINS(p.category, h.hierarchy, '$')
             ) AS count
         FROM Hierarchy h
@@ -40,24 +40,54 @@ const allCategories = (req, res) => {
 };
 
 const deleteCategory = (req, res) => {
-    const CategoryID = req.body.categoryId;
-    database.query('DELETE FROM categories WHERE CategoryID = ?', CategoryID, (err, result) => {
-        if (err) {
-            return res.send({ err: err });
-        } else {
-            return res.send({ message: 'category deleted successfully!' });
-        }
+    const CategoryID = req.body.CategoryID;
+    database.query(`WITH RECURSIVE Hierarchy AS (
+        SELECT 
+            CategoryID, 
+            name, 
+            parentID, 
+            JSON_ARRAY(CategoryID) AS hierarchy
+        FROM categories
+        WHERE parentID IS NULL
+        UNION ALL
+        SELECT 
+            c.CategoryID, 
+            c.name, 
+            c.parentID, 
+            JSON_ARRAY_APPEND(hierarchy, '$', c.CategoryID)
+        FROM categories c
+        JOIN Hierarchy ON c.parentID = Hierarchy.CategoryID
+      )
+      SELECT GROUP_CONCAT(CategoryID) As CategoryIDs
+      FROM Hierarchy
+      WHERE JSON_CONTAINS(hierarchy, ?)`, [CategoryID.toString()], (Verr, Vresult) => {
+        if (Verr) {
+            return res.send({ err: Verr });
+        } 
+        const categoryIDsToDelete = Vresult[0].CategoryIDs.split(',').map(Number);
+        database.query('DELETE FROM categories WHERE CategoryID IN (?)', [categoryIDsToDelete], (err, result) => {
+            if (err) {
+              return res.send({ err: err })
+            }
+            return res.send({ message: "Category deleted successfully!" })
+        });
     });
 }
 
 const createCategory = (req, res) => {
     const parentID = req.body.parentID;
-    const name = req.body.name;
-    database.query('SELECT * FROM categories WHERE parentID = ? AND name = ?', [parentID, name], (Verr, Vresult) => {
+    const name = req.body.newName;
+    
+    const query = parentID === null
+        ? 'SELECT * FROM categories WHERE parentID IS NULL AND BINARY name = ?'
+        : 'SELECT * FROM categories WHERE parentID = ? AND BINARY name = ?';
+    const queryParams = parentID === null ? [name] : [parentID, name];
+
+    database.query(query, queryParams, (Verr, Vresult) => {
         if (Verr) {
             return res.send({ err: Verr });
         } 
-        if (Vresult.length==0) {
+        if (Vresult.length === 0) {
             database.query('INSERT INTO categories (name, parentID) VALUES (?,?)', [name, parentID], (err, result) => {
                 if (err) {
                     return res.send({ err: err });
@@ -73,13 +103,13 @@ const createCategory = (req, res) => {
 
 const updateCategory = (req, res) => {
     const parentID = req.body.parentID;
-    const CategoryID = req.body.categoryId;
-    const name = req.body.name;
-    database.query('SELECT * FROM categories WHERE parentID = ? AND name = ?', [parentID, name], (Verr, Vresult) => {
+    const CategoryID = req.body.CategoryID;
+    const name = req.body.newName;
+    database.query('SELECT * FROM categories WHERE parentID = ? AND BINARY(name) = ?', [parentID, name], (Verr, Vresult) => {
         if (Verr) {
             return res.send({ err: Verr });
         } 
-        if (Vresult.length==0) {
+        if (Vresult.length===0) {
             database.query('UPDATE categories SET name = ? WHERE CategoryID = ?', [name,CategoryID], (err, result) => {
                 if (err) {
                     return res.send({ err: err });

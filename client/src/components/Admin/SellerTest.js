@@ -38,7 +38,6 @@ export default function SellerTest() {
         <>
             <div className="seller-table-container">
                 <h3>Seller Management</h3>
-                <p>( View and update seller's status )</p>
                 <div className="hr-line my-4" />
                 <table className="management-table">
                     <thead>
