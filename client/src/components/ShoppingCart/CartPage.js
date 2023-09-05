@@ -6,45 +6,45 @@ import CartRow from './CartRow';
 
 function CartPage({ user, userType }) {
     const [ products, setProducts ] = useState([]);
-    const [ shoppingCartDB, setShoppingCartDB] = useState([]);
-    const [ orderedProducts, setOrderedProducts] = useState([]);
+    const [ shoppingCartDB, setShoppingCartDB ] = useState([]);
+    const [ orderedProducts, setOrderedProducts ] = useState([]);
+    const [ totalPrice, setTotalPrice ] = useState([]);
 
     useEffect(() => {
         Axios.get('http://localhost:3001/allProducts').then((response) => {
             setProducts(response.data);
         });
 
-        if(userType === "Customer") {
+        const tempOrdered = [];
+        if (userType === "Customer") {
             Axios.post('http://localhost:3001/shoppingCart/findShoppingCart', {
                 id: user.CustomerID
             }).then((response) => {
-                setShoppingCartDB(Object.keys(JSON.parse(response.data[0].product)));
+                const db = Object.keys(JSON.parse(response.data[0].product));
+                for (let pid of db) {
+                    Axios.post('http://localhost:3001/product/findProduct', {
+                        productID: pid
+                    }).then((response) => {
+                        setOrderedProducts(prev => [...prev, response.data[0]]);
+                        setOrderedProducts(prev => prev.slice(0, db.length));
+                    })
+                }
             })
-        }
-
-        const tempOrdered = [];
-        if(userType === "Customer") {
-            for(let i = 0; i < shoppingCartDB.length; i++ ) {
-                Axios.post('http://localhost:3001/product/findProduct', {
-                    productID: shoppingCartDB[i]
-                }).then((response) => {
-                    console.log(response.data[0])
-                    tempOrdered.push(response.data[0]);
-                })
-                setOrderedProducts(tempOrdered)
-            }
-        } else {
-            for(let i = 0; i < window.localStorage.length; i++) {
+        }else {
+            for (let i = 0; i < window.localStorage.length; i++) {
                 Axios.post('http://localhost:3001/product/findProduct', {
                     productID: window.localStorage.key(i)
                 }).then((response) => {
-                    console.log(response.data[0])
                     tempOrdered.push(response.data[0]);
                 })
-                }
-                setOrderedProducts(tempOrdered)
             }
-    },[]);
+            setOrderedProducts(tempOrdered)
+        }
+    }, []);
+
+    // function getTotalPrice(price) {
+    //     setTotalPrice(totalPrice + price);
+    // }
 
     // const row = orderedProductsID.map(id => {
     //     Axios.post('http://localhost:3001/product/findProduct', {
@@ -58,7 +58,7 @@ function CartPage({ user, userType }) {
     // })
 
     const row = orderedProducts.map(product => {
-        console.log(product)
+        //console.log(product)
         return (
             <CartRow data={product} />
         )
@@ -105,7 +105,7 @@ function CartPage({ user, userType }) {
                     <div className="col">
                         <div className='cost-box d-flex justify-content-between align-items-center px-4 border border-secondary-subtle'>
                             <h5 className='text-secondary'>Total</h5>
-                            <h5>$4000</h5>
+                            <h5>${totalPrice}</h5>
                         </div>
                     </div>
                 </div>
