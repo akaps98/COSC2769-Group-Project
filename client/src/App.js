@@ -43,7 +43,7 @@ function App() {
     fetchData();
   }, []);
   if (isLoading) {
-    return <div>Laoding...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -65,9 +65,9 @@ function App() {
             </Route>
 
             <Route exact path="/search" element={<BrowseProduct />} />
-            <Route exact path="/search/detail" element={<ProductDetail user={user}/>} />
+            <Route exact path="/search/detail" element={<ProductDetail userType={userType} user={user}/>} />
 
-            <Route exact path="/cart" element={<CartPage />} />
+            <Route exact path="/cart" element={<CartPage userType={userType} user={user}/>} />
 
             <Route path='/una' element={<Unauthorized />} />
           </Routes>

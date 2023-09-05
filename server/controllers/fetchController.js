@@ -50,7 +50,7 @@ const allCategories = (req, res) => {
     });
 }
 const allShoppingCarts = (req, res) => {
-    database.query("SELECT * FROM shoppingcart", (err, result) => {
+    database.query("SELECT * FROM shoppingcarts", (err, result) => {
         if (err) {
             return res.send(err);
         } else {

@@ -10,7 +10,7 @@ function Header() {
                 <nav>
                     <ul className="">
                         <li><a href="#">Save More on App</a></li>
-                        <li><a href="#">Sell On Lazada</a></li>
+                        <li><a href="/search">Sell On Lazada</a></li>
                         <li><a href="#">Lazada Care</a></li>
                         <li><a href="/login">Login</a></li>
                         <li><a href="/register">Sign Up</a></li>

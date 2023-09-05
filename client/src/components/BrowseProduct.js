@@ -6,7 +6,6 @@ import Pagination from './Pagination';
 
 function BrowseProduct() {
     const [products, setProducts] = useState([]);
-    //const [category, setCategory] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [value, setValue] = useState("");
     const [thisPage, setThisPage] = useState(1);
@@ -32,9 +31,6 @@ function BrowseProduct() {
             setProducts(response.data)
         });
         getCategories()
-        // Axios.get('http://localhost:3001/allCategories').then((response) => {
-        //     setCategory(response.data)
-        // });
         Axios.get("http://localhost:3001/auth").then((response) => {
             if (response.data.loggedIn) {
                 setIsLoggedIn(true);
@@ -63,17 +59,7 @@ function BrowseProduct() {
             }).then((response) => {
                 setProducts(response.data);
             })
-            // setProducts(prev => ({
-            //     ...prev,
-            //     category: selectedNames,
-            // }));
-        } else {
-            // setProducts(prev => ({
-            //         ...prev,
-            //     [name]: value,
-            // }));
         }
-        //console.log(selectionName)
     }
 
     const display = currentProduct.map((product) => {
@@ -81,14 +67,6 @@ function BrowseProduct() {
             <EachProduct key={product.name} data={product} />
         )
     })
-
-    // const options = categories.map((main) => {
-    //     if(main.parentID === null) {
-    //         return (
-    //             <Dropdown key={main.categoryID} data={main.name} />
-    //         )
-    //     }
-    // })
 
     const filter = event => {
         Axios.post('http://localhost:3001/product/browseProductByFiltering', {
