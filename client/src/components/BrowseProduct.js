@@ -9,7 +9,7 @@ function BrowseProduct() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [value, setValue] = useState("");
     const [thisPage, setThisPage] = useState(1);
-    const [productsPerPage, setproductsPerPage] = useState(2);
+    const [productsPerPage, setproductsPerPage] = useState(4);
     const [selection, setSelection] = useState([]);
     const [selectionName, setSelectionName] = useState([]);
 
@@ -64,7 +64,9 @@ function BrowseProduct() {
 
     const display = currentProduct.map((product) => {
         return (
-            <EachProduct key={product.name} data={product} />
+            <div className='col-3'>
+                <EachProduct key={product.name} data={product} />
+            </div>
         )
     })
 
@@ -150,7 +152,12 @@ function BrowseProduct() {
             <input placeholder='Search...' value={value} onChange={(e) => setValue(e.target.value)}></input>
             <button type="submit"></button>
         </form>
-        {display}
+        <div className='container'>
+            <div className='row'>
+                {display}
+            </div>
+        </div>
+        
         <hr></hr>
         <Pagination totalProducts={products.length} productsPerPage={productsPerPage} setThisPage={setThisPage} />
         </>
