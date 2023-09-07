@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios'
 import EachProduct from './EachProduct';
-import Dropdown from './Dropdown';
 import Pagination from './Pagination';
 
 function BrowseProduct() {
@@ -12,6 +11,16 @@ function BrowseProduct() {
     const [productsPerPage, setproductsPerPage] = useState(4);
     const [selection, setSelection] = useState([]);
     const [selectionName, setSelectionName] = useState([]);
+    const [belowPrice, setBelowPrice] = useState(0);
+    const [upperPrice, setUpperPrice] = useState(999999999999999);
+
+    const saveBelowPrice = event => {
+        setBelowPrice(event.target.value);
+    }
+
+    const saveUpperPrice = event => {
+        setUpperPrice(event.target.value);
+    }
 
     const lastPage = thisPage * productsPerPage;
     const firstPage = lastPage - productsPerPage;
@@ -62,6 +71,52 @@ function BrowseProduct() {
         }
     }
 
+    function filterChange(e) {
+        const { name, value } = e.target
+        if(value === "alphabet") {
+            Axios.post('http://localhost:3001/product/filterByAlpabeticalOrder', {
+            }).then((response) => {
+                setProducts(response.data);
+            })
+        } else if (value === "alphabet-reverse") {
+            Axios.post('http://localhost:3001/product/filterByReversedAlpabeticalOrder', {
+            }).then((response) => {
+                setProducts(response.data);
+            })
+        } else if (value === "date-addded-latest") {
+            Axios.post('http://localhost:3001/product/filterByLatestDateAdded', {
+            }).then((response) => {
+                setProducts(response.data);
+            })
+        } else if (value === "date-addded-oldest") {
+            Axios.post('http://localhost:3001/product/filterByOldestDateAdded', {
+            }).then((response) => {
+                setProducts(response.data);
+            })
+        } else if (value === "price-high-to-low") {
+            Axios.post('http://localhost:3001/product/filterByHighPrice', {
+            }).then((response) => {
+                setProducts(response.data);
+            })
+        } else {
+            Axios.post('http://localhost:3001/product/filterByLowPrice', {
+            }).then((response) => {
+                setProducts(response.data);
+            })
+        }
+    }   
+
+    function priceFilter() {
+        console.log(belowPrice)
+        console.log(upperPrice)
+        Axios.post('http://localhost:3001/product/filterPrice', {
+            belowPrice: belowPrice,
+            upperPrice: upperPrice
+        }).then((response) => {
+            setProducts(response.data);
+        })
+    }
+
     const display = currentProduct.map((product) => {
         return (
             <div className='col-3'>
@@ -69,14 +124,6 @@ function BrowseProduct() {
             </div>
         )
     })
-
-    const filter = event => {
-        Axios.post('http://localhost:3001/product/browseProductByFiltering', {
-            category: event.target.value
-        }).then((response) => {
-            setProducts(response.data);
-        })
-    }
 
     const search = event => {
         event.preventDefault();
@@ -89,71 +136,61 @@ function BrowseProduct() {
 
     return (
         <>
-        {/* <select onChange={filter}>
-            {options}
-        </select> */}
-                    <div className="row">
-                        <div>
-                            <input
-                                className="form-control"
-                                disabled
-                                value={selectionName.join(' > ')}
-                            />
-                        </div>
-                        <div className="col-sm-3">
-                            <select className="form-select" name="category1" onChange={handleChange}>
-                                <option hidden>Top Category</option>
-                                {categories.filter(category => !category.parentID).map(category => (
-                                    <option value={category.CategoryID} key={category.CategoryID}>
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="col-sm-3">
-                            <select className="form-select" name="category2" onChange={handleChange}>
-                                <option hidden>Second category</option>
-                                {(selection.length>0) && (
-                                    categories.filter(category => category.parentID === selection[0]).map(category => (
-                                        <option value={category.CategoryID} key={category.CategoryID}>
-                                            {category.name}
-                                        </option>
-                                    )) 
-                                )}
-                            </select>
-                        </div>
-                        <div className="col-sm-3">
-                            <select className="form-select" name="category3" onChange={handleChange}>
-                                <option hidden>Third category</option>
-                                {(selection.length>1) && (
-                                    categories.filter(category => category.parentID === selection[1]).map(category => (
-                                        <option value={category.CategoryID} key={category.CategoryID}>
-                                            {category.name}
-                                        </option>
-                                    ))
-                                )}
-                            </select>
-                        </div>
-                        <div className="col-sm-3">
-                            <select className="form-select" name="category4" onChange={handleChange}>
-                                <option hidden>Optional category</option>
-                                {(selection.length>2) && (
-                                    categories.filter(category => category.parentID === selection[2]).map(category => (
-                                        <option value={category.CategoryID} key={category.CategoryID}>
-                                            {category.name}
-                                        </option>
-                                    ))
-                                )}
-                            </select>
-                        </div>
-                    </div>
+            <div className="row">
+                <div className="col-sm-3">
+                    <select className="form-select" name="category1" onChange={handleChange}>
+                        <option hidden>Top Category</option>
+                        {categories.filter(category => !category.parentID).map(category => (
+                            <option value={category.CategoryID} key={category.CategoryID}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="col-sm-3">
+                    <select className="form-select" name="category2" onChange={handleChange}>
+                        <option hidden>Second category</option>
+                        {(selection.length>0) && (
+                            categories.filter(category => category.parentID === selection[0]).map(category => (
+                                <option value={category.CategoryID} key={category.CategoryID}>
+                                    {category.name}
+                                </option>
+                            )) 
+                        )}
+                    </select>
+                </div>
+                <div className="col-sm-3">
+                    <select className="form-select" name="category3" onChange={handleChange}>
+                        <option hidden>Third category</option>
+                        {(selection.length>1) && (
+                            categories.filter(category => category.parentID === selection[1]).map(category => (
+                                <option value={category.CategoryID} key={category.CategoryID}>
+                                    {category.name}
+                                </option>
+                            ))
+                        )}
+                    </select>
+                </div>
+                <div className="col-sm-3">
+                    <select className="form-select" name="category4" onChange={handleChange}>
+                        <option hidden>Optional category</option>
+                        {(selection.length>2) && (
+                            categories.filter(category => category.parentID === selection[2]).map(category => (
+                                <option value={category.CategoryID} key={category.CategoryID}>
+                                    {category.name}
+                                </option>
+                            ))
+                        )}
+                    </select>
+                </div>
+            </div>
         <form className="row" onSubmit={search}>
             <input placeholder='Search...' value={value} onChange={(e) => setValue(e.target.value)}></input>
             <button type="submit"></button>
         </form>
         <div>
             <label>Sort By</label>
-            <select className="form-select" name="sort" onChange={handleChange}>
+            <select id='sort' className="form-select" name="sort" onChange={filterChange}>
                 <option value="alphabet">A-Z</option>
                 <option value="alphabet-reverse">Z-A</option>
                 <option value="date-addded-latest">Date Added (latest)</option>
@@ -164,9 +201,10 @@ function BrowseProduct() {
             <label>Filtering By</label>
             <div className="input-group mb-3">
                 <label>Price</label>
-                <input type="text" className="form-control" placeholder="Minimum"></input>
+                <input type="text" className="form-control" placeholder="Minimum" value={belowPrice} onChange={saveBelowPrice}></input>
                 <span className="input-group-text">To</span>
-                <input type="text" className="form-control" placeholder="Maximum"></input>
+                <input type="text" className="form-control" placeholder="Maximum" value={upperPrice} onChange={saveUpperPrice}></input>
+                <button onClick={priceFilter}>filter</button>
             </div>
         </div>
         <div className='container'>

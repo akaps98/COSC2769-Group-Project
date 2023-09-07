@@ -1,44 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Axios from 'axios'
 import '../../assets/styles/cart.css'
-import iphone from '../../assets/images/products/iPhone14.png'
 import CartRow from './CartRow';
 
 function CartPage({ user, userType }) {
-    const [ products, setProducts ] = useState([]);
-    const [ shoppingCartDB, setShoppingCartDB ] = useState([]);
-    const [ orderedProducts, setOrderedProducts ] = useState([]);
-    const [ totalPrice, setTotalPrice ] = useState([]);
+    const [orderedProducts, setOrderedProducts] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const products = useRef([]);
 
     useEffect(() => {
-        Axios.get('http://localhost:3001/allProducts').then((response) => {
-            setProducts(response.data);
-        });
 
         const tempOrdered = [];
+        const total = [];
         if (userType === "Customer") {
             Axios.post('http://localhost:3001/shoppingCart/findShoppingCart', {
                 id: user.CustomerID
             }).then((response) => {
                 const db = Object.keys(JSON.parse(response.data[0].product));
                 for (let pid of db) {
+                    const q = JSON.parse(localStorage.getItem(pid));
                     Axios.post('http://localhost:3001/product/findProduct', {
                         productID: pid
                     }).then((response) => {
                         setOrderedProducts(prev => [...prev, response.data[0]]);
                         setOrderedProducts(prev => prev.slice(0, db.length));
+                        total.push(parseInt(response.data[0].price) * q);
+                        const t = total.reduce((acc, curr) => { return acc + curr }, 0);
+                        setTotalPrice(t);
+                        products.current.push(pid);
+                        products.current = products.current.slice(0, db.length);
                     })
                 }
             })
-        }else {
+        } else {
             for (let i = 0; i < window.localStorage.length; i++) {
+                const q = JSON.parse(localStorage.getItem(localStorage.key(i)));
+                const pid = window.localStorage.key(i);
                 Axios.post('http://localhost:3001/product/findProduct', {
-                    productID: window.localStorage.key(i)
+                    productID: pid
                 }).then((response) => {
                     tempOrdered.push(response.data[0]);
+                    total.push(parseInt(response.data[0].price) * q);
+                    const t = total.reduce((acc, curr) => { return acc + curr }, 0);
+                    setTotalPrice(t);
+                    products.current.push(pid);
+                    products.current = products.current.slice(0, localStorage.length);
                 })
             }
-            setOrderedProducts(tempOrdered)
+            setOrderedProducts(tempOrdered);
         }
     }, []);
 
@@ -57,10 +66,25 @@ function CartPage({ user, userType }) {
     //     })
     // })
 
+    const orderForm = () => {
+        const orders = [];
+        for (let pid of products.current){
+            const q = localStorage.getItem(pid);
+            const order = [{quantity: q, ProductID: pid}, "New"]
+            orders.push(order);
+        }
+        console.log(orders);
+    }
+
     const row = orderedProducts.map(product => {
         //console.log(product)
         return (
-            <CartRow data={product} />
+            <CartRow
+                key={product.ProductID}
+                usertype={userType}
+                data={product}
+                totalPrice={setTotalPrice}
+            />
         )
     })
 
@@ -86,36 +110,18 @@ function CartPage({ user, userType }) {
                 <div className="row">
                     <div className="col">
                         <div className='cost-box d-flex justify-content-between align-items-center px-4 border border-secondary-subtle'>
-                            <h5 className='text-secondary'>Discount</h5>
-                            <h5>$50</h5>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className='cost-box d-flex justify-content-between align-items-center px-4 border border-secondary-subtle'>
-                            <h5 className='text-secondary'>Tax</h5>
-                            <h5>$0</h5>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className='cost-box d-flex justify-content-between align-items-center px-4 border border-secondary-subtle'>
-                            <h5 className='text-secondary'>Subtotal</h5>
-                            <h5>$2200</h5>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className='cost-box d-flex justify-content-between align-items-center px-4 border border-secondary-subtle'>
                             <h5 className='text-secondary'>Total</h5>
-                            <h5>${totalPrice}</h5>
+                            <h5>${totalPrice.toLocaleString()}</h5>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div className='mt-3'>
-                <button className='checkout-btn d-inline-block me-5'>Checkout</button>
+                <button className='checkout-btn d-inline-block me-5' onClick={orderForm}>Checkout</button>
                 <button className='d-inline-block bg-dark continue-btn'>Continue Shopping</button>
             </div>
-            
+
         </div>
     )
 }

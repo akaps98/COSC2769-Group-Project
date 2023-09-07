@@ -1,17 +1,15 @@
 import React, { useEffect, useState} from 'react';
 
-function CartRow({ user, usertype, data }) {
+function CartRow({ user, usertype, data, totalPrice }) {
     const [ quantity, setQuantity ] = useState(1);
     const [ price, setPrice ] = useState(0);
-
-
     useEffect(() => {
         if(usertype === "Customer") {
-            setQuantity(1)
+            setQuantity(+localStorage.getItem(data.ProductID))
             setPrice(data.price * quantity)
         } else {
-            setPrice(data.price * quantity)
             setQuantity(+localStorage.getItem(data.ProductID))
+            setPrice(data.price * quantity)
         }
     }, [(localStorage.getItem(data.ProductID))])
 
@@ -21,13 +19,15 @@ function CartRow({ user, usertype, data }) {
         if(usertype === "Customer") {
 
         }
+        totalPrice(prev => prev + data.price);
         const newQuantity = JSON.parse(localStorage.getItem(data.ProductID)) + 1;
         localStorage.setItem(data.ProductID, newQuantity);
     }
 
     function subQuantity() {
-        if(quantity != 1) {
-            setQuantity(quantity - 1)
+        if(quantity !== 1) {
+            setQuantity(quantity - 1);
+            totalPrice(prev => prev - data.price);
         }
         setPrice(data.price * quantity);
         if(usertype === "Customer") {
@@ -43,7 +43,7 @@ function CartRow({ user, usertype, data }) {
         <tr>
             <th scope="row">{data.ProductID}</th>
             <td className='d-flex'>
-                <img src={data.imagePath} className='item-img d-block'></img>
+                <img src={`http://localhost:3001/${data.imagePath}`} alt={data.ProductID} className='item-img d-block'></img>
                 <div className='item-info ps-4'>
                     <h3 className='item-name'>{data.name}</h3>
                     <p className='item-date text-warning py-0'>[Date Added: {data.dateAdded}]</p>
@@ -64,4 +64,4 @@ function CartRow({ user, usertype, data }) {
     )
 }
 
-export default CartRow
+export default CartRow;
