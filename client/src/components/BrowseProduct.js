@@ -92,7 +92,6 @@ function BrowseProduct() {
         {/* <select onChange={filter}>
             {options}
         </select> */}
-        <label className="mb-2">Product Category</label>
                     <div className="row">
                         <div>
                             <input
@@ -152,6 +151,24 @@ function BrowseProduct() {
             <input placeholder='Search...' value={value} onChange={(e) => setValue(e.target.value)}></input>
             <button type="submit"></button>
         </form>
+        <div>
+            <label>Sort By</label>
+            <select className="form-select" name="sort" onChange={handleChange}>
+                <option value="alphabet">A-Z</option>
+                <option value="alphabet-reverse">Z-A</option>
+                <option value="date-addded-latest">Date Added (latest)</option>
+                <option value="date-addded-oldest">Date Added (oldest)</option>
+                <option value="price-high-to-low">Price (High to Low)</option>
+                <option value="price-low-to-high">Price (Low to High)</option>
+            </select>
+            <label>Filtering By</label>
+            <div className="input-group mb-3">
+                <label>Price</label>
+                <input type="text" className="form-control" placeholder="Minimum"></input>
+                <span className="input-group-text">To</span>
+                <input type="text" className="form-control" placeholder="Maximum"></input>
+            </div>
+        </div>
         <div className='container'>
             <div className='row'>
                 {display}

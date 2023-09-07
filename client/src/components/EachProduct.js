@@ -13,7 +13,7 @@ function EachProduct({ data }) {
                 <div className="card-body mb-3 py-0">
                     <h5 className="card-title">{data.name}</h5>
                     <h2 className="text-warning">{`${data.price} VND`}</h2>
-                    <button className='addCart-btn btn btn-primary'>Add To Cart</button>
+                    <button className='addCart-btn btn btn-primary'>View Detail</button>
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">{`${data.quantity} left`}</li>
