@@ -29,12 +29,14 @@ app.use(session({
 app.use('/', require('./routes/fetch'));
 app.use('/register', require('./routes/register'));
 app.use('/log', require('./routes/log'));
+app.use('/order', require('./routes/order'));
 app.use('/auth', require('./routes/auth'));
 app.use('/seller', require('./routes/seller'));
 app.use('/admin', require('./routes/admin'));
 app.use('/product', require('./routes/product'));
 app.use('/shoppingCart', require('./routes/shoppingCart'));
 app.use('/imageUploads', express.static('imageUploads'));
+
 //server
 app.listen(3001, () => {
     console.log('Server running on port 3001');

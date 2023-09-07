@@ -24,8 +24,6 @@ function ProductDetail({ user, userType }) {
         setIsWrapped(prev => !prev);
     }
 
-
-
     function saveProduct() {
         if(userType !== "") { // member
             Axios.post('http://localhost:3001/shoppingCart/updateShoppingCart', {

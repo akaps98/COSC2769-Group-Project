@@ -51,7 +51,7 @@ function App() {
   return (
     <Router>
       <div>
-        {userType!=="Seller" && <Header />}
+        {userType!=="Seller" && <Header userType={userType} />}
         <div className="App">
           <Routes>
             <Route exact path="/" element={<Carousel />} />
@@ -72,7 +72,7 @@ function App() {
             <Route exact path="/cart" element={<CartPage userType={userType} user={user}/>} />
             <Route exact path="/cartrow" element={<CartRow userType={userType} user={user}/>} />
 
-            <Route exact path="/order" element={<OrderPage />} />
+            <Route exact path="/order" element={<OrderPage user={user}/>} />
 
             <Route path='/una' element={<Unauthorized />} />
           </Routes>
