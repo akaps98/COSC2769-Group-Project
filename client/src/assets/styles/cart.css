@@ -28,6 +28,13 @@
     font-size: 12px;
 }
 
+.order-btn {
+    height: 40px;
+    width: 100px;
+    line-height: 40px;
+    border-radius: 10px;
+}
+
 .quantity-btn {
     height: 30px;
     width: 30px;
@@ -51,4 +58,5 @@
 .continue-btn {
     width: 200px;
 }
+
 
