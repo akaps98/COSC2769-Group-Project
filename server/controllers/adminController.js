@@ -7,6 +7,7 @@ const allCategories = (req, res) => {
                 CategoryID, 
                 name, 
                 parentID, 
+                attributes,
                 JSON_ARRAY(name) AS hierarchy
             FROM categories
             WHERE parentID IS NULL
@@ -15,6 +16,7 @@ const allCategories = (req, res) => {
                 c.CategoryID, 
                 c.name, 
                 c.parentID, 
+                c.attributes,
                 JSON_ARRAY_APPEND(hierarchy, '$', c.name)
             FROM categories c
             JOIN Hierarchy ON c.parentID = Hierarchy.CategoryID
@@ -23,6 +25,7 @@ const allCategories = (req, res) => {
             h.CategoryID,
             h.name,
             h.parentID,
+            h.attributes,
             h.hierarchy,
             (
                 SELECT COUNT(*)
@@ -123,6 +126,39 @@ const updateCategory = (req, res) => {
     });
 };
 
+const addAttribute = (req, res) => {
+    const CategoryID = req.body.CategoryID;
+    const newAttribute = req.body.newAttribute;
+    database.query('SELECT attributes FROM categories WHERE CategoryID = ?', [CategoryID], (err, results) => {
+        if (err) {
+            return res.send({ err: err })
+        } 
+        let newAttributes = [];
+        if (results[0].attributes) {
+            newAttributes = JSON.parse(results[0].attributes)
+            newAttributes.push(newAttribute);
+        } else {
+            newAttributes = [newAttribute];
+        }
+        database.query('UPDATE categories SET attributes = ? WHERE CategoryID = ?', [JSON.stringify(newAttributes), CategoryID], (err) => {
+            if (err) {
+                res.send({ err: err })
+            } 
+            res.send({ message: 'Attribute is added successfully!' })
+        })
+    })
+}
+
+const updateAttribute = (req, res) => {
+    const CategoryID = req.body.CategoryID;
+    const attributes = req.body.attributes;
+    database.query('UPDATE categories SET attributes = ? WHERE CategoryID = ?', [JSON.stringify(attributes), CategoryID], (err) => {
+        if (err) {
+            res.send({ err: err })
+        } 
+        res.send({ message: 'Attribute is updated successfully!' })
+    })
+}
 
 const updateSellerStatus = (req, res) => {
     const SellerID = req.body.SellerID;
@@ -136,4 +172,4 @@ const updateSellerStatus = (req, res) => {
     });
 }
 
-module.exports = { allCategories, deleteCategory, createCategory, updateCategory, updateSellerStatus };
+module.exports = { allCategories, deleteCategory, createCategory, updateCategory, addAttribute, updateAttribute, updateSellerStatus };

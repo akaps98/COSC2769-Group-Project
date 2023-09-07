@@ -32,7 +32,11 @@ function Login({ userType, user }) {
                 if (type=="seller") {
                     window.location.href = '/seller';
                 } else {
-                    window.location.href = '/';
+                    if (response.data === "Admin") {
+                        window.location.href  = '/admin'
+                    } else {
+                        window.location.href = '/';
+                    }
                 }
             }
         });

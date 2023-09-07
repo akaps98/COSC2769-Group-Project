@@ -92,7 +92,6 @@ function ProductManage({ seller }) {
                 }
             )
         });
-        console.log(pDate);
     }
 
     function handlePriceChange(e) {
@@ -105,7 +104,6 @@ function ProductManage({ seller }) {
                 }
             )
         });
-        console.log(pPrice);
     }
 
     function filterProducts() {
@@ -151,9 +149,7 @@ function ProductManage({ seller }) {
             return true;
         });
         setProducts(filteredProducts);
-        console.log(filteredProducts);
-        console.log(pDate);
-        console.log(pPrice);
+
     }
 
     function handleFilterClear() {
@@ -203,7 +199,7 @@ function ProductManage({ seller }) {
                 loadProducts();
                 handleDeleteModalClose();
             } else {
-                console.log("ProductManage.js:",err); 
+                console.log("ProductManage.js: err"); 
             }
         });
     }

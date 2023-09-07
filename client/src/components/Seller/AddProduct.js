@@ -12,6 +12,7 @@ function AddProduct({ seller }) {
         description: "",
         image: null,
         category: [],
+        attribute: {},
         quantity: 0,
         dateAdded: now,
         SellerID: seller
@@ -31,6 +32,7 @@ function AddProduct({ seller }) {
     const [selection, setSelection] = useState([]);
     const [selectionName, setSelectionName] = useState([]);
     const [image, setImage] = useState();
+    const [addAttribute, setAddAttribute] = useState({});
 
     function handleChange(e){
         const { name, value } = e.target;
@@ -54,6 +56,15 @@ function AddProduct({ seller }) {
             setProduct(prev => ({
                 ...prev,
                 category: selectedNames,
+            }));
+        } else if (name === "attribute") {
+            const id = e.target.id;
+            const newAttribute = { ...addAttribute };
+            newAttribute[id] = value;
+            setAddAttribute(newAttribute);
+            setProduct(prev => ({
+                ...prev,
+                attribute: newAttribute
             }));
         } else {
             setProduct(prev => ({
@@ -80,7 +91,11 @@ function AddProduct({ seller }) {
         formData.append("quantity", product.quantity);
         formData.append("dateAdded", product.dateAdded);
         formData.append("SellerID", product.SellerID);
-
+        if (Object.keys(product.attribute).length === 0) {
+            formData.append("attribute", null);
+        } else {
+            formData.append("attribute", JSON.stringify(product.attribute));
+        }
         Axios.post('http://localhost:3001/seller/addProduct', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -212,6 +227,28 @@ function AddProduct({ seller }) {
                         </div>
                     </div>
                 </div>
+                {(selection.length === 4 && categories.find(category => 
+                    category.CategoryID === selection[3] && category.attributes !== null
+                )) &&
+                    <div>
+                        <label className="mb-2 mt-4">Category attributes</label>
+                        <div className="d-flex ms-2">
+                        {JSON.parse(categories.find(category => category.CategoryID === selection[3]).attributes).map((attribute) => (
+                                <div key={attribute} className="d-flex col-3 me-4">
+                                    <label className="fw me-1 mt-1">{attribute}</label>
+                                    <input
+                                        name="attribute"
+                                        id={attribute}
+                                        className="form-control"
+                                        value={addAttribute[attribute]}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                }
                 <div>
                     <label className="mb-2 mt-4">Product Description</label>
                     <textarea 

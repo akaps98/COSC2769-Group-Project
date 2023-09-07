@@ -3,8 +3,9 @@ import Axios from 'axios';
 import CategoryDelete from "./CategoryDelete";
 import AddCategory from "./AddCategory";
 import AddSubcategory from "./AddSubcategory";
+import AddAttribute from "./AddAttribute";
 
-export default function CategoryTestData() {
+export default function Category() {
     const [categories, setCategories] = useState([]);
     const getCategories = () => {
         Axios.get('http://localhost:3001/admin/allCategories')
@@ -16,7 +17,6 @@ export default function CategoryTestData() {
     useEffect(() => {
         getCategories()
     }, []);
-
     const [selectedID, setSelectedID] = useState({
         top: null,
         second: null,
@@ -66,12 +66,37 @@ export default function CategoryTestData() {
     const handleAddSubcategoryModalClose = () => setAddSubcategoryModalShow(false);
     const handleAddSubcategoryModalShow = () => setAddSubcategoryModalShow(true);
 
+    const [addAttributeModalShow, setAddAttributeModalShow] = useState(false);
+    const handleAddAttributeModalClose = () => setAddAttributeModalShow(false);
+    const handleAddAttributeModalShow = () => setAddAttributeModalShow(true);
+
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     const [newName, setNewName] = useState("");
+
     const handleUpdate = event => {
         event.preventDefault();
         const { id, name } = event.target;
+        if (updatedAttributes !== "") {
+            Axios.post('http://localhost:3001/admin/updateAttribute', {
+                CategoryID: id,
+                attributes: updatedAttributes.split(/\s*,\s*/)
+            }).then((response) => {
+                if (response.data.message) {
+                    // Alert can be replaced with something else
+                    console.log(response.data.message);
+                    //
+                    setUpdatedAttributes("");
+                    handleUpdateCategory(id, name);
+                } else {
+                    alert(JSON.stringify(response.data));
+                }
+            });
+        } else {
+            handleUpdateCategory(id, name);
+        }
+    }
+    const handleUpdateCategory = (id, name) => {
         Axios.post('http://localhost:3001/admin/updateCategory', {
             CategoryID: id,
             newName: newName,
@@ -143,11 +168,37 @@ export default function CategoryTestData() {
         });
     }
 
+    const [newAttribute, setNewAttribute] = useState("")
+    function setCreateAttribute(id) {
+        setCategoryID(id);
+        handleAddAttributeModalShow();
+    }
+    function handleCreateAttribute() {
+        Axios.post('http://localhost:3001/admin/addAttribute', {
+            CategoryID: categoryID,
+            newAttribute: newAttribute,
+        }).then((response) => {
+            if (response.data.message) {
+                // Alert can be replaced with something else
+                alert(JSON.stringify(response.data.message));
+                //
+                getCategories();
+                handleAddAttributeModalClose();
+                setNewAttribute("");
+            } else {
+                alert(JSON.stringify(response.data));
+            }
+        });
+    }
+
+    const [updatedAttributes, setUpdatedAttributes] = useState("")
+
     return (
         <>
             <CategoryDelete deleteModalshow={deleteModalShow} handleDeleteModalClose={handleDeleteModalClose} handleDelete={handleDelete}/>
             <AddCategory addModalshow={addModalShow} handleAddModalClose={handleAddModalClose} newName={newName} setNewName={setNewName} handleCreate={handleCreate}/>
             <AddSubcategory addSubcategoryModalshow={addSubcategoryModalShow} handleAddSubcategoryModalClose={handleAddSubcategoryModalClose} newName={newName} setNewName={setNewName} handleCreate={handleCreate}/>
+            <AddAttribute addAttributeModalshow={addAttributeModalShow} handleAddAttributeModalClose={handleAddAttributeModalClose} newAttribute={newAttribute} setNewAttribute={setNewAttribute} handleCreateAttribute={handleCreateAttribute}/>
             <div className="my-5 category-list-container">
                 <div className="category-list-header">
                     <div>
@@ -313,6 +364,11 @@ export default function CategoryTestData() {
                                                                                     <div className="category-name-container">
                                                                                         <form id={fourthCategory.CategoryID} name={fourthCategory.parentID} onSubmit={handleUpdate}>
                                                                                             <input placeholder={fourthCategory.name} value={newName} onChange={(e) => setNewName(e.target.value)} required/>
+                                                                                            {fourthCategory.attributes && (
+                                                                                                <div>
+                                                                                                    <p style={{color: "gray"}}>Attributes: <input placeholder={JSON.parse(fourthCategory.attributes).join(", ")} value={updatedAttributes} onChange={(e) => setUpdatedAttributes(e.target.value)} required/></p>
+                                                                                                </div>
+                                                                                            )}
                                                                                             <div className="category-manage-btn-container">
                                                                                                 <button type="submit" className="text-success me-3 save-text">Save</button>
                                                                                                 <button type="button" className="text-secondary cancel-text" onClick={cancelUpdate}>Cancel</button>
@@ -321,7 +377,18 @@ export default function CategoryTestData() {
                                                                                     </div>
                                                                                     :
                                                                                     <div className="category-name-container">
-                                                                                        <p>{fourthCategory.name} <span style={{color: "lightgray"}}>({fourthCategory.count} products)</span></p>
+                                                                                        <p>{fourthCategory.name}<span style={{color: "lightgray"}}>({fourthCategory.count} products)</span></p>
+                                                                                        
+
+
+                                                                                        {fourthCategory.attributes && (
+                                                                                            <div>
+                                                                                                <p className="ms-3"style={{color: "gray"}}>Attributes: {JSON.parse(fourthCategory.attributes).join(", ")}</p>
+                                                                                            </div>
+                                                                                        )}
+                                                                                        
+                                                                                        
+                                                                                        
                                                                                         <div className="category-manage-btn-container">
                                                                                             {(fourthCategory.count===0) &&
                                                                                                 <>
@@ -329,6 +396,7 @@ export default function CategoryTestData() {
                                                                                                         onClick={(e) => setSelectedCategory(e.target.value)}
                                                                                                     ></button>
                                                                                                     <button className="category-delete-btn" onClick={() => setDelete(fourthCategory.CategoryID)}></button>        
+                                                                                                    <button className="subcategory-add-btn" onClick={() => setCreateAttribute(fourthCategory.CategoryID)}></button>
                                                                                                 </>
                                                                                             }
                                                                                         </div>

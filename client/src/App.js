@@ -15,7 +15,7 @@ import ProductManage from './components/Seller/ProductManage';
 import OrderList from './components/Seller/OrderList';
 import Unauthorized from './components/Unauthorized';
 
-import AdminTest from './components/Admin/AdminTest';
+import Admin from './components/Admin/Admin';
 
 function App() {
   Axios.defaults.withCredentials = true;
@@ -58,7 +58,7 @@ function App() {
             <Route exact path="/register" element={<Register userType={userType} user={user} />} />
             <Route exact path="/logout" element={<Logout />} />
 
-            <Route path="/seller" element={(userType==="Seller")?<SellerPage />:<Unauthorized />}>
+            <Route path="/seller" element={(userType==="Seller")?<SellerPage status={user.status} />:<Unauthorized />}>
               <Route path='/seller' element={<ProductManage seller={user.SellerID}/>} />
               <Route path='/seller/orders' element={<OrderList seller={user.SellerID}/>} />
               <Route path='/seller/addProduct' element={<AddProduct seller={user.SellerID}/>} />
@@ -68,7 +68,7 @@ function App() {
 
             <Route path='/una' element={<Unauthorized />} />
 
-            <Route path='/adminTest' element={<AdminTest />} />
+            <Route path='/admin' element={(userType==="Customer"&&user.username==="Admin")?<Admin />:<Unauthorized/>} />
           </Routes>
         </div>
       </div>

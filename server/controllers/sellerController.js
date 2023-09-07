@@ -20,14 +20,15 @@ const updateProduct = (req, res) => {
     const description = req.body.description;
     const quantity = req.body.quantity;
     const category = req.body.category;
+    const attribute = req.body.attribute;
     const seller = req.body.SellerID
-
+    
     database.query('SELECT * FROM products WHERE BINARY(name) = ? AND SellerID = ? AND ProductID != ?', [name,seller,id], (Verr, Vresult) => {
         if (Verr) {
             return res.send({ err: Verr });
         } 
         if (Vresult.length==0) {
-            database.query('UPDATE products SET name = ?, price = ?, description = ?, quantity = ?, category = ? WHERE ProductID = ?', [name,price,description,quantity,category,id], (err, result) => {
+            database.query('UPDATE products SET name = ?, price = ?, description = ?, quantity = ?, category = ?, attribute = ? WHERE ProductID = ?', [name,price,description,quantity,category,attribute,id], (err, result) => {
                 if (err) {
                     return res.send({ err: err });
                 } else {
@@ -83,15 +84,14 @@ function multerMiddleware(SellerID) {
 }
 
 const addProduct = async (req, res) => {
-    const { name, price, description, category, quantity, dateAdded, SellerID } = req.body;
+    const { name, price, description, category, attribute, quantity, dateAdded, SellerID } = req.body;
     const imagePath = req.file.path;
-
     database.query('SELECT * FROM products WHERE BINARY(name) = ? AND SellerID = ?', [name,SellerID], (Verr, Vresult) => {
         if (Verr) {
             return res.send({ err: Verr });
         } 
         if (Vresult.length==0) {
-            database.query('INSERT INTO products (name, price, description, imagePath, category, quantity, dateAdded, SellerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [name, price, description, imagePath, category, quantity, dateAdded, SellerID], (err, result) => {
+            database.query('INSERT INTO products (name, price, description, imagePath, category, attribute, quantity, dateAdded, SellerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [name, price, description, imagePath, category, attribute, quantity, dateAdded, SellerID], (err, result) => {
                 if (err) {
                     return res.send({ err: err });
                 } else {

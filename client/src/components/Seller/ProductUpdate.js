@@ -6,27 +6,41 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
     Axios.defaults.withCredentials = true;
 
     const [product, setProduct] = useState(p);
-
     const [categories, setCategories] = useState([]);
     const getCategories = () => {
         Axios.get('http://localhost:3001/allCategories')
             .then((response) => {
                 setCategories(response.data)
             })
-            .catch(() => {console.log('ProductUpdate.js',err)});
+            .catch(() => {console.log('ProductUpdate.js error')});
     }
     useEffect(() => {
         getCategories()
     }, []);
+
     const [selection, setSelection] = useState([]);
     const [selectionName, setSelectionName] = useState([]);
-    const [image, setImage] = useState();
+    const originalAtt = (typeof p.attribute === "string") ? JSON.parse(p.attribute) : (p.attribute)
+    const [newAttributes, setNewAttributes] = useState((typeof product.attribute === "string") ? JSON.parse(product.attribute) : product.attribute);
 
     function handleChange(e){
         const { name, value } = e.target;
         if (name.startsWith("category")) {
             const selectedId = parseInt(value);
             const selectedCategory = categories.find(category => category.CategoryID === selectedId);
+            if (name==="category4") {
+                if (selectedCategory.attributes) {
+                    JSON.parse(selectedCategory.attributes).forEach(attribute => {
+                        newAttributes[attribute] = "";
+                    })
+                }
+            } else {
+                setNewAttributes({})
+                setProduct(prev => ({
+                ...prev,
+                attribute: {}
+            }));
+            }
             const index = parseInt(name.charAt(name.length - 1)) - 1;
             const selectedNames = [
                 ...selectionName.slice(0, index),
@@ -34,6 +48,16 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
             ];
             setSelection([...selection.slice(0, index), selectedId]);
             setSelectionName(selectedNames);
+            
+        } else if (name === "attribute") {
+            const id = e.target.id;
+            const update = { ...newAttributes };
+            update[id] = value;
+            setNewAttributes(update);
+            setProduct(prev => ({
+                ...prev,
+                attribute: update
+            }));
         } else {
             setProduct(prev =>{
                 return({ ...prev, [name]: value })
@@ -44,17 +68,27 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
     function handleClose() {
         setSelectionName([]);
         setSelection([])
+        setNewAttributes(originalAtt)
         handleCloseModal();
     }
     const updateProduct = event => {
         event.preventDefault();
-        handleCloseModal();
+    
         if (selectionName.length < 3) {
             alert("Please select at least three categories.");
             return;
         }
+        handleCloseModal();
+
         setProduct(prev => ({...prev,category: selectionName,}));
         
+
+        if (Object.keys(product.attribute).length === 0) {
+            setProduct(prev => ({
+                ...prev,
+                attribute: null
+            }));
+        }
         Axios.post('http://localhost:3001/seller/updateProduct', {
             ProductID: product.ProductID,
             name: product.name,
@@ -62,6 +96,7 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
             description: product.description,
             quantity: product.quantity,
             category: JSON.stringify(selectionName),
+            attribute: (Object.keys(product.attribute).length === 0) ? null : JSON.stringify(product.attribute),
             SellerID: product.SellerID
         })
         .then((response) => {
@@ -137,11 +172,11 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
                             </div>
                         </div>
                         <div className="mb-4">
-                        <label className="fw-bold mb-2">Category</label>
+                            <label className="fw-bold mb-2">Category</label>
                             <input 
                                 name="category" 
                                 className="form-control" 
-                                placeholder={product.category}
+                                placeholder={(typeof product.category === 'string') ? JSON.parse(product.category).join(" > ") : product.category.join(" > ")}
                                 value={selectionName.join(' > ')}
                                 disabled
                             />
@@ -193,6 +228,65 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                        {selection.length === 0 
+                            ? 
+                            p.attribute &&  
+                            <div className="mb-4">
+                                <label className="fw-bold mb-2">Category attributes</label>
+                                <div className="d-flex ms-2">
+                                    {(typeof p.attribute === "string") ? Object.keys(JSON.parse(p.attribute)).map((key) => (
+                                        <div key={key} className="d-flex col-3 me-4">
+                                            <label className="fw me-1 mt-1">{key}</label>
+                                            <input
+                                                name="attribute"
+                                                id={key}
+                                                className="form-control"
+                                                value={newAttributes[key]}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                    )) : Object.keys(p.attribute).map((key) => (
+                                        <div key={key} className="d-flex col-3 me-4">
+                                            <label className="fw me-1 mt-1">{key}</label>
+                                            <input
+                                                name="attribute"
+                                                id={key}
+                                                className="form-control"
+                                                //value={(typeof product.attribute === "string") ? JSON.parse(product.attribute)[key] : product.attribute[key]}
+                                                value={newAttributes[key]}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            : 
+                            (selection.length === 4 && categories.find(category => 
+                                category.CategoryID === selection[3] && category.attributes !== null
+                            )) &&
+                            <div className="mb-4">
+                                <label className="fw-bold mb-2">Category attributes</label>
+                                <div className="d-flex">
+                                {JSON.parse(categories.find(category => category.CategoryID === selection[3]).attributes).map((attribute) => (
+                                        <div key={attribute} className="d-flex col-3 me-4">
+                                            <label className="fw me-1 mt-1">{attribute}</label>
+                                            <input
+                                                name="attribute"
+                                                id={attribute}
+                                                className="form-control"
+                                                value={newAttributes[attribute]}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        }
                         </div>
                         <div className="mb-4">
                             <label className="fw-bold mb-2">Description</label>

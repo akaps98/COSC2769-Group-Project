@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from 'axios';
 
-export default function SellerTest() {
+export default function Seller() {
     Axios.defaults.withCredentials = true;
 
     const [sellers, setSellers] = useState([]);
@@ -28,7 +28,7 @@ export default function SellerTest() {
                     alert(JSON.stringify(response.data.message));
                     getSellers();
                 } else {
-                    console.log("SellerTest.js err:",err)
+                    console.log("SellerTest.js err:")
                 }
             });
         }
