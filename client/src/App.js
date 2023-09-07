@@ -17,6 +17,7 @@ import Unauthorized from './components/Unauthorized';
 import BrowseProduct from './components/BrowseProduct';
 import CartPage from './components/ShoppingCart/CartPage';
 import CartRow from './components/ShoppingCart/CartRow';
+import OrderPage from './components/OrderManagement/OrderPage';
 
 function App() {
   Axios.defaults.withCredentials = true;
@@ -70,6 +71,8 @@ function App() {
 
             <Route exact path="/cart" element={<CartPage userType={userType} user={user}/>} />
             <Route exact path="/cartrow" element={<CartRow userType={userType} user={user}/>} />
+
+            <Route exact path="/order" element={<OrderPage />} />
 
             <Route path='/una' element={<Unauthorized />} />
           </Routes>

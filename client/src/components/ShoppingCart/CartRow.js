@@ -49,7 +49,6 @@ function CartRow({ user, usertype, data, totalPrice }) {
                     <p className='item-date text-warning py-0'>[Date Added: {data.dateAdded}]</p>
                     <button className='remove-btn bg-light text-black-50'>Remove</button>
                 </div>
-
             </td>
             <td>{data.price}</td>
             <td>
