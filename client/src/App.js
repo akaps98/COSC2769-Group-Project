@@ -14,6 +14,10 @@ import AddProduct from './components/Seller/AddProduct';
 import ProductManage from './components/Seller/ProductManage';
 import OrderList from './components/Seller/OrderList';
 import Unauthorized from './components/Unauthorized';
+import BrowseProduct from './components/BrowseProduct';
+import CartPage from './components/ShoppingCart/CartPage';
+import CartRow from './components/ShoppingCart/CartRow';
+import OrderPage from './components/OrderManagement/OrderPage';
 
 import Admin from './components/Admin/Admin';
 
@@ -43,13 +47,13 @@ function App() {
     fetchData();
   }, []);
   if (isLoading) {
-    return <div>Laoding...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
     <Router>
       <div>
-        {userType!=="Seller" && <Header />}
+        {userType!=="Seller" && <Header userType={userType} />}
         <div className="App">
           <Routes>
             <Route exact path="/" element={<Carousel />} />
@@ -64,7 +68,13 @@ function App() {
               <Route path='/seller/addProduct' element={<AddProduct seller={user.SellerID}/>} />
             </Route>
 
-            <Route exact path="/detail" element={<ProductDetail />} />
+            <Route exact path="/search" element={<BrowseProduct />} />
+            <Route exact path="/search/detail" element={<ProductDetail userType={userType} user={user}/>} />
+
+            <Route exact path="/cart" element={<CartPage userType={userType} user={user}/>} />
+            <Route exact path="/cartrow" element={<CartRow userType={userType} user={user}/>} />
+
+            <Route exact path="/order" element={<OrderPage user={user}/>} />
 
             <Route path='/una' element={<Unauthorized />} />
 

@@ -32,6 +32,13 @@ const handleCustomerRegister = (req, res) => {
                                     if (err) {
                                         return res.send({ err: err });
                                     } else {
+                                        database.query('INSERT INTO shoppingcarts (CustomerID, product) SELECT CustomerID, "{}" FROM customers WHERE username LIKE ?', username, (err, result) => {
+                                            if (err) {
+                                                return console.log(err);
+                                            } else {
+                                                return console.log(result);
+                                            }
+                                        })
                                         return res.send({ message: 'New data inserted successfully!' });
                                     }
                                 });

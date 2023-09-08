@@ -17,8 +17,8 @@ After all the steps, for testng, ‘npm start’ in the client folder and ‘npm
 
 const database = mysql.createConnection({
     host: 'myrds.cc9rwqabneki.ap-southeast-1.rds.amazonaws.com',
-    user: 'chris', //change user to yours
-    password: 'chrispassword', // change password to yours
+    user: 'tony', //change user to yours
+    password: 'tonypassword', // change password to yours
     database: 'fullstackdev14_db',
 });
 

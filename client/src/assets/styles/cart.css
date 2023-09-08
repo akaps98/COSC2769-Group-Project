@@ -1,0 +1,65 @@
+
+
+.cart-table {
+    width: 100%;
+    text-align: left;
+}
+
+.item-img {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.item-info {
+    line-height: 10px;
+}
+
+.item-name {
+    font-size: 22px;
+}
+
+.item-date {
+    font-size: 15px;
+}
+
+.remove-btn {
+    font-size: 12px;
+}
+
+.order-btn {
+    height: 40px;
+    width: 100px;
+    line-height: 40px;
+    border-radius: 10px;
+}
+
+.quantity-btn {
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+}
+
+.quantity-box {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.cost-box {
+    height: 50px;
+}
+
+.checkout-btn {
+    width: 200px;
+}
+
+.continue-btn {
+    width: 200px;
+}
+
+.blur {
+    opacity: 0.6;
+}
+

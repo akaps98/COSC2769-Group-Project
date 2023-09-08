@@ -3,15 +3,16 @@ import searchIcon from "../assets/images/search-icon.svg"
 import shoppingCartIcon from "../assets/images/shopping-cart-icon.png"
 import banner from "../assets/images/sale-banner-header.png"
 
-function Header() {
+function Header({ userType }) {
     return (
         <header className="header">
             <div className="headerTop">
                 <nav>
                     <ul className="">
                         <li><a href="#">Save More on App</a></li>
-                        <li><a href="#">Sell On Lazada</a></li>
+                        <li><a href="/search">Sell On Lazada</a></li>
                         <li><a href="#">Lazada Care</a></li>
+                        {userType === "Customer" ? <li><a href="/order">Order</a></li> : null}
                         <li><a href="/login">Login</a></li>
                         <li><a href="/register">Sign Up</a></li>
                     </ul>

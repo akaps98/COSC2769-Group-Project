@@ -48,4 +48,13 @@ const allCategories = (req, res) => {
         }
     });
 }
-module.exports = { root, allCustomers, allSellers, allProducts, allOrders, allCategories }
+const allShoppingCarts = (req, res) => {
+    database.query("SELECT * FROM shoppingcarts", (err, result) => {
+        if (err) {
+            return res.send(err);
+        } else {
+            return res.send(result);
+        }
+    });
+}
+module.exports = { root, allCustomers, allSellers, allProducts, allOrders, allCategories, allShoppingCarts }
