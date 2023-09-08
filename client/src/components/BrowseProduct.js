@@ -87,11 +87,11 @@ function BrowseProduct() {
     }
 
     function filterProducts() {
-        const newProducts = [...products];
+        const newProducts = [...allProducts];
         const filteredProducts = newProducts.filter(product => {
             if (pName !== "") {
                 const name = pName.toLowerCase();
-                if (!product.description.toLowerCase().includes(name) || !product.description.toLowerCase().includes(name)) {
+                if (!(product.name.toLowerCase().includes(name) || product.description.toLowerCase().includes(name))) {
                     return false;
                 }
             }
