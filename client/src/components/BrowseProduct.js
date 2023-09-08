@@ -136,7 +136,8 @@ function BrowseProduct() {
 
     return (
         <>
-            <div className="row">
+        <div className="m-5">
+            <div className="row mb-1">
                 <div className="col-sm-3">
                     <select className="form-select" name="category1" onChange={handleChange}>
                         <option hidden>Top Category</option>
@@ -184,6 +185,7 @@ function BrowseProduct() {
                     </select>
                 </div>
             </div>
+
         <form className="row" onSubmit={search}>
             <input placeholder='Search...' value={value} onChange={(e) => setValue(e.target.value)}></input>
             <button type="submit"></button>
@@ -206,6 +208,8 @@ function BrowseProduct() {
                 <input type="text" className="form-control" placeholder="Maximum" value={upperPrice} onChange={saveUpperPrice}></input>
                 <button onClick={priceFilter}>filter</button>
             </div>
+        </div>
+        
         </div>
         <div className='container'>
             <div className='row'>

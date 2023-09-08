@@ -58,6 +58,7 @@ function ProductDetail({ user, userType }) {
         alert("Successfully removed on shopping cart!");
         //window.location.reload();
     }
+    console.log(category[0])
     return (
         <>
             <div className="product-detail-container">
@@ -67,7 +68,8 @@ function ProductDetail({ user, userType }) {
                 <div className="product-main-container">
                     <h2 className="pName">{product.name}</h2>
                     {/* <p className="stars" style={{ "--rating": rating }}>1490 Ratings</p> */}
-                    {category.map(name => <p key = {name} className="text-muted category-text">{name + ''}</p>)}
+                    {category[0].join(' > ')}
+
                     <div className="hr-line"></div>
                     <p className="price">{product.price.toLocaleString()}</p>
                     {/* <div className="qty-container">
