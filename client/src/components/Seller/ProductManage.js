@@ -194,7 +194,7 @@ function ProductManage({ seller }) {
         }).then((response) => {
             if (response.data.message) {
                 // Alert can be replaced with something else
-                alert(JSON.stringify(response.data.message));
+                alert("Product is deleted successfully!");
                 //
                 loadProducts();
                 handleDeleteModalClose();

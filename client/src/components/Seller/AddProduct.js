@@ -24,7 +24,7 @@ function AddProduct({ seller }) {
             .then((response) => {
                 setCategories(response.data)
             })
-            .catch(() => {alert('ProductUpdate.js_getCategories:',err)});
+            .catch(() => {console.log('ProductUpdate.js_getCategories:',err)});
     }
     useEffect(() => {
         getCategories()
@@ -103,11 +103,11 @@ function AddProduct({ seller }) {
         }).then((response) => {
             if (response.data.message) {
                 // Alert can be replaced with something else
-                alert(JSON.stringify(response.data.message)); 
+                alert("Product is added successfully!"); 
                 //
                 window.location.href = '/seller'
             } else {
-                alert(JSON.stringify(response.data)); 
+                console.log(response.data); 
             }
         });
     };

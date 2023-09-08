@@ -9,7 +9,7 @@ export default function Logout() {
 
         Axios.get('http://localhost:3001/log/out').then((response) => {
             // Alert can be replaced with something else
-            alert(JSON.stringify(response.data)); 
+            alert("Logged out successully!"); 
             //
             window.location.href = '/'
         });

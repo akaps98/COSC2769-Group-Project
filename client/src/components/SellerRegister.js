@@ -24,7 +24,7 @@ function SellerRegister(){
         }).then((response) => {
             if (response.data.message) {
                 // Alert can be replaced with something else
-                alert(JSON.stringify(response.data.message));
+                alert("Registered successfully!");
                 //
                 window.location.href = '/login'
             } else {

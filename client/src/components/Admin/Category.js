@@ -12,7 +12,7 @@ export default function Category() {
             .then((response) => {
                 setCategories(response.data)
             })
-            .catch(() => { alert('ProductUpdate.js_getCategories: error') });
+            .catch(() => { console.log('ProductUpdate.js_getCategories: error') });
     }
     useEffect(() => {
         getCategories()
@@ -83,9 +83,6 @@ export default function Category() {
                 attributes: updatedAttributes.split(/\s*,\s*/)
             }).then((response) => {
                 if (response.data.message) {
-                    // Alert can be replaced with something else
-                    console.log(response.data.message);
-                    //
                     setUpdatedAttributes("");
                     handleUpdateCategory(id, name);
                 } else {
@@ -103,9 +100,7 @@ export default function Category() {
             parentID: name,
         }).then((response) => {
             if (response.data.message) {
-                // Alert can be replaced with something else
-                alert(JSON.stringify(response.data.message));
-                //
+                alert("Category is updated successfully!");
                 getCategories();
                 setSelectedCategory(null);
                 setNewName("");
@@ -129,9 +124,7 @@ export default function Category() {
             CategoryID: categoryID
         }).then((response) => {
             if (response.data.message) {
-                // Alert can be replaced with something else
-                alert(JSON.stringify(response.data.message));
-                //
+                alert("Category is deleted successfully!");
                 getCategories();
                 handleDeleteModalClose();
             } else {

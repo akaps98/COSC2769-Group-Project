@@ -39,7 +39,7 @@ function OrderList({ seller }){
             if (response.data.message) {
                 getOrders();
                 // Alert can be replaced with something else
-                alert(JSON.stringify(response.data.message));
+                alert("Status updated successfully!");
                 //
                 handleClose();
             } else {

@@ -25,7 +25,7 @@ export default function Seller() {
                 newStatus: name
             }).then((response) => {
                 if (response.data.message) {
-                    alert(JSON.stringify(response.data.message));
+                    alert("Seller status is update successully!");
                     getSellers();
                 } else {
                     console.log("SellerTest.js err:")
