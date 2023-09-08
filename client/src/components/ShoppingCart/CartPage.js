@@ -110,9 +110,14 @@ function CartPage({ user, userType }) {
             }
         }
         localStorage.clear();
-        Axios.post('http://localhost:3001/shoppingCart/deleteShoppingCart', {
+        Axios.post('http://localhost:3001/shoppingCart/deleteShoppingCart', { 
             CustomerID: user.CustomerID,
         }).then((response) => { })
+        alert("Checkout success!")
+        Axios.post('http://localhost:3001/shoppingCart/insertShoppingCart', { 
+            CustomerID: user.CustomerID,
+        }).then((response) => { })
+        window.location.reload();
     }
 
     const row = orderedProducts.map(product => {

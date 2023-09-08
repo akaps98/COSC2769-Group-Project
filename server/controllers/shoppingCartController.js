@@ -81,4 +81,16 @@ const deleteShoppingCart = (req, res) => {
     })
 }
 
-module.exports = { findShoppingCart, updateShoppingCart, removeShoppingCart, insertToOrder, findQuantity, deleteShoppingCart };
+const insertShoppingCart = (req, res) => {
+    const CustomerID = req.body.CustomerID;
+
+    database.query('INSERT INTO shoppingcarts (CustomerID, product) SELECT CustomerID, "{}" FROM customers WHERE CustomerID LIKE ?', [CustomerID], (err, result) => {
+        if (err) {
+            return console.log(err);
+        } else {
+            return console.log(result);
+        }
+    })
+}
+
+module.exports = { findShoppingCart, updateShoppingCart, removeShoppingCart, insertToOrder, findQuantity, deleteShoppingCart, insertShoppingCart };
