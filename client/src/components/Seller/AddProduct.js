@@ -10,8 +10,9 @@ function AddProduct({ seller }) {
         name: "",
         price: 0,
         description: "",
-        imagePath: "",
+        image: null,
         category: [],
+        attribute: {},
         quantity: 0,
         dateAdded: now,
         SellerID: seller
@@ -19,11 +20,11 @@ function AddProduct({ seller }) {
 
     const [categories, setCategories] = useState([]);
     const getCategories = () => {
-        Axios.get('http://localhost:3001/admin/allCategories')
+        Axios.get('http://localhost:3001/allCategories')
             .then((response) => {
                 setCategories(response.data)
             })
-            .catch(() => {alert('ProductUpdate.js_getCategories: error')});
+            .catch(() => {alert('ProductUpdate.js_getCategories:',err)});
     }
     useEffect(() => {
         getCategories()
@@ -31,11 +32,17 @@ function AddProduct({ seller }) {
     const [selection, setSelection] = useState([]);
     const [selectionName, setSelectionName] = useState([]);
     const [image, setImage] = useState();
+    const [addAttribute, setAddAttribute] = useState({});
 
     function handleChange(e){
         const { name, value } = e.target;
         if(name === "image" && e.target.files[0]){
-            setImage(URL.createObjectURL(e.target.files[0]))
+            const newImage = e.target.files[0];
+            setImage(newImage);
+            setProduct(prev => ({
+                ...prev,
+                image: newImage,
+            }));
         } else if (name.startsWith("category")) {
             const selectedId = parseInt(value);
             const selectedCategory = categories.find(category => category.CategoryID === selectedId);
@@ -50,6 +57,15 @@ function AddProduct({ seller }) {
                 ...prev,
                 category: selectedNames,
             }));
+        } else if (name === "attribute") {
+            const id = e.target.id;
+            const newAttribute = { ...addAttribute };
+            newAttribute[id] = value;
+            setAddAttribute(newAttribute);
+            setProduct(prev => ({
+                ...prev,
+                attribute: newAttribute
+            }));
         } else {
             setProduct(prev => ({
                     ...prev,
@@ -60,36 +76,58 @@ function AddProduct({ seller }) {
 
     const addProduct = event => {
         event.preventDefault();
+
         if (product.category.length < 3) {
             alert("Please select at least three categories.");
             return;
         }
-        // Axios.post('http://localhost:3001/seller/addProduct', product).then((response) => {
-        //     if (response.data.message) {
-        //         alert(JSON.stringify(response.data.message)); //success
-        //         window.location.href = '/seller'
-        //     } else {
-        //         alert('AddProduct.js_addProduct:',JSON.stringify(response.data)); 
-        //     }
-        //     console.log(response)
-        // });
-        alert(JSON.stringify(product))
+
+        const formData = new FormData();
+        formData.append("name", product.name);
+        formData.append("price", product.price);
+        formData.append("description", product.description);
+        formData.append("image", product.image);
+        formData.append("category", JSON.stringify(product.category));
+        formData.append("quantity", product.quantity);
+        formData.append("dateAdded", product.dateAdded);
+        formData.append("SellerID", product.SellerID);
+        if (Object.keys(product.attribute).length === 0) {
+            formData.append("attribute", null);
+        } else {
+            formData.append("attribute", JSON.stringify(product.attribute));
+        }
+        Axios.post('http://localhost:3001/seller/addProduct', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((response) => {
+            if (response.data.message) {
+                // Alert can be replaced with something else
+                alert(JSON.stringify(response.data.message)); 
+                //
+                window.location.href = '/seller'
+            } else {
+                alert(JSON.stringify(response.data)); 
+            }
+        });
     };
     
     return (
         <div className="mx-auto my-5 product-form-container">
-            <form onSubmit={addProduct}>
+            <form onSubmit={addProduct} encType="multipart/form-data">
                 <label className="mb-2">Product Image</label>
-                <div className="mb-2">
-                    <img className="preview-image col-sm-4" alt="" src={image} />
-                </div>
+                {image &&
+                    <div className="mb-2">
+                        <img className="preview-image col-sm-4" alt="preview" src={URL.createObjectURL(image)} />
+                    </div>
+                }
                 <div className="mb-4">
                     <input 
                         className="form-control-file" 
                         type="file"
                         name="image" 
                         onChange={handleChange}
-                        //required
+                        required
                     />
                 </div>
                 <div className="row mb-4">
@@ -98,6 +136,8 @@ function AddProduct({ seller }) {
                         <input 
                             className="form-control" 
                             name="name" 
+                            minLength="5" maxLength="50" 
+                            title="Name should be at least 5 characters." 
                             onChange={handleChange} 
                             placeholder="ex) iPhone 14 pro" 
                             required
@@ -187,6 +227,28 @@ function AddProduct({ seller }) {
                         </div>
                     </div>
                 </div>
+                {(selection.length === 4 && categories.find(category => 
+                    category.CategoryID === selection[3] && category.attributes !== null
+                )) &&
+                    <div>
+                        <label className="mb-2 mt-4">Category attributes</label>
+                        <div className="d-flex ms-2">
+                        {JSON.parse(categories.find(category => category.CategoryID === selection[3]).attributes).map((attribute) => (
+                                <div key={attribute} className="d-flex col-3 me-4">
+                                    <label className="fw me-1 mt-1">{attribute}</label>
+                                    <input
+                                        name="attribute"
+                                        id={attribute}
+                                        className="form-control"
+                                        value={addAttribute[attribute]}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                }
                 <div>
                     <label className="mb-2 mt-4">Product Description</label>
                     <textarea 

@@ -23,15 +23,20 @@ function Login({ userType, user }) {
             emailPhone: emailPhone,
             password: password
         }).then((response) => {
-            console.log(response);
             if (response.data.message) {
-                alert(JSON.stringify(response.data.message)); //error type
+                alert(JSON.stringify(response.data.message));
             } else {
-                alert("Hello, "+response.data+"!"); //success
+                // Alert can be replaced with something else
+                alert("Hello, "+response.data+"!");
+                //
                 if (type=="seller") {
                     window.location.href = '/seller';
                 } else {
-                    window.location.href = '/';
+                    if (response.data === "Admin") {
+                        window.location.href  = '/admin'
+                    } else {
+                        window.location.href = '/';
+                    }
                 }
             }
         });

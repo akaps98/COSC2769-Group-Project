@@ -15,7 +15,7 @@ const handleLogIn = (req,res) => {
                 bcrypt.compare(password, result[0].password, (error, response) => {
                     if (response) {
                         req.session.user = result;
-                        return res.send(result[0].username+' (customer)');
+                        return res.send(result[0].username);
                     } else {
                         return res.send({ message: "Wrong password!"});
                     }
@@ -33,7 +33,7 @@ const handleLogIn = (req,res) => {
                 bcrypt.compare(password, result[0].password, (error, response) => {
                     if (response) {
                         req.session.user = result;
-                        return res.send(result[0].username+' (seller)');
+                        return res.send(result[0].username);
                     } else {
                         return res.send({ message: "Wrong password!"});
                     }

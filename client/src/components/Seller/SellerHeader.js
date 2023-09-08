@@ -8,8 +8,10 @@ function SellerHeader({ setMenuToggle, menuToggle }) {
     const handleMenuToggle = () => setMenuToggle(prev => !prev);
     return (
         <div className="seller-header-container">
-            <button className="menu-btn" onClick={handleMenuToggle}/>
-            <Link to={"/seller"}><img src={logo} alt="" className="seller-logo mb-4" /></Link>
+            <div className="seller-header-logo-container">
+                <button className="menu-btn" onClick={handleMenuToggle} />
+                <Link to={"/seller"}><img src={logo} alt="" className="seller-logo mb-4" /></Link>
+            </div>
             <div className={menuToggle ? "seller-header-main-container seller-header-small-container" : "seller-header-main-container"}>
                 <div>
                     <p onClick={handleToggle}

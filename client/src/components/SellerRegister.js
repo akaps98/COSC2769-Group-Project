@@ -23,12 +23,13 @@ function SellerRegister(){
             password: password
         }).then((response) => {
             if (response.data.message) {
-                alert(JSON.stringify(response.data.message)); //success
+                // Alert can be replaced with something else
+                alert(JSON.stringify(response.data.message));
+                //
                 window.location.href = '/login'
             } else {
                 alert(JSON.stringify(response.data)); 
             }
-            console.log(response)
         });
     };
 

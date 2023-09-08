@@ -8,7 +8,9 @@ export default function Logout() {
         event.preventDefault();
 
         Axios.get('http://localhost:3001/log/out').then((response) => {
+            // Alert can be replaced with something else
             alert(JSON.stringify(response.data)); 
+            //
             window.location.href = '/'
         });
     };

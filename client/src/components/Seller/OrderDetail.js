@@ -1,8 +1,7 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
-import iphone from "../../assets/images/products/iPhone14.png"
 
-function OrderDetail({ order, show, handleClose }) {
+function OrderDetail({ order, show, handleClose, updateStatus }) {
     return (
         <Modal size="lg" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -10,7 +9,7 @@ function OrderDetail({ order, show, handleClose }) {
             </Modal.Header>
             <Modal.Body className="px-4">
                 <div className="row mb-3">
-                    <img src={"../"+order.imagePath} alt={order.ProductID} className="col-sm-2" />
+                    <img src={`http://localhost:3001/${order.imagePath}`} alt={order.ProductID} className="col-sm-2" />
                     <div className="col-sm-4">
                         <p className="text-secondary">Product ID. {order.ProductID}</p>
                         <p>{order.name}</p>
@@ -54,7 +53,7 @@ function OrderDetail({ order, show, handleClose }) {
                     </div>
                     <div className="col-sm-3">
                         <p className="text-secondary">Date Ordered</p>
-                        <p className="align-center">{order.date.slice(0,10)}</p>
+                        <p className="align-center">{order.date}</p>
                     </div>
                 </div>
                 <div className="row mb-3">
@@ -65,14 +64,20 @@ function OrderDetail({ order, show, handleClose }) {
                     {order.status === "New" &&
                         <div className="col-sm-6">
                             <p className="text-secondary">Action</p>
-                            <button className="order-ship-btn">Ship</button>
-                            <button variant="dark" className="order-cancel-btn">Cancel</button>
+                            <button className="order-ship-btn"
+                            onClick={() => {if (window.confirm("Are you sure to ship this order?")) {updateStatus("Shipped")}}}>
+                                Ship
+                            </button>
+                            <button variant="dark" className="order-cancel-btn"
+                            onClick={() => {if (window.confirm("Are you sure to cancel this order?")) {updateStatus("Canceled")}}}>
+                                Cancel
+                            </button>
                         </div>
                     }
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                <Button variant="secondary" onClick={handleClose} className="close-btn">Close</Button>
             </Modal.Footer>
         </Modal>
     )
