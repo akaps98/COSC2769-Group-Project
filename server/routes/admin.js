@@ -7,6 +7,7 @@ router.post('/deleteCategory', adminController.deleteCategory);
 router.post('/createCategory', adminController.createCategory);
 router.post('/updateCategory', adminController.updateCategory);
 router.post('/addAttribute', adminController.addAttribute);
+router.post('/deleteAttribute', adminController.deleteAttribute);
 router.post('/updateAttribute', adminController.updateAttribute)
 router.post('/updateSellerStatus', adminController.updateSellerStatus);
 

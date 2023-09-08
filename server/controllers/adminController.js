@@ -148,6 +148,28 @@ const addAttribute = (req, res) => {
         })
     })
 }
+const deleteAttribute = (req, res) => {
+    const CategoryID = req.body.CategoryID;
+    const index = req.body.index;
+    database.query('SELECT attributes FROM categories WHERE CategoryID = ?', [CategoryID], (error, results) => {
+        if (error) {
+            res.send({ err: err })
+        }
+        let currentAttributes = JSON.parse(results[0].attributes);
+        currentAttributes.splice(index, 1);
+        if (currentAttributes.length===0) {
+            currentAttributes = null;
+        } else {
+            currentAttributes = JSON.stringify(currentAttributes)
+        }
+        database.query('UPDATE categories SET attributes = ? WHERE CategoryID = ?', [currentAttributes, CategoryID], (updateError) => {
+            if (updateError) {
+                res.send({ err: err })
+            }
+            res.send({ message: 'Attribute is added successfully!' })    
+        });
+    });
+}
 
 const updateAttribute = (req, res) => {
     const CategoryID = req.body.CategoryID;
@@ -172,4 +194,4 @@ const updateSellerStatus = (req, res) => {
     });
 }
 
-module.exports = { allCategories, deleteCategory, createCategory, updateCategory, addAttribute, updateAttribute, updateSellerStatus };
+module.exports = { allCategories, deleteCategory, createCategory, updateCategory, addAttribute, deleteAttribute, updateAttribute, updateSellerStatus };
