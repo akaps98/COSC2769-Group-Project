@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Axios from 'axios'
 import { useLocation } from 'react-router-dom'
-import productImg from "../assets/images/products/iPhone14.png";
 import guaranteed from "../assets/images/guaranteed.png";
 import heart from "../assets/images/heart.png"
 
