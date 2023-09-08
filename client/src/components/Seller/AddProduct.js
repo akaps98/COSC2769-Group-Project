@@ -76,9 +76,9 @@ function AddProduct({ seller }) {
 
     const addProduct = event => {
         event.preventDefault();
-
-        if (product.category.length < 3) {
-            alert("Please select at least three categories.");
+        
+        if (product.category.length < 4) {
+            alert("Please select all four categories.");
             return;
         }
 
@@ -215,7 +215,7 @@ function AddProduct({ seller }) {
                         </div>
                         <div className="col-sm-3">
                             <select className="form-select" name="category4" onChange={handleChange}>
-                                <option hidden>Optional category</option>
+                                <option hidden>Fourth category</option>
                                 {(selection.length>2) && (
                                     categories.filter(category => category.parentID === selection[2]).map(category => (
                                         <option value={category.CategoryID} key={category.CategoryID}>

@@ -74,13 +74,11 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
     const updateProduct = event => {
         event.preventDefault();
     
-        if (selectionName.length < 3) {
-            alert("Please select at least three categories.");
+        if (selectionName.length < 4) {
+            alert("Please select all four categories.");
             return;
         }
         handleCloseModal();
-
-        setProduct(prev => ({...prev,category: selectionName,}));
         
 
         if (Object.keys(product.attribute).length === 0) {
@@ -217,7 +215,7 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
                                 </div>
                                 <div className="col-sm-3">
                                     <select className="form-select" name="category4" onChange={handleChange}>
-                                        <option hidden>Optional</option>
+                                        <option hidden>Fourth</option>
                                         {(selection.length>2) && (
                                             categories.filter(category => category.parentID === selection[2]).map(category => (
                                                 <option value={category.CategoryID} key={category.CategoryID}>
@@ -237,7 +235,7 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
                                 <label className="fw-bold mb-2">Category attributes</label>
                                 <div className="d-flex ms-2">
                                     {(typeof p.attribute === "string") ? Object.keys(JSON.parse(p.attribute)).map((key) => (
-                                        <div key={key} className="d-flex col-3 me-4">
+                                        <div key={key} className="d-flex col-5 me-4">
                                             <label className="fw me-1 mt-1">{key}</label>
                                             <input
                                                 name="attribute"
@@ -249,7 +247,7 @@ function ProductUpdate({ handleCloseModal, show, p, reload }) {
                                             />
                                         </div>
                                     )) : Object.keys(p.attribute).map((key) => (
-                                        <div key={key} className="d-flex col-3 me-4">
+                                        <div key={key} className="d-flex col-5 me-4">
                                             <label className="fw me-1 mt-1">{key}</label>
                                             <input
                                                 name="attribute"

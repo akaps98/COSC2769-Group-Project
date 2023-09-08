@@ -21,6 +21,7 @@ export default function Category() {
         top: null,
         second: null,
         third: null,
+        fourth: null,
     });
     const handleCategoryClick = (category, level) => {
         setSelectedID(prevSelected => ({
@@ -42,6 +43,12 @@ export default function Category() {
                     : (level === 'third')
                         ? ((prevSelected.third === category.CategoryID) ? null : category.CategoryID)
                         : selectedID.third,
+            fourth:
+                (level === 'top' || level === 'second' || level === 'third')
+                    ? null
+                    : (level === 'fourth') 
+                        ? ((selectedID.fourth === category.CategoryID) ? null : category.CategoryID)
+                        : selectedID.fourth,
         }));
     };
 
@@ -77,23 +84,6 @@ export default function Category() {
     const handleUpdate = event => {
         event.preventDefault();
         const { id, name } = event.target;
-        if (updatedAttributes !== "") {
-            Axios.post('http://localhost:3001/admin/updateAttribute', {
-                CategoryID: id,
-                attributes: updatedAttributes.split(/\s*,\s*/)
-            }).then((response) => {
-                if (response.data.message) {
-                    setUpdatedAttributes("");
-                    handleUpdateCategory(id, name);
-                } else {
-                    alert(JSON.stringify(response.data));
-                }
-            });
-        } else {
-            handleUpdateCategory(id, name);
-        }
-    }
-    const handleUpdateCategory = (id, name) => {
         Axios.post('http://localhost:3001/admin/updateCategory', {
             CategoryID: id,
             newName: newName,
@@ -132,7 +122,19 @@ export default function Category() {
             }
         });
     }
-
+    const handleDeleteAttribute = event => {
+        const { id, name } = event.target;
+        Axios.post('http://localhost:3001/admin/deleteAttribute', {
+            CategoryID: id,
+            index: name
+        }).then((response) => {
+            if (response.data.message) {
+                getCategories();
+            } else {
+                console.log("CategoryTest.js delete error");
+            }
+        });
+    }
     const [parentID,setParentID] = useState();
     function setCreate(id) {
         setParentID(id);
@@ -149,7 +151,7 @@ export default function Category() {
         }).then((response) => {
             if (response.data.message) {
                 // Alert can be replaced with something else
-                alert(JSON.stringify(response.data.message));
+                alert("Category is created successfully!");
                 //
                 getCategories();
                 handleAddModalClose();
@@ -173,7 +175,7 @@ export default function Category() {
         }).then((response) => {
             if (response.data.message) {
                 // Alert can be replaced with something else
-                alert(JSON.stringify(response.data.message));
+                alert("Attribute is created successfully!");
                 //
                 getCategories();
                 handleAddAttributeModalClose();
@@ -196,7 +198,8 @@ export default function Category() {
                 <div className="category-list-header">
                     <div>
                         <h3>Category Management</h3>
-                        <p>( Delete & Update shows only if no products are related)</p>
+                        <li className="ms-4">Delete & Update shows only if no products are related</li>
+                        <li className="ms-4" style={{color: "maroon"}}>Fourth level category is required, which must have attributes ( unless, products cannot be added to it )</li>
                     </div>
                     <button className="add-btn" onClick={() => setCreate(null)}>Add Category</button>
                 </div>
@@ -359,7 +362,13 @@ export default function Category() {
                                                                                             <input placeholder={fourthCategory.name} value={newName} onChange={(e) => setNewName(e.target.value)} required/>
                                                                                             {fourthCategory.attributes && (
                                                                                                 <div>
-                                                                                                    <p style={{color: "gray"}}>Attributes: <input placeholder={JSON.parse(fourthCategory.attributes).join(", ")} value={updatedAttributes} onChange={(e) => setUpdatedAttributes(e.target.value)} required/></p>
+                                                                                                        {JSON.parse(fourthCategory.attributes).map((attribute, index) => (
+                                                                                                            <li className="ms-5" style={{color: "gray"}} key={index}>{attribute} 
+                                                                                                                {(fourthCategory.count===0) &&
+                                                                                                                    <button className="category-delete-btn pb-2 ms-2" name={index} id={fourthCategory.CategoryID} onClick={handleDeleteAttribute}></button>
+                                                                                                                }
+                                                                                                            </li>
+                                                                                                        ))}
                                                                                                 </div>
                                                                                             )}
                                                                                             <div className="category-manage-btn-container">
@@ -370,13 +379,19 @@ export default function Category() {
                                                                                     </div>
                                                                                     :
                                                                                     <div className="category-name-container">
-                                                                                        <p>{fourthCategory.name}<span style={{color: "lightgray"}}>({fourthCategory.count} products)</span></p>
+                                                                                        <p>{fourthCategory.name}<span style={{color: "lightgray"}}> ({fourthCategory.count} products)</span></p>
                                                                                         
 
 
                                                                                         {fourthCategory.attributes && (
                                                                                             <div>
-                                                                                                <p className="ms-3"style={{color: "gray"}}>Attributes: {JSON.parse(fourthCategory.attributes).join(", ")}</p>
+                                                                                                    {JSON.parse(fourthCategory.attributes).map((attribute, index) => (
+                                                                                                        <li className="ms-5" style={{color: "gray"}} key={index}>{attribute} 
+                                                                                                            {(fourthCategory.count===0) &&
+                                                                                                                <button className="category-delete-btn pb-2 ms-2" name={index} id={fourthCategory.CategoryID} onClick={handleDeleteAttribute}></button>
+                                                                                                            }
+                                                                                                        </li>
+                                                                                                    ))}
                                                                                             </div>
                                                                                         )}
                                                                                         
