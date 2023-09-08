@@ -1,29 +1,33 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Axios from 'axios'
 
 function CartRow({ user, usertype, data, totalPrice }) {
-    const [ quantity, setQuantity ] = useState(1);
-    const [ price, setPrice ] = useState(0);
-    
+    const [quantity, setQuantity] = useState(1);
+    const [price, setPrice] = useState(0);
+
     useEffect(() => {
         if (usertype === "Customer") {
             Axios.post('http://localhost:3001/shoppingCart/findQuantity', {
                 productID: data.ProductID,
                 CustomerID: user.CustomerID
             }).then((response) => {
-                if (localStorage.getItem(data.ProductID)) {
-                    const q = parseInt(localStorage.getItem(data.ProductID)) + parseInt(Object.values(response.data[0])[0]);
-                    setQuantity(q);
-                    setPrice(data.price * q);
-                } else {
-                    const q = parseInt(Object.values(response.data[0])[0]);
-                    setQuantity(q);
-                    setPrice(data.price * q);
-                }
+                const q = parseInt(Object.values(response.data[0])[0]);
+                setQuantity(q);
+                setPrice(data.price * q);
             });
-        } else {
+        }else {
             const q = parseInt(localStorage.getItem(data.ProductID));
+            console.log(q);
             setQuantity(q);
+            setPrice(data.price * q);
+        }
+    }, []);
+
+    useEffect(() => {
+        if(usertype === "Customer"){
+            setPrice(data.price * quantity);
+        }else{
+            const q = parseInt(localStorage.getItem(data.ProductID));
             setPrice(data.price * q);
         }
     }, [localStorage.getItem(data.ProductID)])
@@ -37,13 +41,13 @@ function CartRow({ user, usertype, data, totalPrice }) {
     }
 
     function subQuantity() {
-        if(quantity !== 1) {
+        if (quantity !== 1) {
             setQuantity(quantity - 1);
             totalPrice(prev => prev - data.price);
         }
         setPrice(data.price * quantity);
         let newQuantity = JSON.parse(localStorage.getItem(data.ProductID)) - 1;
-        if(newQuantity < 1) {
+        if (newQuantity < 1) {
             newQuantity = 1
         }
         localStorage.setItem(data.ProductID, newQuantity);

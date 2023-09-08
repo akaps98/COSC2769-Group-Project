@@ -1050,6 +1050,7 @@ span {
 }
 
 .category-container input {
+    margin-top: 10px;
     margin-left: 20px;
 }
 
@@ -1126,9 +1127,6 @@ span {
     display: table-cell;
 }
 
-.fourthCategory-container div {
-    display: table-cell;
-}
 @keyframes appear {
     0% {
         transform-origin: top center;

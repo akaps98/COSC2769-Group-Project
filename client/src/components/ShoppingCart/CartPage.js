@@ -11,7 +11,7 @@ function CartPage({ user, userType }) {
     const orders = useRef([]);
 
     const navigate = useNavigate();
-    
+
     const navigateToShopping = () => {
         navigate("/search");
     };
@@ -21,21 +21,21 @@ function CartPage({ user, userType }) {
     }
 
     useEffect(() => {
-        const tempOrdered = [];
         const total = [];
         if (userType === "Customer") {
             if (localStorage.length !== 0) {
                 for (let i = 0; i < localStorage.length; i++) {
                     const pid = localStorage.key(i);
+                    const qty = parseInt(localStorage.getItem(pid));
                     Axios.post('http://localhost:3001/shoppingCart/updateShoppingCart', {
-                        quantity: 1,
+                        quantity: qty,
                         productID: pid,
                         customerID: user.CustomerID
                     })
-                    .then((response) => {
-                        console.log(response);
-                    })
-                    .catch(err => console.log(err));
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch(err => console.log(err));
                 }
             }
             Axios.post('http://localhost:3001/shoppingCart/findShoppingCart', {
@@ -50,16 +50,9 @@ function CartPage({ user, userType }) {
                     }).then((response) => {
                         setOrderedProducts(prev => [...prev, response.data[0]]);
                         setOrderedProducts(prev => prev.slice(0, pids.length));
-                        if (localStorage.getItem(pids[i])) {
-                            const q = parseInt(localStorage.getItem(pids[i])) + parseInt(quantities[i]);
-                            total.push(parseInt(response.data[0].price) * q);
-                            const t = total.reduce((acc, curr) => { return acc + curr }, 0);
-                            setTotalPrice(t);
-                        } else {
-                            total.push(parseInt(response.data[0].price) * parseInt(quantities[i]));
-                            const t = total.reduce((acc, curr) => { return acc + curr }, 0);
-                            setTotalPrice(t);
-                        }
+                        total.push(parseInt(response.data[0].price) * parseInt(quantities[i]));
+                        const t = total.reduce((acc, curr) => { return acc + curr }, 0);
+                        setTotalPrice(t);
                         products.current.push(pids[i]);
                         products.current = products.current.slice(0, pids.length);
                     })
@@ -73,13 +66,13 @@ function CartPage({ user, userType }) {
                     Axios.post('http://localhost:3001/product/findProduct', {
                         productID: pid
                     }).then((response) => {
-                        tempOrdered.push(response.data[0]);
+                        setOrderedProducts(prev => [...prev, response.data[0]]);
+                        setOrderedProducts(prev => prev.slice(0, localStorage.length));
                         total.push(parseInt(response.data[0].price) * q);
                         const t = total.reduce((acc, curr) => { return acc + curr }, 0);
                         setTotalPrice(t);
                     })
                 }
-                setOrderedProducts(tempOrdered);
             }
         }
     }, []);
@@ -119,7 +112,7 @@ function CartPage({ user, userType }) {
         localStorage.clear();
         Axios.post('http://localhost:3001/shoppingCart/deleteShoppingCart', {
             CustomerID: user.CustomerID,
-        }).then((response) => {})
+        }).then((response) => { })
     }
 
     const row = orderedProducts.map(product => {
