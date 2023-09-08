@@ -24,7 +24,7 @@ function AddProduct({ seller }) {
             .then((response) => {
                 setCategories(response.data)
             })
-            .catch(() => {console.log('ProductUpdate.js_getCategories:',err)});
+            .catch((err) => {console.log('ProductUpdate.js_getCategories:',err)});
     }
     useEffect(() => {
         getCategories()
