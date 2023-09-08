@@ -36,11 +36,9 @@ function ProductDetail({ user, userType }) {
         if(localStorage.getItem(product.ProductID) == null) {
             localStorage.setItem(product.ProductID, quantity);
         } else {
-            // const newQuantity = JSON.parse(localStorage.getItem(product.ProductID)) + quantity;
             localStorage.setItem(product.ProductID, quantity);
         }
         alert("Successfully added on shopping cart!");
-        //window.location.reload();
     }
 
     function removeProduct() {
@@ -56,9 +54,7 @@ function ProductDetail({ user, userType }) {
             localStorage.removeItem(product.ProductID);
         }
         alert("Successfully removed on shopping cart!");
-        //window.location.reload();
     }
-    console.log(category[0])
     return (
         <>
             <div className="product-detail-container">
@@ -67,22 +63,14 @@ function ProductDetail({ user, userType }) {
                 </div>
                 <div className="product-main-container">
                     <h2 className="pName">{product.name}</h2>
-                    {/* <p className="stars" style={{ "--rating": rating }}>1490 Ratings</p> */}
                     {category[0].join(' > ')}
-
                     <div className="hr-line"></div>
+                    {Object.keys(JSON.parse(product.attribute)).map((key, value) => (
+                    <div key={key}>
+                        <p>{key}: {JSON.parse(product.attribute)[key]}</p>
+                    </div>
+                )) }
                     <p className="price">{product.price.toLocaleString()}</p>
-                    {/* <div className="qty-container">
-                        <p className="text-secondary pt-1">Quantity</p>
-                        <button className="qty-btn" onClick={() => {
-                            if(quantity != 1) {
-                                setQuantity(quantity - 1)
-                            }
-                        }}>-</button>
-                        <input type="text" className="quantity" value={quantity} readOnly/>
-                        <button className="qty-btn" onClick={() => {setQuantity(quantity + 1);}}>+</button>
-                        <p className="text-secondary stock">{product.quantity} available</p>
-                    </div> */}
                     <div className="btn-container">
                         <button className="toCart-btn" onClick={saveProduct}>Add to Cart</button>
                         <button className="toCart-btn" onClick={removeProduct}>Remove on Cart</button>

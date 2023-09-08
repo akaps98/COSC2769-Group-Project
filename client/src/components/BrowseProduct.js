@@ -3,9 +3,11 @@ import Axios from 'axios'
 import EachProduct from './EachProduct';
 import Pagination from './Pagination';
 
+import search from "../assets/images/sellers/search-interface-symbol.png";
+
 function BrowseProduct() {
     const [products, setProducts] = useState([]);
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [allProducts, setAllProducts] = useState([]);
     const [value, setValue] = useState("");
     const [thisPage, setThisPage] = useState(1);
     const [productsPerPage, setproductsPerPage] = useState(4);
@@ -13,14 +15,6 @@ function BrowseProduct() {
     const [selectionName, setSelectionName] = useState([]);
     const [belowPrice, setBelowPrice] = useState(0);
     const [upperPrice, setUpperPrice] = useState(999999999999999);
-
-    const saveBelowPrice = event => {
-        setBelowPrice(event.target.value);
-    }
-
-    const saveUpperPrice = event => {
-        setUpperPrice(event.target.value);
-    }
 
     const lastPage = thisPage * productsPerPage;
     const firstPage = lastPage - productsPerPage;
@@ -37,23 +31,15 @@ function BrowseProduct() {
 
     useEffect(() => {
         Axios.get('http://localhost:3001/allProducts').then((response) => {
-            setProducts(response.data)
+            setProducts(response.data);
+            setAllProducts(response.data);
         });
         getCategories()
-        Axios.get("http://localhost:3001/auth").then((response) => {
-            if (response.data.loggedIn) {
-                setIsLoggedIn(true);
-            }
-        });
     }, [])
-
-    const [image, setImage] = useState();
 
     function handleChange(e){
         const { name, value } = e.target;
-        if(name === "image" && e.target.files[0]){
-            setImage(URL.createObjectURL(e.target.files[0]))
-        } else if (name.startsWith("category")) {
+        if (name.startsWith("category")) {
             const selectedId = parseInt(value);
             const selectedCategory = categories.find(category => category.CategoryID === selectedId);
             const index = parseInt(name.charAt(name.length - 1)) - 1;
@@ -71,51 +57,117 @@ function BrowseProduct() {
         }
     }
 
+    const [pName, setPName] = useState("");
+    const handleNameChange = (e) => setPName(e.target.value);
+    const [pDate, setPDate] = useState({ fromDate: "", toDate: "" });
+    const [pPrice, setPPrice] = useState({ fromPrice: 0, toPrice: 0 });
+
+    function handleDateChange(e) {
+        const { name, value } = e.target;
+        setPDate((prev) => {
+            return (
+                {
+                    ...prev,
+                    [name]: value
+                }
+            )
+        });
+    }
+
+    function handlePriceChange(e) {
+        const { name, value } = e.target;
+        setPPrice((prev) => {
+            return (
+                {
+                    ...prev,
+                    [name]: parseInt(value)
+                }
+            )
+        });
+    }
+
+    function filterProducts() {
+        const newProducts = [...products];
+        const filteredProducts = newProducts.filter(product => {
+            if (pName !== "") {
+                const name = pName.toLowerCase();
+                if (!product.description.toLowerCase().includes(name) || !product.description.toLowerCase().includes(name)) {
+                    return false;
+                }
+            }
+            if (pDate.fromDate !== "" && pDate.toDate !== "") {
+                if (!(new Date(pDate.fromDate) <= new Date(product.dateAdded.slice(0, 10)))
+                    || !(new Date(product.dateAdded.slice(0, 10)) <= new Date(pDate.toDate))) {
+                    return false;
+                }
+            }else if (pDate.fromDate !== "" || pDate.toDate !== "") {
+                if (pDate.fromDate !== "") {
+                    if(!(new Date(pDate.fromDate) <= new Date(product.dateAdded.slice(0, 10)))){
+                        return false;
+                    }
+                } else {
+                    if (!(new Date(product.dateAdded.slice(0, 10)) <= new Date(pDate.toDate))){
+                        return false;
+                    }
+                }
+            }
+            if (pPrice.fromPrice !== 0 && pPrice.toPrice !== 0) {
+                if (!(pPrice.fromPrice <= product.price) || !(product.price <= pPrice.toPrice)){
+                    return false;
+                }
+            } else if (pPrice.fromPrice !== 0 || pPrice.toPrice !== 0) {
+                if (pPrice.fromPrice !== 0) {
+                    if (!(pPrice.fromPrice <= product.price)){
+                        return false
+                    }
+                } else {
+                    if (!(pPrice.toPrice >= product.price)){
+                        return false;
+                    }
+                }
+            }
+            return true;
+        });
+        setProducts(filteredProducts);
+    }
+
+    function handleFilterClear() {
+        setPDate({ fromDate: "", toDate: "" });
+        setPPrice({ fromPrice: 0, toPrice: 0 });
+    }
+
+    const [filterShow, setFilterShow] = useState(false);
+    const handleFilterClose = () => setFilterShow(false);
+    const handleFilterToggle = () => setFilterShow((prev) => !prev);
+
     function filterChange(e) {
         const { name, value } = e.target
         if(value === "alphabet") {
-            Axios.post('http://localhost:3001/product/filterByAlpabeticalOrder', {
-            }).then((response) => {
-                setProducts(response.data);
-            })
+            const sortedProducts = products.sort((a, b) => a.name.localeCompare(b.name));
+            setProducts(sortedProducts);
+            console.log(currentProduct)
         } else if (value === "alphabet-reverse") {
-            Axios.post('http://localhost:3001/product/filterByReversedAlpabeticalOrder', {
-            }).then((response) => {
-                setProducts(response.data);
-            })
+            const sortedProducts = products.sort((a, b) => a.name.localeCompare(b.name)).reverse();
+            setProducts(sortedProducts);
+            console.log(currentProduct)
         } else if (value === "date-addded-latest") {
-            Axios.post('http://localhost:3001/product/filterByLatestDateAdded', {
-            }).then((response) => {
-                setProducts(response.data);
-            })
+            const sortedProducts = products.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+            setProducts(sortedProducts);
+            console.log(currentProduct)
         } else if (value === "date-addded-oldest") {
-            Axios.post('http://localhost:3001/product/filterByOldestDateAdded', {
-            }).then((response) => {
-                setProducts(response.data);
-            })
+            const sortedProducts = products.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)).reverse();
+            setProducts(sortedProducts);
+            console.log(currentProduct)
         } else if (value === "price-high-to-low") {
-            Axios.post('http://localhost:3001/product/filterByHighPrice', {
-            }).then((response) => {
-                setProducts(response.data);
-            })
+            const sortedProducts = products.sort((a, b) => a.price - b.price).reverse();
+            setProducts(sortedProducts);
+            console.log(currentProduct)
         } else {
-            Axios.post('http://localhost:3001/product/filterByLowPrice', {
-            }).then((response) => {
-                setProducts(response.data);
-            })
+            const sortedProducts = products.sort((a, b) => a.price - b.price);
+            setProducts(sortedProducts);
+            console.log(currentProduct)
         }
     }   
-
-    function priceFilter() {
-        console.log(belowPrice)
-        console.log(upperPrice)
-        Axios.post('http://localhost:3001/product/filterPrice', {
-            belowPrice: belowPrice,
-            upperPrice: upperPrice
-        }).then((response) => {
-            setProducts(response.data);
-        })
-    }
 
     const display = currentProduct.map((product) => {
         return (
@@ -124,15 +176,6 @@ function BrowseProduct() {
             </div>
         )
     })
-
-    const search = event => {
-        event.preventDefault();
-        Axios.post('http://localhost:3001/product/browseProductBySearching', {
-            value: value
-        }).then((response) => {
-            setProducts(response.data);
-        })
-    }
 
     return (
         <>
@@ -184,39 +227,49 @@ function BrowseProduct() {
                         )}
                     </select>
                 </div>
+                <div className="product-filter-container my-3">
+                <button className="product-search-btn" onClick={filterProducts}><img src={search} alt="" /></button>
+                <input type="text" placeholder="Search..." className="product-name-filter-input" onChange={(e) => handleNameChange(e)} />
+                <button className={filterShow ? "product-filter-btn filter-btn-active" : "product-filter-btn"}
+                    onClick={handleFilterToggle}>
+                    Filter
+                </button>
+                {filterShow &&
+                    <div className="product-filter-form-container mt-3 text-secondary">
+                        <div className="product-date-filter-container">
+                            Date <input type="date" className="col-sm-4 ms-4" name="fromDate" onChange={(e) => handleDateChange(e)} value={pDate.fromDate} /> - <input type="date" className="col-sm-4" name="toDate" value={pDate.toDate} onChange={(e) => handleDateChange(e)} />
+                        </div>
+                        <div className="hr-line my-3" />
+                        <div className="product-price-filter-container">
+                            Price <input type="number" className="col-sm-4 ms-4" placeholder="20000" name="fromPrice" onChange={(e) => handlePriceChange(e)} value={pPrice.fromPrice} /> - <input type="number" className="col-sm-4" placeholder="100000" value={pPrice.toPrice} name="toPrice" onChange={(e) => handlePriceChange(e)} />
+                        </div>
+                        <div className="hr-line my-3" />
+                        <div className="product-filter-footer">
+                            <button className="text-danger" onClick={handleFilterClear}>Clear all filter</button>
+                            <div>
+                                <button className="text-secondary" onClick={handleFilterClose}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
             </div>
-
-        <form className="row" onSubmit={search}>
-            <input placeholder='Search...' value={value} onChange={(e) => setValue(e.target.value)}></input>
-            <button type="submit"></button>
-        </form>
-        <div>
-            <label>Sort By</label>
-            <select id='sort' className="form-select" name="sort" onChange={filterChange}>
-                <option value="alphabet">A-Z</option>
-                <option value="alphabet-reverse">Z-A</option>
-                <option value="date-addded-latest">Date Added (latest)</option>
-                <option value="date-addded-oldest">Date Added (oldest)</option>
-                <option value="price-high-to-low">Price (High to Low)</option>
-                <option value="price-low-to-high">Price (Low to High)</option>
-            </select>
-            <label>Filtering By</label>
-            <div className="input-group mb-3">
-                <label>Price</label>
-                <input type="text" className="form-control" placeholder="Minimum" value={belowPrice} onChange={saveBelowPrice}></input>
-                <span className="input-group-text">To</span>
-                <input type="text" className="form-control" placeholder="Maximum" value={upperPrice} onChange={saveUpperPrice}></input>
-                <button onClick={priceFilter}>filter</button>
+            <div>
+                <select id='sort' className="form-select" name="sort" onChange={filterChange}>
+                    <option value="alphabet">A-Z</option>
+                    <option value="alphabet-reverse">Z-A</option>
+                    <option value="date-addded-latest">Date Added (latest)</option>
+                    <option value="date-addded-oldest">Date Added (oldest)</option>
+                    <option value="price-high-to-low">Price (High to Low)</option>
+                    <option value="price-low-to-high">Price (Low to High)</option>
+                </select>
             </div>
-        </div>
-        
         </div>
         <div className='container'>
             <div className='row'>
                 {display}
             </div>
         </div>
-        
         <hr></hr>
         <Pagination totalProducts={products.length} productsPerPage={productsPerPage} setThisPage={setThisPage} />
         </>
