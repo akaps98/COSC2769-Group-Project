@@ -2,37 +2,52 @@ import logo from "../assets/images/logo.png"
 import searchIcon from "../assets/images/search-icon.svg"
 import shoppingCartIcon from "../assets/images/shopping-cart-icon.png"
 import banner from "../assets/images/sale-banner-header.png"
+import "../assets/styles/header.css"
 
 function Header({ userType }) {
     return (
         <header className="header">
             <div className="headerTop">
                 <nav>
-                    <ul className="">
+                    <ul className="mb-0 pb-0">
                         <li><a href="#">Save More on App</a></li>
                         <li><a href="/search">Sell On Lazada</a></li>
                         <li><a href="#">Lazada Care</a></li>
                         {userType === "Customer" ? <li><a href="/order">Order</a></li> : null}
-                        <li><a href="/login">Login</a></li>
-                        <li><a href="/register">Sign Up</a></li>
+                        <li></li>
                     </ul>
                 </nav>
             </div>
-            <div className="headerBottom">
-                <div className="container d-flex justify-content-center align-items-center">
-                    <div className="logo">
-                        <a href="/"><img src={logo}></img></a>
-                    </div>
-                    <form className="headerSearch d-flex">
-                        <input type="text" className="searchText" id="searchText" placeholder="Search in Lazada"></input>
-                        <button><img src={searchIcon}></img></button>
-                    </form>
-                    <img className="shoppingCartIcon" src={shoppingCartIcon}></img>
-                    <div className="banner">
-                        <img src={banner}></img>
-                    </div>
+
+            <nav className="navbar navbar-expand-lg bg-body-tertiary my-0">
+                <div className="container-fluid">
+                    <a className="navbar-brand" href="/">
+                        <img src={logo} className="headerImage"></img>
+                    </a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#lazadaHeader" aria-controls="lazadaHeader" >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse d-flex" id="lazadaHeader">
+                        <form className="d-flex ms-auto" role="search">
+                            <input className="searchText form-control border border-secondary m-0" type="search" placeholder="Search in Lazada" aria-label="Search"></input>
+                            <button className="searchBtn border border-secondary" type="submit">
+                                <img src={searchIcon} className="searchIcon"></img>
+                            </button>
+                        </form>
+                        <a href="/cart">
+                            <button className="cartBtn ms-4 me-auto">
+                                <img className="shoppingCartIcon" src={shoppingCartIcon}></img>
+                            </button>
+                        </a>
+                        <div className="navbar-nav mx-auto mb-2 mb-lg-0">
+                            <a href="/login"><button className="navBtn btn btn-outline-primary me-2">Log In</button></a>
+                            <a href="/register"><button className="navBtn btn btn-primary border">Sign Up</button></a>
+                        </div>
+                        
                 </div>
-            </div>
+                </div>
+            </nav>
+            
         </header>
     )
 }

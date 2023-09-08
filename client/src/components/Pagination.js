@@ -1,4 +1,5 @@
 import React from 'react'
+import "../assets/styles/product.css"
 
 function Pagination({ totalProducts, productsPerPage, setThisPage }) {
     const pages = [];
@@ -10,7 +11,7 @@ function Pagination({ totalProducts, productsPerPage, setThisPage }) {
     return (
         <>
             {pages.map((page, idx) => {
-                return <button key={idx} onClick={() => setThisPage(page)}>{page}</button>
+                return <button className='paginationBtn mt-3 mx-1' key={idx} onClick={() => setThisPage(page)}>{page}</button>
             })}
         </>
     )

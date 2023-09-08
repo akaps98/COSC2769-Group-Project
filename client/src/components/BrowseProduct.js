@@ -179,10 +179,11 @@ function BrowseProduct() {
 
     return (
         <>
-        <div className="m-5">
-            <div className="row mb-1">
-                <div className="col-sm-3">
-                    <select className="form-select" name="category1" onChange={handleChange}>
+        <div className="container bg-light my-5 my-5 px-5 py-2 rounded">
+            <div className="row">
+                <div className="col p-3">
+                    <h5 className='mb-3'>Category</h5>
+                    <select className="form-select mb-2" name="category1" onChange={handleChange}>
                         <option hidden>Top Category</option>
                         {categories.filter(category => !category.parentID).map(category => (
                             <option value={category.CategoryID} key={category.CategoryID}>
@@ -190,9 +191,7 @@ function BrowseProduct() {
                             </option>
                         ))}
                     </select>
-                </div>
-                <div className="col-sm-3">
-                    <select className="form-select" name="category2" onChange={handleChange}>
+                    <select className="form-select mb-2" name="category2" onChange={handleChange}>
                         <option hidden>Second category</option>
                         {(selection.length>0) && (
                             categories.filter(category => category.parentID === selection[0]).map(category => (
@@ -202,9 +201,7 @@ function BrowseProduct() {
                             )) 
                         )}
                     </select>
-                </div>
-                <div className="col-sm-3">
-                    <select className="form-select" name="category3" onChange={handleChange}>
+                    <select className="form-select mb-2" name="category3" onChange={handleChange}>
                         <option hidden>Third category</option>
                         {(selection.length>1) && (
                             categories.filter(category => category.parentID === selection[1]).map(category => (
@@ -214,9 +211,7 @@ function BrowseProduct() {
                             ))
                         )}
                     </select>
-                </div>
-                <div className="col-sm-3">
-                    <select className="form-select" name="category4" onChange={handleChange}>
+                    <select className="form-select mb-2" name="category4" onChange={handleChange}>
                         <option hidden>Optional category</option>
                         {(selection.length>2) && (
                             categories.filter(category => category.parentID === selection[2]).map(category => (
@@ -227,51 +222,44 @@ function BrowseProduct() {
                         )}
                     </select>
                 </div>
-                <div className="product-filter-container my-3">
-                <button className="product-search-btn" onClick={filterProducts}><img src={search} alt="" /></button>
-                <input type="text" placeholder="Search..." className="product-name-filter-input" onChange={(e) => handleNameChange(e)} />
-                <button className={filterShow ? "product-filter-btn filter-btn-active" : "product-filter-btn"}
-                    onClick={handleFilterToggle}>
-                    Filter
-                </button>
-                {filterShow &&
-                    <div className="product-filter-form-container mt-3 text-secondary">
-                        <div className="product-date-filter-container">
-                            Date <input type="date" className="col-sm-4 ms-4" name="fromDate" onChange={(e) => handleDateChange(e)} value={pDate.fromDate} /> - <input type="date" className="col-sm-4" name="toDate" value={pDate.toDate} onChange={(e) => handleDateChange(e)} />
-                        </div>
-                        <div className="hr-line my-3" />
-                        <div className="product-price-filter-container">
-                            Price <input type="number" className="col-sm-4 ms-4" placeholder="20000" name="fromPrice" onChange={(e) => handlePriceChange(e)} value={pPrice.fromPrice} /> - <input type="number" className="col-sm-4" placeholder="100000" value={pPrice.toPrice} name="toPrice" onChange={(e) => handlePriceChange(e)} />
-                        </div>
-                        <div className="hr-line my-3" />
-                        <div className="product-filter-footer">
-                            <button className="text-danger" onClick={handleFilterClear}>Clear all filter</button>
-                            <div>
-                                <button className="text-secondary" onClick={handleFilterClose}>Close</button>
+                <div className="col">
+                    <div className="product-filter-container my-3">
+                        <h5>Search & Filtering</h5>
+                        <button className="product-search-btn border" onClick={filterProducts}><img src={search} alt="" /></button>
+                        <input type="text" placeholder="Search..." className="product-name-filter-input" onChange={(e) => handleNameChange(e)} />
+                        <button className={filterShow ? "product-filter-btn filter-btn-active" : "product-filter-btn"}
+                            onClick={handleFilterToggle}>
+                            Filter
+                        </button>
+                        {filterShow &&
+                            <div className="product-filter-form-container mt-3 text-secondary">
+                                <div className="product-date-filter-container">
+                                    Date <input type="date" className="col-sm-4 ms-4" name="fromDate" onChange={(e) => handleDateChange(e)} value={pDate.fromDate} /> - <input type="date" className="col-sm-4" name="toDate" value={pDate.toDate} onChange={(e) => handleDateChange(e)} />
+                                </div>
+                                <div className="hr-line my-3" />
+                                <div className="product-price-filter-container">
+                                    Price <input type="number" className="col-sm-4 ms-4" placeholder="20000" name="fromPrice" onChange={(e) => handlePriceChange(e)} value={pPrice.fromPrice} /> - <input type="number" className="col-sm-4" placeholder="100000" value={pPrice.toPrice} name="toPrice" onChange={(e) => handlePriceChange(e)} />
+                                </div>
+                                <div className="hr-line my-3" />
+                                <div className="product-filter-footer">
+                                    <button className="text-danger" onClick={handleFilterClear}>Clear all filter</button>
+                                    <div>
+                                        <button className="text-secondary" onClick={handleFilterClose}>Close</button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
-                }
                 </div>
-            </div>
-            <div>
-                <select id='sort' className="form-select" name="sort" onChange={filterChange}>
-                    <option value="alphabet">A-Z</option>
-                    <option value="alphabet-reverse">Z-A</option>
-                    <option value="date-addded-latest">Date Added (latest)</option>
-                    <option value="date-addded-oldest">Date Added (oldest)</option>
-                    <option value="price-high-to-low">Price (High to Low)</option>
-                    <option value="price-low-to-high">Price (Low to High)</option>
-                </select>
+                
             </div>
         </div>
-        <div className='container'>
-            <div className='row'>
+        <div className='container bg-linear p-5 rounded'>
+            <div className='row mb-3'>
                 {display}
             </div>
+            <Pagination totalProducts={products.length} productsPerPage={productsPerPage} setThisPage={setThisPage} />
         </div>
-        <hr></hr>
-        <Pagination totalProducts={products.length} productsPerPage={productsPerPage} setThisPage={setThisPage} />
         </>
     )
 }

@@ -72,7 +72,7 @@ function ProductDetail({ user, userType }) {
                 )) }
                     <p className="price">{product.price.toLocaleString()}</p>
                     <div className="btn-container">
-                        <button className="toCart-btn" onClick={saveProduct}>Add to Cart</button>
+                        <button className="toCart-btn me-2" onClick={saveProduct}>Add to Cart</button>
                         <button className="toCart-btn" onClick={removeProduct}>Remove on Cart</button>
                     </div>
                 </div>

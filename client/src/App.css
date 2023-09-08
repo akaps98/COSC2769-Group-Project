@@ -24,9 +24,10 @@ ul {
 
 ul a {
   text-transform: uppercase;
-  color: #a7a7a7;
+  font-weight: 300;
+  color: white;
   font-size: 12px;
-  transition: all 300ms;
+  transition: all 200ms;
 }
 
 ul li {
@@ -35,12 +36,11 @@ ul li {
 }
 
 ul a:hover {
-  color: orange;
+  cursor: pointer;
+  font-weight: 700;
 }
 
-.headerTop {
-  background-color: #f7f7f7;
-}
+
 
 .headerBottom .logo img{
   width: 150px;
@@ -51,16 +51,6 @@ ul a:hover {
   padding-right: 30px;
 }
 
-.searchText {
-  height: 50px;
-  background-color: #f7f7f7;
-  border: solid 1px transparent;
-  box-shadow: 0 0 15px #f7f7f7;
-  width: 600px;
-  padding: 20px;
-  font-size: 15px;
-}
-
 button {
   height: 50px;
   width: 50px;
@@ -68,18 +58,6 @@ button {
   color: white;
   border: solid 1px transparent;
   border-radius: 2px;
-}
-
-button img {
-  height: 30px;
-  width: 30px;
-  margin-left: 10px;
-}
-
-.shoppingCartIcon {
-  height: 30px;
-  margin-top: 20px;
-  padding-right: 30px;
 }
 
 .App {

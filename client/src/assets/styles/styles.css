@@ -793,7 +793,6 @@ span {
 
 .product-filter-container {
     position: relative;
-    float: right;
 }
 
 .product-filter-form-container {
@@ -826,7 +825,6 @@ span {
     padding-left: 40px;
     height: 40px;
     border: 1px solid #D8D9DA;
-
     &:focus {
         outline: none;
         border: 1px solid rgba(0, 115, 187, 0.8);
@@ -845,8 +843,10 @@ span {
 }
 
 .product-search-btn img {
+    object-fit: cover;
     width: 16px;
     height: 16px;
+    margin-left: 10px
 }
 
 .product-filter-btn {

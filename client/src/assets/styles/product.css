@@ -1,13 +1,28 @@
 .product-card {
     max-width: 300px;
+    box-shadow: 7px 7px 6px -6px rgba(0,0,0,0.5);
 }
 
 
 .card-img-top {
     object-fit: cover;
+    height: 300px;
     border-radius: 10px;
 }
 
 .addCart-btn {
     width: 150px;
+}
+
+.bg-linear {
+    background-image: linear-gradient(to bottom right, blue, rgb(80, 80, 255));
+}
+
+.paginationBtn {
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    background-color: white;
+    color: black;
+    font-weight: 500;
 }

@@ -1,0 +1,61 @@
+/* .header {
+    background-image: linear-gradient(to bottom right, blue, rgb(80, 80, 255));
+} */
+
+.headerTop {
+    background-image: linear-gradient(to bottom right, blue, rgb(80, 80, 255));
+    color: white;
+    padding: 5px 0;
+}
+
+.headerImage {
+    object-fit: cover;
+    width: 200px;
+}
+
+.searchText {
+    height: 50px;
+    background-color: #f7f7f7;
+    box-shadow: 0 0 15px #f7f7f7;
+    width: 600px;
+    padding: 20px;
+    font-size: 15px;
+    border-radius: 5px 0px 0px 5px;
+    border-right: none !important
+}
+
+.searchBtn {
+    background-color: orange;
+    height: 50px;
+    width: 50px;
+    transition: all 300ms;
+    opacity: 1;
+}
+
+.searchBtn:hover {
+    opacity: 0.8;
+}
+
+.searchIcon {
+    object-fit: cover;
+    height: 30px;
+    width: 30px;
+    margin-left: 10px;
+}
+
+.cartBtn {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+}
+
+.shoppingCartIcon {
+    object-fit: cover;
+    height: 30px;
+    margin: 0;
+}
+
+.navBtn {
+    width: 120px;
+    font-size: 20px;
+}
