@@ -22,6 +22,7 @@ const updateShoppingCart = (req, res) => {
         if (err) {
             return res.send(err);
         } else {
+            console.log(result);
             return res.send(result);
         }
     })
@@ -47,10 +48,8 @@ const insertToOrder = (req, res) => {
 
     database.query("INSERT INTO orders (CustomerID, products, price, date) VALUES (?, ?, ?, ?)", [CustomerID, products, price, date], (err, result) => {
         if (err) {
-            console.log(err);
             return res.send(err);
         } else {
-            console.log(result);
             return res.send(result);
         }
     })
