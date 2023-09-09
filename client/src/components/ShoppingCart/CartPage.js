@@ -48,6 +48,7 @@ function CartPage({ user, userType }) {
                     Axios.post('http://localhost:3001/product/findProduct', {
                         productID: pids[i]
                     }).then((response) => {
+                        localStorage.setItem(pids[i], quantities[i]);
                         setOrderedProducts(prev => [...prev, response.data[0]]);
                         setOrderedProducts(prev => prev.slice(0, pids.length));
                         total.push(parseInt(response.data[0].price) * parseInt(quantities[i]));
@@ -81,33 +82,19 @@ function CartPage({ user, userType }) {
         orders.current = [];
         if (userType === "Customer") {
             for (let pid of products.current) {
-                let totalQty = 0;
                 const q = localStorage.getItem(pid);
-                Axios.post('http://localhost:3001/shoppingCart/findQuantity', {
-                    productID: pid,
-                    CustomerID: user.CustomerID
-                }).then((response) => {
-                    if (q) {
-                        totalQty = parseInt(Object.values(response.data[0])[0]) + parseInt(q);
-                        console.log(q);
-                    } else {
-                        totalQty = parseInt(Object.values(response.data[0])[0]);
-                    }
-                    const order = [{ quantity: totalQty, ProductID: pid }, "New"];
-                    orders.current.push(order)
-                    console.log(orders);
-                    if (orders.current.length === products.current.length) {
-                        Axios.post('http://localhost:3001/shoppingCart/insertToOrder', {
-                            CustomerID: user.CustomerID,
-                            products: JSON.stringify(orders.current, replacer),
-                            price: totalPrice,
-                            date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
-                        })
-                            .then((response) => console.log(response))
-                            .catch(err => console.log(err));
-                    }
-                });
+                const order = [{ quantity: parseInt(q), ProductID: pid }, "New"];
+                orders.current.push(order);
             }
+            Axios.post('http://localhost:3001/shoppingCart/insertToOrder', {
+                CustomerID: user.CustomerID,
+                products: JSON.stringify(orders.current, replacer),
+                price: totalPrice,
+                date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
+            })
+                .then((response) => console.log(response))
+                .catch(err => console.log(err));
+
             Axios.post('http://localhost:3001/shoppingCart/deleteShoppingCart', {
                 CustomerID: user.CustomerID,
             }).then((response) => { })

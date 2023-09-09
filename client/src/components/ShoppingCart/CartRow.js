@@ -33,7 +33,16 @@ function CartRow({ user, usertype, data, totalPrice }) {
 
     function addQuantity() {
         setQuantity(quantity + 1)
-        setPrice(data.price * quantity);
+        setPrice(data.price * quantity); 
+        Axios.post('http://localhost:3001/shoppingCart/updateShoppingCart', {
+            quantity: quantity + 1,
+            productID: data.ProductID,
+            customerID: user.CustomerID
+        })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch(err => console.log(err));
         totalPrice(prev => prev + data.price);
         const newQuantity = JSON.parse(localStorage.getItem(data.ProductID)) + 1;
         localStorage.setItem(data.ProductID, newQuantity);
@@ -42,6 +51,15 @@ function CartRow({ user, usertype, data, totalPrice }) {
     function subQuantity() {
         if (quantity !== 1) {
             setQuantity(quantity - 1);
+            Axios.post('http://localhost:3001/shoppingCart/updateShoppingCart', {
+                quantity: quantity - 1,
+                productID: data.ProductID,
+                customerID: user.CustomerID
+            })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch(err => console.log(err));
             totalPrice(prev => prev - data.price);
         }
         setPrice(data.price * quantity);
