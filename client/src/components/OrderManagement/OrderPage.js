@@ -12,13 +12,34 @@ function OrderPage({ user }) {
             CustomerID: user.CustomerID
         }).then((response) => {
             setOrder(response.data)
+            
             setOrderedProducts(JSON.parse(response.data[0].products));
         });
     }, [])
 
-    const row = orderedProducts.map(product => {
+    // const row = orderedProducts.map(product => {
+    //     return (
+    //         <OrderRow key={product.ProductID} data={product} order={order}/>
+    //     )
+    // })
+
+    const newProducts = [];
+
+    order.map(order => {
+        let orderID = order.OrderID;
+        JSON.parse(order.products).map(product => {
+            //console.log(product[0].ProductID)
+            newProducts.push([orderID, product]);
+            // return (
+            //     <OrderRow key={product[0].ProductID} data={product[1]} order={order}/>
+            // )
+        })
+    })
+
+    const row = newProducts.map(product => {
+        console.log(product[1][1]);
         return (
-            <OrderRow key={product.ProductID} data={product} order={order}/>
+            <OrderRow key={product[0].ProductID} ProductID={product[1][0].ProductID} quantity={product[1][0].quantity} status={product[1][1]} OrderID={product[0]}/>
         )
     })
 
