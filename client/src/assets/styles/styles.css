@@ -793,6 +793,7 @@ span {
 
 .product-filter-container {
     position: relative;
+    float: right;
 }
 
 .product-filter-form-container {
