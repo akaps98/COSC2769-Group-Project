@@ -108,16 +108,18 @@ function CartPage({ user, userType }) {
                     }
                 });
             }
+            Axios.post('http://localhost:3001/shoppingCart/deleteShoppingCart', {
+                CustomerID: user.CustomerID,
+            }).then((response) => { })
+            alert("Checkout success!")
+            Axios.post('http://localhost:3001/shoppingCart/insertShoppingCart', {
+                CustomerID: user.CustomerID,
+            }).then((response) => { })
+            localStorage.clear();
+            window.location.reload();
+        } else {
+            alert("Please login first to checkout!")
         }
-        localStorage.clear();
-        Axios.post('http://localhost:3001/shoppingCart/deleteShoppingCart', { 
-            CustomerID: user.CustomerID,
-        }).then((response) => { })
-        alert("Checkout success!")
-        Axios.post('http://localhost:3001/shoppingCart/insertShoppingCart', { 
-            CustomerID: user.CustomerID,
-        }).then((response) => { })
-        window.location.reload();
     }
 
     const row = orderedProducts.map(product => {
@@ -154,7 +156,7 @@ function CartPage({ user, userType }) {
                     <div className="col">
                         <div className='cost-box d-flex justify-content-between align-items-center px-4 border border-secondary-subtle'>
                             <h5 className='text-secondary'>Total</h5>
-                            <h5>${totalPrice.toLocaleString()}</h5>
+                            <h5>₫{totalPrice.toLocaleString()}</h5>
                         </div>
                     </div>
                 </div>

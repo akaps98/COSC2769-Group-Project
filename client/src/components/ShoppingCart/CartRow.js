@@ -15,18 +15,17 @@ function CartRow({ user, usertype, data, totalPrice }) {
                 setQuantity(q);
                 setPrice(data.price * q);
             });
-        }else {
+        } else {
             const q = parseInt(localStorage.getItem(data.ProductID));
-            console.log(q);
             setQuantity(q);
             setPrice(data.price * q);
         }
     }, []);
 
     useEffect(() => {
-        if(usertype === "Customer"){
+        if (usertype === "Customer") {
             setPrice(data.price * quantity);
-        }else{
+        } else {
             const q = parseInt(localStorage.getItem(data.ProductID));
             setPrice(data.price * q);
         }
@@ -52,6 +51,22 @@ function CartRow({ user, usertype, data, totalPrice }) {
         }
         localStorage.setItem(data.ProductID, newQuantity);
     }
+
+    function removeProduct() {
+        if (usertype !== "") { // member
+            Axios.post('http://localhost:3001/shoppingCart/removeShoppingCart', {
+                productID: data.ProductID,
+                customerID: user.CustomerID
+            }).then((response) => {
+                console.log(response);
+            });
+        }
+        if (localStorage.getItem(data.ProductID) != null) {
+            localStorage.removeItem(data.ProductID);
+        }
+        alert("Successfully removed on shopping cart!");
+        window.location.reload();
+    }
     return (
         <tr>
             <th scope="row">{data.ProductID}</th>
@@ -60,10 +75,10 @@ function CartRow({ user, usertype, data, totalPrice }) {
                 <div className='item-info ps-4'>
                     <h3 className='item-name'>{data.name}</h3>
                     <p className='item-date text-warning py-0'>[Date Added: {data.dateAdded}]</p>
-                    <button className='remove-btn bg-light text-black-50'>Remove</button>
+                    <button className='remove-btn bg-light text-black-50' onClick={removeProduct}>Remove</button>
                 </div>
             </td>
-            <td>{data.price}</td>
+            <td>₫{data.price.toLocaleString()}</td>
             <td>
                 <div className='d-flex'>
                     <button className='quantity-btn bg-danger' onClick={subQuantity}>-</button>
@@ -71,7 +86,7 @@ function CartRow({ user, usertype, data, totalPrice }) {
                     <button className='quantity-btn bg-primary' onClick={addQuantity}>+</button>
                 </div>
             </td>
-            <td>${price}</td>
+            <td>₫{price.toLocaleString()}</td>
         </tr>
     )
 }
