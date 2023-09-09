@@ -23,20 +23,14 @@ function Header({ userType, username }) {
             <nav className="navbar navbar-expand-lg bg-body-tertiary my-0">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="/">
-                        <img src={logo} className="headerImage"></img>
+                        <img src={logo} className="headerImage ms-2"></img>
                     </a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#lazadaHeader" aria-controls="lazadaHeader" >
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse d-flex" id="lazadaHeader">
-                        <form className="d-flex ms-auto" role="search">
-                            <input className="searchText form-control border border-secondary m-0" type="search" placeholder="Search in Lazada" aria-label="Search"></input>
-                            <button className="searchBtn border border-secondary" type="submit">
-                                <img src={searchIcon} className="searchIcon"></img>
-                            </button>
-                        </form>
+                    <div className="d-flex float-right" id="lazadaHeader">
                         <a href="/cart">
-                            <button className="cartBtn ms-4 me-auto">
+                            <button className="cartBtn me-3">
                                 {(username !== "Admin") && <img className="shoppingCartIcon" src={shoppingCartIcon}></img>}
                             </button>
                         </a>
