@@ -15,10 +15,6 @@ function OrderRow({ data, order }) {
 
         if(data[1] === "Shipped") {
             setIsShipped(true);
-            let reject = document.getElementById("rejectBtn")
-            let accept = document.getElementById("acceptBtn")
-            reject.classList.remove("blur")
-            accept.classList.remove("blur")
         }
     }, [])
 
@@ -54,8 +50,8 @@ function OrderRow({ data, order }) {
             <td>{data[1]}</td>
             <td>
                 <div className='order-container'>
-                    <button disabled={!isShipped} id="rejectBtn" className='d-block order-btn bg-danger mb-3 blur' onClick={reject}>Rejected</button>
-                    <button disabled={!isShipped} id="acceptBtn" className='d-block order-btn bg-primary blur' onClick={accept}>Accepted</button>
+                    <button disabled={!isShipped} id="rejectBtn" className={`d-block order-btn bg-danger mb-3 ${isShipped ? 'active' : 'blur'}`} onClick={reject}>Rejected</button>
+                    <button disabled={!isShipped} id="acceptBtn" className={`d-block order-btn bg-primary ${isShipped ? 'active' : 'blur'}`} onClick={accept}>Accepted</button>
                 </div>
             </td>
         </tr>
