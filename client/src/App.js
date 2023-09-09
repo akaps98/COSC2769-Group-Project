@@ -53,14 +53,14 @@ function App() {
   return (
     <Router>
       <div>
-        {userType!=="Seller" && <Header userType={userType} />}
+        {userType!=="Seller" && <Header userType={userType} username={user.username} />}
         <div className="App">
           <Routes>
             <Route exact path="/" element={<Carousel />} />
 
             <Route exact path="/login" element={<Login userType={userType} user={user} />} />
             <Route exact path="/register" element={<Register userType={userType} user={user} />} />
-            <Route exact path="/logout" element={<Logout />} />
+            <Route exact path="/logout" element={<Logout username={user.username} userType={userType}/>} />
 
             <Route path="/seller" element={(userType==="Seller")?<SellerPage status={user.status} />:<Unauthorized />}>
               <Route path='/seller' element={<ProductManage seller={user.SellerID}/>} />

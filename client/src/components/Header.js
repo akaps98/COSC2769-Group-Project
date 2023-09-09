@@ -4,7 +4,7 @@ import shoppingCartIcon from "../assets/images/shopping-cart-icon.png"
 import banner from "../assets/images/sale-banner-header.png"
 import "../assets/styles/header.css"
 
-function Header({ userType }) {
+function Header({ userType, username }) {
     return (
         <header className="header">
             <div className="headerTop">
@@ -13,7 +13,8 @@ function Header({ userType }) {
                         <li><a href="#">Save More on App</a></li>
                         <li><a href="/search">Sell On Lazada</a></li>
                         <li><a href="#">Lazada Care</a></li>
-                        {userType === "Customer" ? <li><a href="/order">Order</a></li> : null}
+                        {(username === "Admin") && <li><a href='/admin'>Admin page</a></li>}
+                        {(userType === "Customer" && username !== "Admin") ? <li><a href="/order">Order</a></li> : null}
                         <li></li>
                     </ul>
                 </nav>
@@ -36,13 +37,19 @@ function Header({ userType }) {
                         </form>
                         <a href="/cart">
                             <button className="cartBtn ms-4 me-auto">
-                                <img className="shoppingCartIcon" src={shoppingCartIcon}></img>
+                                {(username !== "Admin") && <img className="shoppingCartIcon" src={shoppingCartIcon}></img>}
                             </button>
                         </a>
-                        <div className="navbar-nav mx-auto mb-2 mb-lg-0">
-                            <a href="/login"><button className="navBtn btn btn-outline-primary me-2">Log In</button></a>
-                            <a href="/register"><button className="navBtn btn btn-primary border">Sign Up</button></a>
-                        </div>
+                        {(userType === "") ?
+                            <div className="navbar-nav mx-auto mb-2 mb-lg-0">
+                                <a href="/login"><button className="navBtn btn btn-outline-primary me-2">Log In</button></a>
+                                <a href="/register"><button className="navBtn btn btn-primary border">Sign Up</button></a>
+                            </div>
+                        :
+                            <div className="navbar-nav mx-auto mb-2 mb-lg-0">
+                                <a href="/logout"><button className="navBtn btn btn-outline-primary me-2">Log Out</button></a>
+                            </div>
+                        }
                         
                 </div>
                 </div>

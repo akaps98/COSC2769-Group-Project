@@ -49,10 +49,12 @@ function OrderRow({ data, order }) {
             </td>
             <td>{data[1]}</td>
             <td>
+            {(isShipped) &&
                 <div className='order-container'>
-                    <button disabled={!isShipped} id="rejectBtn" className={`d-block order-btn bg-danger mb-3 ${isShipped ? 'active' : 'blur'}`} onClick={reject}>Rejected</button>
-                    <button disabled={!isShipped} id="acceptBtn" className={`d-block order-btn bg-primary ${isShipped ? 'active' : 'blur'}`} onClick={accept}>Accepted</button>
+                    <button id="rejectBtn" className={`d-block order-btn bg-danger mb-3 ${isShipped ? 'active' : 'blur'}`} onClick={reject}>Reject</button>
+                    <button id="acceptBtn" className={`d-block order-btn bg-primary ${isShipped ? 'active' : 'blur'}`} onClick={accept}>Accept</button>
                 </div>
+            }
             </td>
         </tr>
     )
