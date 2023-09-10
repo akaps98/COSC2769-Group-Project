@@ -26,79 +26,6 @@ const browseByCategory = (req, res) => {
     });
 }
 
-const filterByAlpabeticalOrder = (req, res) => {
-    database.query("SELECT * FROM products ORDER BY name ASC", (err,result) => {
-        if (err) {
-            return res.send(err);
-        } else {
-            return res.send(result);
-        }
-    });
-}
-
-const filterByReversedAlpabeticalOrder = (req, res) => {
-    database.query("SELECT * FROM products ORDER BY name DESC", (err,result) => {
-        if (err) {
-            return res.send(err);
-        } else {
-            return res.send(result);
-        }
-    });
-}
-
-const filterByLatestDateAdded = (req, res) => {
-    database.query("SELECT * FROM products ORDER BY dateAdded ASC", (err,result) => {
-        if (err) {
-            return res.send(err);
-        } else {
-            return res.send(result);
-        }
-    });
-}
-
-const filterByOldestDateAdded = (req, res) => {
-    database.query("SELECT * FROM products ORDER BY dateAdded DESC", (err,result) => {
-        if (err) {
-            return res.send(err);
-        } else {
-            return res.send(result);
-        }
-    });
-}
-
-const filterByHighPrice = (req, res) => {
-    database.query("SELECT * FROM products ORDER BY price DESC", (err,result) => {
-        if (err) {
-            return res.send(err);
-        } else {
-            return res.send(result);
-        }
-    });
-}
-
-const filterByLowPrice = (req, res) => {
-    database.query("SELECT * FROM products ORDER BY price ASC", (err,result) => {
-        if (err) {
-            return res.send(err);
-        } else {
-            return res.send(result);
-        }
-    });
-}
-
-const filterPrice = (req, res) => {
-    const belowPrice = req.body.belowPrice;
-    const upperPrice = req.body.upperPrice;
-
-    database.query("SELECT * FROM products WHERE price BETWEEN ? AND ?", [parseInt(belowPrice), parseInt(upperPrice)], (err, result) => {
-        if (err) {
-            return res.send(err);
-        } else {
-            return res.send(result);
-        }
-    })
-}
-
 const findProduct = (req, res) => {
     const productID = req.body.productID;
 
@@ -111,4 +38,4 @@ const findProduct = (req, res) => {
     })
 }
 
-module.exports = { browseByTitle, browseByCategory, filterByAlpabeticalOrder, filterByReversedAlpabeticalOrder, filterByLatestDateAdded, filterByOldestDateAdded, filterByHighPrice, filterByLowPrice, filterPrice, findProduct };
+module.exports = { browseByTitle, browseByCategory, findProduct };
