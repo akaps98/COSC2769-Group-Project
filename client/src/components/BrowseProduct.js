@@ -8,13 +8,10 @@ import search from "../assets/images/sellers/search-interface-symbol.png";
 function BrowseProduct() {
     const [products, setProducts] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
-    const [value, setValue] = useState("");
     const [thisPage, setThisPage] = useState(1);
     const [productsPerPage, setproductsPerPage] = useState(4);
     const [selection, setSelection] = useState([]);
     const [selectionName, setSelectionName] = useState([]);
-    const [belowPrice, setBelowPrice] = useState(0);
-    const [upperPrice, setUpperPrice] = useState(999999999999999);
 
     const lastPage = thisPage * productsPerPage;
     const firstPage = lastPage - productsPerPage;
@@ -139,35 +136,6 @@ function BrowseProduct() {
     const [filterShow, setFilterShow] = useState(false);
     const handleFilterClose = () => setFilterShow(false);
     const handleFilterToggle = () => setFilterShow((prev) => !prev);
-
-    function filterChange(e) {
-        const { name, value } = e.target
-        if(value === "alphabet") {
-            const sortedProducts = products.sort((a, b) => a.name.localeCompare(b.name));
-            setProducts(sortedProducts);
-            console.log(currentProduct)
-        } else if (value === "alphabet-reverse") {
-            const sortedProducts = products.sort((a, b) => a.name.localeCompare(b.name)).reverse();
-            setProducts(sortedProducts);
-            console.log(currentProduct)
-        } else if (value === "date-addded-latest") {
-            const sortedProducts = products.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
-            setProducts(sortedProducts);
-            console.log(currentProduct)
-        } else if (value === "date-addded-oldest") {
-            const sortedProducts = products.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)).reverse();
-            setProducts(sortedProducts);
-            console.log(currentProduct)
-        } else if (value === "price-high-to-low") {
-            const sortedProducts = products.sort((a, b) => a.price - b.price).reverse();
-            setProducts(sortedProducts);
-            console.log(currentProduct)
-        } else {
-            const sortedProducts = products.sort((a, b) => a.price - b.price);
-            setProducts(sortedProducts);
-            console.log(currentProduct)
-        }
-    }   
 
     const display = currentProduct.map((product) => {
         return (
