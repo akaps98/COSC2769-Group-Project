@@ -3,7 +3,7 @@ import Axios from 'axios'
 import EachProduct from './EachProduct';
 import Pagination from './Pagination';
 
-import search from "../assets/images/sellers/search-interface-symbol.png";
+import search from "../../assets/images/sellers/search-interface-symbol.png";
 
 function BrowseProduct() {
     const [products, setProducts] = useState([]);

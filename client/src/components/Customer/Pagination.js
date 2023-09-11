@@ -1,5 +1,5 @@
 import React from 'react'
-import "../assets/styles/product.css"
+import "../../assets/styles/product.css"
 
 function Pagination({ totalProducts, productsPerPage, setThisPage }) {
     const pages = [];
