@@ -1,10 +1,10 @@
 # 2023-2nd semester / COSC2769 Group Project / Group 14
 
 ## 1. Contribution score
-Hong SeongJoon (S3726123) : 5
-Kang Junsik (S3916884) : 5
-Nguyen Anh Duy (S3878141) : 5
-Yoo Christina (S3938331) : 5
+- Hong SeongJoon (S3726123) : 5
+- Kang Junsik (S3916884) : 5
+- Nguyen Anh Duy (S3878141) : 5
+- Yoo Christina (S3938331) : 5
 
 
 ## 2. How to install and run the project
