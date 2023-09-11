@@ -28,7 +28,8 @@
 **More seller user emails:**
 - frank@email.com
 - donald@email.com
-- george@email.com  
+- george@email.com
+
 **More customer user emails:**
 - christina@email.com
 - bobby@email.com
