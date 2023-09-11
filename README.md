@@ -24,11 +24,11 @@
 - user email: alice@email.com
 - user password: alice1111
 
-(All passwords are the name in the email + 1111)
+(All passwords are the name in the email + 1111)__
 **More seller user emails:**
 - frank@email.com
 - donald@email.com
-- george@email.com
+- george@email.com__
 **More customer user emails:**
 - christina@email.com
 - bobby@email.com
